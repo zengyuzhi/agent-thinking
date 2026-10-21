@@ -1,0 +1,9 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Benchmark working files
+bench/.work/
+bench/results/
+__pycache__/

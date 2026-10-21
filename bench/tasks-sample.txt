@@ -1,0 +1,12 @@
+# Sample: tasks close to what agent-thinking is for (debugging, repair, migration, audit),
+# plus two non-coding tasks as a contrast.
+fix-build-agentops
+fix-build-google-auto
+fix-erlang-ssh-cve
+fix-druid-loophole-cve
+react-performance-debugging
+debug-trl-grpo
+spring-boot-jakarta-migration
+software-dependency-audit
+organize-messy-files
+citation-check

@@ -1,0 +1,4 @@
+# Pilot: check the pipeline and estimate cost per rollout
+software-dependency-audit
+organize-messy-files
+citation-check
