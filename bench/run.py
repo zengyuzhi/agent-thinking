@@ -5,6 +5,8 @@ Arms:
   control    the task as published, no skills
   treatment  agent-thinking deployed, and one line prepended to the task
              instruction telling the agent to invoke it
+  nudge      no skills, and one generic "verify your work" line prepended,
+             to tell the skill's effect apart from the effect of any extra line
 
 Usage:
   python3 bench/run.py run --tasks bench/tasks-pilot.txt --trials 1
@@ -35,6 +37,11 @@ INVOKE_LINE = (
     "Before you start, invoke the `agent-thinking` skill and follow it in Apply mode "
     "for the task below.\n\n"
 )
+NUDGE_LINE = (
+    "Before you finish, verify your work: check each requirement of the task below "
+    "and show the output that proves it.\n\n"
+)
+PREPEND = {"control": "", "treatment": INVOKE_LINE, "nudge": NUDGE_LINE}
 
 
 def load_env():
@@ -64,18 +71,18 @@ def build_treatment_skill() -> Path:
     return root
 
 
-def prepend_instruction(task_dir: Path):
-    """Insert INVOKE_LINE at the start of the instruction body."""
+def prepend_instruction(task_dir: Path, line: str):
+    """Insert line at the start of the instruction body."""
     instruction = task_dir / "instruction.md"
     if instruction.exists():
-        instruction.write_text(INVOKE_LINE + instruction.read_text())
+        instruction.write_text(line + instruction.read_text())
         return
     task_md = task_dir / "task.md"
     text = task_md.read_text()
     m = re.match(r"(---\n.*?\n---\n)(.*)", text, flags=re.S)
     if not m:
         sys.exit(f"cannot find frontmatter in {task_md}")
-    task_md.write_text(m.group(1) + "\n" + INVOKE_LINE + m.group(2).lstrip("\n"))
+    task_md.write_text(m.group(1) + "\n" + line + m.group(2).lstrip("\n"))
 
 
 CA_NAME = "bench-extra-ca.crt"
@@ -113,13 +120,13 @@ def set_verifier_timeout(task_dir: Path, seconds: int):
     task_md.write_text(new)
 
 
-def build_task_dirs(tasks: list[str], ca: Path | None = None, verifier_timeout: int | None = None) -> dict[str, Path]:
+def build_task_dirs(tasks: list[str], arms: list[str], ca: Path | None = None, verifier_timeout: int | None = None) -> dict[str, Path]:
     src = SKILLSBENCH / "tasks"
     missing = [t for t in tasks if not (src / t).is_dir()]
     if missing:
         sys.exit(f"unknown tasks: {missing}")
     dirs = {}
-    for arm in ("control", "treatment"):
+    for arm in arms:
         root = WORK / f"tasks-{arm}"
         shutil.rmtree(root, ignore_errors=True)
         root.mkdir(parents=True)
@@ -129,8 +136,8 @@ def build_task_dirs(tasks: list[str], ca: Path | None = None, verifier_timeout: 
                 inject_ca(root / t, ca)
             if verifier_timeout:
                 set_verifier_timeout(root / t, verifier_timeout)
-            if arm == "treatment":
-                prepend_instruction(root / t)
+            if PREPEND[arm]:
+                prepend_instruction(root / t, PREPEND[arm])
         dirs[arm] = root
     return dirs
 
@@ -140,11 +147,14 @@ def cmd_run(args):
     if not SKILLSBENCH.is_dir():
         sys.exit(f"clone SkillsBench first: git clone https://github.com/benchflow-ai/skillsbench.git {SKILLSBENCH}")
     tasks = [l.strip() for l in Path(args.tasks).read_text().splitlines() if l.strip() and not l.startswith("#")]
+    arms = args.arms.split(",")
+    if not set(arms) <= PREPEND.keys():
+        sys.exit(f"unknown arm in {arms}; choose from {sorted(PREPEND)}")
     skills_root = build_treatment_skill()
     ca = Path(args.extra_ca) if args.extra_ca else None
     if ca and not ca.is_file():
         sys.exit(f"extra CA not found: {ca}")
-    task_dirs = build_task_dirs(tasks, ca, args.verifier_timeout)
+    task_dirs = build_task_dirs(tasks, arms, ca, args.verifier_timeout)
     run_id = datetime.now().strftime("%Y%m%d-%H%M%S")
     out = BENCH / "results" / run_id
     out.mkdir(parents=True)
@@ -153,20 +163,22 @@ def cmd_run(args):
         "model": args.model or os.environ.get("BENCH_MODEL"),
         "tasks": tasks,
         "trials": args.trials,
+        "arms": arms,
         "skillsbench_commit": subprocess.run(
             ["git", "-C", str(SKILLSBENCH), "rev-parse", "--short", "HEAD"], capture_output=True, text=True
         ).stdout.strip(),
         "skill_commit": subprocess.run(
             ["git", "-C", str(REPO), "rev-parse", "--short", "HEAD"], capture_output=True, text=True
         ).stdout.strip(),
-        "invoke_line": INVOKE_LINE.strip(),
+        "prepend": {a: PREPEND[a].strip() for a in arms},
         "extra_ca": str(ca) if ca else None,
         "verifier_timeout": args.verifier_timeout,
     }
     (out / "meta.json").write_text(json.dumps(meta, indent=2))
 
     for trial in range(1, args.trials + 1):
-        for arm in ("control", "treatment"):
+        # alternate arm order across trials so time-of-run effects (network, API load) do not favor one arm
+        for arm in arms if trial % 2 else arms[::-1]:
             jobs = out / arm / f"trial-{trial}"
             cmd = [
                 BENCH_PYTHON, str(BENCH / "bench_shim.py"), "eval", "run",
@@ -213,8 +225,9 @@ def loaded_skill(rollout: Path) -> bool:
 def cmd_summarize(args):
     out = Path(args.run_dir)
     meta = json.loads((out / "meta.json").read_text())
+    arms = meta.get("arms", ["control", "treatment"])
     rows = {}
-    for arm in ("control", "treatment"):
+    for arm in arms:
         for task, rollout, data in find_results(out / arm):
             rows.setdefault(task, {}).setdefault(arm, []).append((rollout, data))
 
@@ -243,9 +256,9 @@ def cmd_summarize(args):
         "| Task | Arm | Pass | Tool calls | Input tokens (k) | Output tokens (k) | Agent time (s) | Skill loaded | Infra |",
         "|---|---|---|---|---|---|---|---|---|",
     ]
-    totals = {"control": [], "treatment": []}
+    totals = {arm: [] for arm in arms}
     for task in sorted(rows):
-        for arm in ("control", "treatment"):
+        for arm in arms:
             runs = rows[task].get(arm, [])
             if not runs:
                 continue
@@ -275,6 +288,8 @@ def main():
     r.add_argument("--trials", type=int, default=1)
     r.add_argument("--model", help="defaults to BENCH_MODEL in .env")
     r.add_argument("--concurrency", type=int, default=2)
+    r.add_argument("--arms", default="control,treatment",
+                   help="comma-separated arms to run: control, treatment, nudge")
     r.add_argument("--verifier-timeout", type=int,
                    help="override verifier timeout (s), for slow networks; applied to both arms")
     r.add_argument("--extra-ca", default=os.environ.get("BENCH_EXTRA_CA_CERT"),

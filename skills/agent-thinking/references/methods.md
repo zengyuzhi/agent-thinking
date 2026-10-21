@@ -135,7 +135,7 @@ Agents trust the README, comments, old notes, the summary from the last session,
 **Prompt**
 ```
 Docs, comments, notes and your memory may all be outdated. Before you base a decision on any of them, confirm it once against the current code, configuration or command output.
-If the docs and the code disagree, trust the code, and list the places where they disagree.
+If the docs and the code disagree, the code shows what happens, not what was intended. Settle it with the requirements, tests, callers and history, and list the places where they disagree.
 When you use a third-party library's API, check the official docs for the current version. Do not rely on memory.
 ```
 
@@ -295,7 +295,8 @@ Before you delete or rewrite any code or config that looks redundant or odd:
 1. Use git log / git blame to find when and why it was added, and whether there is a related issue or PR.
 2. Search for every place that references it.
 3. Explain in which situations things would break if you deleted it.
-If you cannot find a reason for it to exist, do not delete it. List it and let me decide.
+If the history is missing, use tests, callers and runtime behavior instead, and say what stays unknown.
+If I asked for the deletion, use this to decide how to delete safely, not whether. Otherwise, if you cannot find a reason for it to exist, do not delete it. List it and let me decide.
 ```
 
 ---
@@ -316,7 +317,7 @@ This helps an agent decide when to make the call itself and when to stop and ask
 ```
 Before each decision, first judge whether it is reversible:
 - Reversible (two-way door): local changes, running tests, creating branches. Just do it, no need to ask me.
-- Irreversible (one-way door): deleting data, pushing to a shared branch or production, sending anything externally, changing permissions. Stop, explain the impact and the alternatives, and wait for my confirmation.
+- Irreversible (one-way door): deleting data, pushing to a shared branch or production, sending anything externally, changing permissions. Stop, explain the impact and the alternatives, and wait for my confirmation, unless I already approved this action. Ask again only if what you find goes beyond what I approved.
 When in doubt, treat it as irreversible.
 ```
 
@@ -419,7 +420,7 @@ When an agent fixes one bug, it often breaks something else along the way: other
 **Prompt**
 ```
 This change must be a Pareto improvement:
-1. Before the change, run the full test suite and record the baseline (passed count, failed count, key performance metrics).
+1. Before the change, run the tests that cover the affected behavior, plus any checks the repository requires, and record the baseline (passed count, failed count, key performance metrics).
 2. After the change, run it again and confirm that no previously passing test now fails and no metric got worse.
 3. If something unavoidably gets worse (a trade-off), stop and list: who gets better, who gets worse, and by how much. I will decide whether to accept it.
 ```

@@ -2,9 +2,9 @@
 
 English | [中文](README.zh-CN.md)
 
-An Agent Skill for Claude Code, Codex, pi, and other agents that support `SKILL.md`. It picks the right few of 27 thinking methods for the task at hand and applies them, or writes a prompt for another agent.
+An Agent Skill for Claude Code, Codex, pi, and other agents that support `SKILL.md`. It makes an agent's work verifiable: it picks the few thinking methods that guard against the task's likely failures, proves "done" with evidence for every acceptance criterion, or writes a self-contained prompt for another agent.
 
-The methods include First Principles, Socratic Questioning, Pre-Mortem, Chesterton's Fence, scientific debugging, Adversarial Review, Chain-of-Verification, and Ablation Study. A second reference collects prompting techniques by task type: explaining, writing code, architecture diagrams, long tasks, research, and output format.
+`SKILL.md` carries twelve short method cards, built from a library of 27 methods that includes First Principles, Socratic Questioning, Pre-Mortem, Chesterton's Fence, scientific debugging, Adversarial Review, Chain-of-Verification, and Ablation Study. A second reference collects prompting techniques by task type: explaining, writing code, architecture diagrams, long tasks, research, and output format.
 
 The repo holds two skills with the same content: `agent-thinking` in English and `agent-thinking-zh` in Chinese. Install either one, or both.
 
@@ -48,10 +48,14 @@ Agents that ignore both fields can still use the skill, but may load it automati
 
 | Mode | Triggered by | What it does |
 |---|---|---|
-| Apply | a task description, or nothing | picks up to five methods by task stage, does the task, and leaves evidence for each method in the conversation |
-| Write a prompt | asking for a prompt, a hand-off to an agent, or rules for CLAUDE.md or AGENTS.md | produces one self-contained prompt and does not run the task |
+| Apply | a task description, or nothing | picks up to three method cards by the failures they prevent, does the task, and ends with an evidence ledger: each acceptance criterion verified, failed, or unverified |
+| Write a prompt | asking for a prompt, a hand-off to an agent, or rules for CLAUDE.md or AGENTS.md | produces one self-contained prompt with acceptance criteria, a budget, and a ledger report format, and does not run the task |
 | Named | naming a method | uses only the named methods |
 | Advise | asking which methods fit, e.g. "which approach is best here?" | recommends methods with reasons and first steps, changes nothing, then asks whether to go ahead |
+
+### When it helps
+
+The skill adds steps, so it costs tokens and time. It pays off when the task has no runnable check, includes a destructive or outward-facing step, involves several agents, has an unknown cause, or spans sessions. When the task has its own tests and takes about ten tool calls, the skill keeps only the evidence ledger and says so.
 
 The agent replies in the language you write in. For the Chinese skill, replace `agent-thinking` with `agent-thinking-zh` in the commands above.
 
@@ -61,7 +65,7 @@ Both skills share this layout; the English one is under [skills/agent-thinking](
 
 | File | Contents |
 |---|---|
-| `SKILL.md` | the steps, and the stage-to-method picker |
+| `SKILL.md` | the steps, the card picker, and the twelve method cards |
 | `references/methods.md` | 27 thinking methods, each with a copy-paste prompt |
 | `references/techniques.md` | prompting techniques by task type, and a combined prompt for CLAUDE.md or AGENTS.md |
 | `agents/openai.yaml` | Codex UI metadata and invocation policy |

@@ -172,7 +172,7 @@ If you cannot run verification, explain why and give the next best way to check.
 **9. Confirm dangerous actions first**
 ```
 Consider the reversibility and blast radius of each action. Local, reversible actions (editing files, running tests) can be done directly.
-For actions that are hard to undo, affect shared systems, or are destructive, ask me first:
+For actions that are hard to undo, affect shared systems, or are destructive, ask me first, unless I already approved that action:
 - Deleting files or branches, dropping database tables, rm -rf
 - git push --force, git reset --hard, amending published commits
 - Actions others can see: pushing code, commenting on PRs or issues, sending messages
@@ -304,7 +304,7 @@ Without a success criterion, the agent does not know when to stop. It either sea
 
 **2. Require cross-checking across sources**
 
-Confirm each fact in at least two independent sources. Prefer official documentation and primary data.
+Confirm disputed or consequential facts in at least two independent sources. Prefer official documentation and primary data.
 
 **3. Keep several hypotheses at once**
 ```
@@ -363,7 +363,7 @@ Working principles:
 3. Docs, comments, and memory may be outdated. Confirm against the current code before making decisions.
 4. Build the simplest version that works first. Do not add features or abstractions nobody asked for.
 5. Before deleting code that looks redundant, find out why it exists.
-6. Do reversible actions directly. Ask me before irreversible actions such as deleting data, pushing, or sending anything externally.
+6. Do reversible actions directly. Ask me before irreversible actions such as deleting data, pushing, or sending anything externally, unless I already approved them.
 7. Changes must not make anything that worked before worse. When there is a trade-off, stop and explain it. Do not hard-code to pass tests.
 8. Separate facts, inferences, and assumptions. Cite sources for facts. Say what evidence would overturn your conclusion.
 9. At the end of each answer, list: conclusions lacking evidence, untested scenarios, and parts that are guesses.
