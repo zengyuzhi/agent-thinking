@@ -1,5 +1,5 @@
 interface:
   display_name: "Agent Thinking"
-  short_description: "Pick thinking methods by task stage and apply them, or write prompts for other agents"
+  short_description: "Make work verifiable: pick a few thinking methods, prove done with evidence, or write prompts for other agents"
 policy:
   allow_implicit_invocation: false

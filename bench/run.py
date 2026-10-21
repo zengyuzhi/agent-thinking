@@ -97,7 +97,7 @@ ENV NODE_EXTRA_CA_CERTS=/usr/local/share/ca-certificates/{CA_NAME} \\
 
 
 def inject_ca(task_dir: Path, ca: Path):
-    """Trust an extra root CA (e.g. a corporate TLS proxy) in the task image. Applied to both arms."""
+    """Trust an extra root CA (e.g. a corporate TLS proxy) in the task image. Applied to every arm."""
     env_dir = task_dir / "environment"
     shutil.copy(ca, env_dir / CA_NAME)
     dockerfile = env_dir / "Dockerfile"
@@ -148,8 +148,8 @@ def cmd_run(args):
         sys.exit(f"clone SkillsBench first: git clone https://github.com/benchflow-ai/skillsbench.git {SKILLSBENCH}")
     tasks = [l.strip() for l in Path(args.tasks).read_text().splitlines() if l.strip() and not l.startswith("#")]
     arms = args.arms.split(",")
-    if not set(arms) <= PREPEND.keys():
-        sys.exit(f"unknown arm in {arms}; choose from {sorted(PREPEND)}")
+    if not set(arms) <= PREPEND.keys() or len(set(arms)) != len(arms):
+        sys.exit(f"bad arms {arms}; choose distinct arms from {sorted(PREPEND)}")
     skills_root = build_treatment_skill()
     ca = Path(args.extra_ca) if args.extra_ca else None
     if ca and not ca.is_file():
@@ -177,8 +177,9 @@ def cmd_run(args):
     (out / "meta.json").write_text(json.dumps(meta, indent=2))
 
     for trial in range(1, args.trials + 1):
-        # alternate arm order across trials so time-of-run effects (network, API load) do not favor one arm
-        for arm in arms if trial % 2 else arms[::-1]:
+        # rotate arm order so each arm takes each position and time-of-run effects (network, API load) even out
+        shift = (trial - 1) % len(arms)
+        for arm in arms[shift:] + arms[:shift]:
             jobs = out / arm / f"trial-{trial}"
             cmd = [
                 BENCH_PYTHON, str(BENCH / "bench_shim.py"), "eval", "run",
@@ -222,6 +223,27 @@ def loaded_skill(rollout: Path) -> bool:
     return traj.exists() and '"skill": "agent-thinking"' in traj.read_text()
 
 
+def picks_first(rollout: Path) -> bool:
+    """True if the agent's first message after loading the skill lists its picks, before any other tool call."""
+    traj = rollout / "trajectory" / "acp_trajectory.jsonl"
+    if not traj.exists():
+        return False
+    loaded = False
+    for line in traj.read_text().splitlines():
+        try:
+            e = json.loads(line)
+        except ValueError:
+            continue
+        if e.get("type") == "tool_call":
+            if '"skill": "agent-thinking' in line:
+                loaded = True
+            elif loaded:
+                return False
+        elif loaded and e.get("type") == "agent_message":
+            return bool(re.search(r"^\W*(Picks|选用)", e.get("text") or "", flags=re.M))
+    return False
+
+
 def cmd_summarize(args):
     out = Path(args.run_dir)
     meta = json.loads((out / "meta.json").read_text())
@@ -245,6 +267,7 @@ def cmd_summarize(args):
             "out_k": sum(m.get("total_completion_tokens") or 0 for m in fm) / n / 1000,
             "secs": sum((d.get("timing") or {}).get("agent_execution") or 0 for _, d in scored) / n,
             "skill": sum(loaded_skill(r) for r, _ in scored),
+            "picks": sum(picks_first(r) for r, _ in scored),
         }
 
     lines = [
@@ -253,8 +276,8 @@ def cmd_summarize(args):
         f"Model `{meta['model']}`, {meta['trials']} trial(s), SkillsBench `{meta['skillsbench_commit']}`, skill `{meta['skill_commit']}`.",
         "Per-arm averages are over scored rollouts; `infra` counts rollouts that failed before scoring and were retried.",
         "",
-        "| Task | Arm | Pass | Tool calls | Input tokens (k) | Output tokens (k) | Agent time (s) | Skill loaded | Infra |",
-        "|---|---|---|---|---|---|---|---|---|",
+        "| Task | Arm | Pass | Tool calls | Input tokens (k) | Output tokens (k) | Agent time (s) | Skill loaded | Picks first | Infra |",
+        "|---|---|---|---|---|---|---|---|---|---|",
     ]
     totals = {arm: [] for arm in arms}
     for task in sorted(rows):
@@ -266,7 +289,7 @@ def cmd_summarize(args):
             totals[arm].append(st)
             lines.append(
                 f"| {task} | {arm} | {st['pass']:g}/{st['n']} | {st['tools']:.0f} | {st['in_k']:.0f} | "
-                f"{st['out_k']:.1f} | {st['secs']:.0f} | {st['skill']}/{st['n']} | {st['failed']} |"
+                f"{st['out_k']:.1f} | {st['secs']:.0f} | {st['skill']}/{st['n']} | {st['picks']}/{st['n']} | {st['failed']} |"
             )
     lines += ["", "| Arm | Pass rate | Avg tool calls | Avg input tokens (k) | Avg output tokens (k) | Avg agent time (s) |", "|---|---|---|---|---|---|"]
     for arm, sts in totals.items():
@@ -291,7 +314,7 @@ def main():
     r.add_argument("--arms", default="control,treatment",
                    help="comma-separated arms to run: control, treatment, nudge")
     r.add_argument("--verifier-timeout", type=int,
-                   help="override verifier timeout (s), for slow networks; applied to both arms")
+                   help="override verifier timeout (s), for slow networks; applied to every arm")
     r.add_argument("--extra-ca", default=os.environ.get("BENCH_EXTRA_CA_CERT"),
                    help="PEM root CA to trust inside task images, for networks behind a TLS-inspecting proxy")
     r.set_defaults(func=cmd_run)

@@ -29,7 +29,7 @@ If you cannot restate the task and the mode in one sentence, ask the user one qu
 
 ## 2. Pick the cards
 
-Answer each question for this task. Each yes makes the card a candidate.
+Answer each question from the task text alone; do not open files to answer them. A question you cannot answer yet counts as no. Each yes makes the card a candidate.
 
 | Question | Card |
 |---|---|
@@ -47,9 +47,9 @@ Answer each question for this task. Each yes makes the card a candidate.
 
 Keep at most three candidates, five when you dispatch agents. Keep the ones guarding against the likeliest costly failure. Drop a card when the project's instructions or another kept card already require its action. The Ledger card always applies and does not count.
 
-**When the task has its own runnable check** (tests, a verifier, a build) **and fits in about ten tool calls**, keep only the Ledger and say so in one line. The other cards pay off when there is no runnable check, a destructive or outward-facing step, several agents, an unknown cause, or work that spans sessions.
+**When the task text names a runnable check** (a test command, a verifier, a build) **and asks for one bounded change**, keep only the Ledger and say so in one line. The other cards pay off when there is no runnable check, a destructive or outward-facing step, several agents, an unknown cause, or work that spans sessions.
 
-Before any further tool call, send the picks as a message of their own in this form, then continue without waiting:
+Your very next output is the picks message below, with no tool call before it. Send it and keep going; do not wait for a reply. After your first look at the code you may add or swap one card, saying why.
 
 ```
 Picks
@@ -59,9 +59,9 @@ Picks
 
 ## 3. Cards
 
-**Clarify** (methods 2). List your reading of the request and the terms or scope you are unsure of. Settle what you can from code, tests, and history. Ask the user only questions whose answer would change the implementation, one at a time, most important first. Evidence: the questions and answers, or the assumptions you chose and why.
+**Clarify** (method 2). List your reading of the request and the terms or scope you are unsure of. Settle what you can from code, tests, and history. Ask the user only questions whose answer would change the implementation, one at a time, most important first. Evidence: the questions and answers, or the assumptions you chose and why.
 
-**Reproduce** (1, 3). Before changing anything, reproduce the failure and record the command and the actual output. If you cannot reproduce it, stop and report. Say how you confirmed the cause is the cause and not a symptom. After the fix, rerun the same command. Evidence: the reproduction command with output before and after.
+**Reproduce** (1, 3). Before changing anything, reproduce the failure and record the command and the actual output. If you cannot reproduce it, say so, name the check you will use instead, and go on only if the task supplies one. Say how you confirmed the cause is the cause and not a symptom. After the fix, rerun the same command. Evidence: the reproduction command with output before and after.
 
 **Diagnose** (13, 14, 15). State at least two competing hypotheses. Record each round as hypothesis, prediction (what a command will show if it is true), command run, observation, verdict. Choose experiments that tell the hypotheses apart. Once the direct cause is found, keep asking why until you reach a cause whose fix prevents this class of failure; list the branches when there are several. A search that finds nothing is weak evidence, so say how likely it was to miss. Evidence: the rounds.
 
@@ -85,7 +85,7 @@ Picks
 
 ## 4. Apply mode
 
-Do the task, following the picked cards, and finish with the Ledger.
+Do the task, following the picked cards, and finish with the Ledger. Before an irreversible step the user has not approved, such as deleting data, pushing, sending anything outside, or changing permissions, stop and ask.
 
 For explaining, diagrams, research, or long tasks, also read the matching techniques.md section (B, D, F, or E), found by its `## ` heading.
 
