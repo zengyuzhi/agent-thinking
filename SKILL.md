@@ -22,6 +22,8 @@ Read the text the user attached when invoking this skill. Claude Code fills it i
 - **Write a prompt**. The text asks for a prompt, a hand-off to another agent or subagent, or rules for CLAUDE.md or AGENTS.md. You produce the prompt only and do not run the task.
 - **Named**. The text names one or more methods. Use only those and skip step 2.
 
+When the task is to dispatch other agents to do the work, you are in Apply mode as the orchestrator, and each agent's brief follows the Write-a-prompt rules in 4b.
+
 Done when you can restate the task and the mode in one sentence. If you cannot, ask the user one question before going on.
 
 ## 2. Pick methods by stage
@@ -75,7 +77,7 @@ Decide which stages below the task actually passes through. From each relevant s
 
 Add B for explaining or teaching, E for long tasks, F for research.
 
-Done when you have a list of the picked method numbers and techniques.md sections, each with one sentence on why.
+Done when the user can see, in a message before any work starts, the picked method numbers and techniques.md sections, each with one sentence on why. Then continue without waiting; the user may redirect.
 
 ## 3. Read the picked entries
 
@@ -94,7 +96,11 @@ Do the task. Every picked method leaves **evidence** in the conversation that th
 | Pareto Improvement | test baseline before and after the change |
 | List Every Uncertainty | the uncertainty list at the end |
 
-For methods not in the table, derive the evidence from that method's prompt in methods.md. Done when every picked method has evidence, or a stated reason why it could not.
+For methods not in the table, derive the evidence from that method's prompt in methods.md.
+
+When you dispatch agents, write each picked method into their briefs as a concrete rule, and require each agent's report to carry that method's evidence. Your final message then points to where each method's evidence lives: a file, a report section, or this conversation.
+
+Done when every picked method has evidence, or a stated reason why it could not.
 
 ## 4b. Write-a-prompt mode
 
