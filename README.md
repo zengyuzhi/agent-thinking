@@ -55,7 +55,7 @@ Agents that ignore both fields can still use the skill, but may load it automati
 
 ### When it helps
 
-The skill adds steps, so it costs tokens and time. It pays off when the task has no runnable check, includes a destructive or outward-facing step, involves several agents, has an unknown cause, or spans sessions. When the task has its own tests and takes about ten tool calls, the skill keeps only the evidence ledger and says so.
+The skill adds steps, so it costs tokens and time. It pays off when the task has no runnable check, includes a destructive or outward-facing step, involves several agents, has an unknown cause, or spans sessions. When the task names its own check, such as a test command, and asks for one bounded change, the skill keeps only the evidence ledger and says so.
 
 The agent replies in the language you write in. For the Chinese skill, replace `agent-thinking` with `agent-thinking-zh` in the commands above.
 
