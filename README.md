@@ -39,6 +39,7 @@ Agents that ignore both fields can still use the skill, but may load it automati
 /agent-thinking fix the bug where users can't log back in after a session timeout
 /agent-thinking write a prompt: have a subagent review this payment change
 /agent-thinking pre-mortem
+/agent-thinking which methods fit the current situation?
 ```
 
 | Mode | Triggered by | What it does |
@@ -46,6 +47,7 @@ Agents that ignore both fields can still use the skill, but may load it automati
 | Apply | a task description, or nothing | picks up to five methods by task stage, does the task, and leaves evidence for each method in the conversation |
 | Write a prompt | asking for a prompt, a hand-off to an agent, or rules for CLAUDE.md or AGENTS.md | produces one self-contained prompt and does not run the task |
 | Named | naming a method | uses only the named methods |
+| Advise | asking which methods fit, e.g. "which approach is best here?" | recommends methods with reasons and first steps, changes nothing, then asks whether to go ahead |
 
 The agent replies in the language you write in.
 

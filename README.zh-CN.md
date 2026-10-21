@@ -39,6 +39,7 @@ git clone https://github.com/zengyuzhi/agent-thinking.git ~/.agents/skills/agent
 /agent-thinking 修复登录超时后无法重新登录的 bug
 /agent-thinking 写提示词：让子 Agent 审查这次的支付改动
 /agent-thinking 事前验尸
+/agent-thinking 当前这个情况用什么方式最好？
 ```
 
 | 模式 | 触发方式 | 做什么 |
@@ -46,6 +47,7 @@ git clone https://github.com/zengyuzhi/agent-thinking.git ~/.agents/skills/agent
 | 套用 | 参数描述一件要做的事，或者留空 | 按任务阶段挑最多五条方法，自己完成任务，每条方法在对话里留下证据 |
 | 写提示词 | 参数要求写提示词、交给某个 Agent、写进 CLAUDE.md 或 AGENTS.md | 只产出一段自包含的提示词，不执行任务 |
 | 点名 | 参数里点了某条方法的名字 | 只用被点名的方法 |
+| 咨询 | 问哪些方法适合，比如"当前情况用什么方式最好" | 推荐方法并说明理由和第一步怎么做，不改任何东西，最后问你要不要开始执行 |
 
 ## 文件
 

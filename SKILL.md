@@ -1,7 +1,7 @@
 ---
 name: agent-thinking
 description: Pick the right thinking methods for the current task and apply them, or write a high-quality prompt for another agent.
-argument-hint: "a task; or \"write a prompt: ...\"; or name a method, e.g. \"pre-mortem\""
+argument-hint: "a task; or \"write a prompt: ...\"; or \"which methods fit?\"; or name a method, e.g. \"pre-mortem\""
 disable-model-invocation: true
 ---
 
@@ -21,6 +21,7 @@ Read the text the user attached when invoking this skill. Claude Code fills it i
 - **Apply**. The text describes something to do. You do it yourself, using the picked methods.
 - **Write a prompt**. The text asks for a prompt, a hand-off to another agent or subagent, or rules for CLAUDE.md or AGENTS.md. You produce the prompt only and do not run the task.
 - **Named**. The text names one or more methods. Use only those and skip step 2.
+- **Advise**. The text asks which methods or approach fit the situation, without asking you to act. Run steps 2 and 3, then 4c. Change nothing.
 
 When the task is to dispatch other agents to do the work, you are in Apply mode as the orchestrator, and each agent's brief follows the Write-a-prompt rules in 4b.
 
@@ -115,6 +116,10 @@ Produce one self-contained prompt with these parts, in order.
 When the target is CLAUDE.md or AGENTS.md, start from the combined prompt at the end of techniques.md and keep only the lines that fit this project.
 
 Then run the colleague test: read the prompt as a colleague who knows nothing about the task. It passes only if they could start work right away. Deliver the prompt in one code block, followed by one line per method used and why.
+
+## 4c. Advise mode
+
+For each picked method, give three lines: why it fits this situation, the first concrete action it would mean here, and the evidence it would leave. Then one line on methods you considered and rejected, and why. End by asking whether to go ahead in Apply mode.
 
 ## 5. Wrap up
 
