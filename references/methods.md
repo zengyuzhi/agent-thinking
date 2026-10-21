@@ -1,765 +1,765 @@
-# 思维方法（27 条）
+# Thinking Methods (27)
 
-| # | 方法 | 一句话 | 最适合 |
+| # | Method | In one line | Best for |
 |---|---|---|---|
-| **一、弄清问题** | | | |
-| 1 | 第一性原理 | 先把问题本身搞清楚 | 修 bug、长任务开始前 |
-| 2 | 苏格拉底提问法 | 先问清楚再动手 | 需求含糊时 |
-| 3 | 退一步提问（论文） | 先问背后的原理，再解具体问题 | 复杂推理 |
-| 4 | 地图不是疆域 | 文档和记忆可能过时，以当前代码为准 | 读文档、接手项目 |
-| 5 | 分而治之与 MECE | 拆成不重不漏的小块 | 大任务、调研 |
-| 6 | 由易到难分解（论文） | 先解最简单的子问题，逐步往上 | 有前后依赖的任务 |
-| **二、设计方案** | | | |
-| 7 | 奥卡姆剃刀 | 先做最简单、能工作的版本 | 所有实现 |
-| 8 | 高内聚低耦合 | 把模块边界划清楚 | 改代码、拆模块 |
-| 9 | 逆向思维与事前验尸 | 假设它已经失败了，问为什么 | 设计方案、上线前 |
-| 10 | 二阶思维 | 然后呢？ | 改接口、改指标、改流程 |
-| 11 | 切斯特顿的篱笆 | 拆之前先搞清楚它为什么在那 | 删代码、删规则 |
-| 12 | 单向门与双向门 | 可逆的决定快做，不可逆的慢做 | 决定什么时候该问人 |
-| **三、调试与找根因** | | | |
-| 13 | 科学方法 | 假设、预测、实验、观察 | 调试 |
-| 14 | 五个为什么 | 连续追问，挖到根因 | 事故复盘 |
-| 15 | 贝叶斯更新 | 带着置信度判断，按证据调整 | 诊断、调研 |
-| **四、验证与审查** | | | |
-| 16 | 帕累托改进 | 改好一处，不弄坏别处 | 验收标准 |
-| 17 | 古德哈特定律 | 指标一旦变成目标，就不再是好指标 | 写测试、定验收标准 |
-| 18 | 对抗式审查 | 找一个专门挑毛病的 Agent | 审查 |
-| 19 | 保持独立思考 | 先判断，再参考别人的答案 | 多 Agent 协作 |
-| 20 | 自洽性（论文） | 多次独立求解，看答案是否一致 | 需要高可靠的判断 |
-| 21 | 钢人论证 | 反驳之前，先把对方的观点说到最强 | 方案选型 |
-| 22 | 批判性思维 | 必须检查证据 | 所有分析 |
-| 23 | 验证链（论文） | 先写草稿，再逐条独立核对 | 减少事实性错误 |
-| 24 | 小黄鸭调试 | 一行行讲出来，问题自己会冒出来 | 自查代码 |
-| **五、交付与持续改进** | | | |
-| 25 | 列出所有不自信的点 | 让不确定有地方出现 | 交付时 |
-| 26 | 检查清单 | 把完成的标准写下来，逐项打勾 | 交付前 |
-| 27 | 消融实验 | 拿掉一个东西，看看还行不行 | 优化提示词和配置 |
+| **I. Understand the Problem** | | | |
+| 1 | First Principles | Understand the problem itself first | Fixing bugs, before long tasks |
+| 2 | Socratic Questioning | Ask until it is clear, then act | Vague requirements |
+| 3 | Step-Back Prompting (paper) | Ask about the underlying principle first, then solve the specific problem | Complex reasoning |
+| 4 | The Map Is Not the Territory | Docs and memory may be outdated; the current code is the truth | Reading docs, taking over a project |
+| 5 | Divide and Conquer (MECE) | Split into parts with no overlaps and no gaps | Large tasks, research |
+| 6 | Least-to-Most Decomposition (paper) | Solve the easiest subproblem first, then work upward | Tasks with sequential dependencies |
+| **II. Design the Approach** | | | |
+| 7 | Occam's Razor | Build the simplest version that works first | All implementation |
+| 8 | High Cohesion, Low Coupling | Draw clear module boundaries | Changing code, splitting modules |
+| 9 | Inversion and Pre-Mortem | Assume it already failed, and ask why | Designing solutions, before launch |
+| 10 | Second-Order Thinking | And then what? | Changing interfaces, metrics, processes |
+| 11 | Chesterton's Fence | Before you remove it, find out why it is there | Deleting code, deleting rules |
+| 12 | One-Way and Two-Way Doors | Make reversible decisions fast and irreversible ones slowly | Deciding when to ask a human |
+| **III. Debug and Find Root Causes** | | | |
+| 13 | The Scientific Method | Hypothesis, prediction, experiment, observation | Debugging |
+| 14 | Five Whys | Keep asking why until you reach the root cause | Incident reviews |
+| 15 | Bayesian Updating | Judge with a confidence level and adjust it with evidence | Diagnosis, research |
+| **IV. Verify and Review** | | | |
+| 16 | Pareto Improvement | Make one thing better without breaking anything else | Acceptance criteria |
+| 17 | Goodhart's Law | When a measure becomes a target, it stops being a good measure | Writing tests, setting acceptance criteria |
+| 18 | Adversarial Review | Get an agent whose only job is to find faults | Review |
+| 19 | Independent Judgment | Judge first, then look at other answers | Multi-agent work |
+| 20 | Self-Consistency (paper) | Solve independently several times and check whether the answers agree | Judgments that must be highly reliable |
+| 21 | Steelmanning | Before you argue against a view, state it in its strongest form | Choosing between solutions |
+| 22 | Critical Thinking | Always check the evidence | All analysis |
+| 23 | Chain-of-Verification (paper) | Write a draft first, then check each claim independently | Reducing factual errors |
+| 24 | Rubber Duck Debugging | Explain it line by line, and the problem shows itself | Self-checking code |
+| **V. Deliver and Improve** | | | |
+| 25 | List Every Uncertainty | Give uncertainty a place to show up | At delivery |
+| 26 | Checklists | Write down what "done" means and check each item | Before delivery |
+| 27 | Ablation Study | Remove one thing and see if it still works | Tuning prompts and configuration |
 
-标了"论文"的四条来自 LLM 研究论文。论文测试的大多是 2022 到 2023 年的模型，现在的模型很多自带深度思考，这些技巧带来的提升可能变小了。用之前最好在自己的任务上做一次对比，方法见第 27 条。
-
----
-
-## 一、弄清问题
-
-### 1. 第一性原理
-
-> 先把问题本身搞清楚
-
-**是什么**
-
-回到最基本的事实，从事实一步步推出结论。经验、类比和别人的结论都先放在一边。
-
-**对 Agent 的意义**
-
-Agent 很容易直接开始修，却没确认问题是否真的存在。长任务里还有一个风险，对话超过几十上百轮后，Agent 会忘记最初要做什么，开始解决一个偏掉的问题。
-
-**做法**
-
-- 修复前先复现问题，记录复现步骤和实际结果。
-- 找到根因再动手，只消除症状的修改不算修好。
-- 修复后用同样的步骤再跑一遍，对比前后结果。
-- 长任务开始时把目标写进一个文件，比如 `TASK.md`，每个阶段开始前让 Agent 重读一次。
-
-**提示词**
-```
-在动手修改之前，先回到事实：
-1. 复现这个问题，给出复现步骤和实际输出。如果无法复现，停下来告诉我。
-2. 找出根因，说明你是怎么确认它是根因的。
-3. 修复后用同样的步骤再跑一遍，给出修复前后的结果对比。
-每完成一个阶段，重读 TASK.md，确认你仍在解决最初的问题。
-```
+The four methods marked "paper" come from LLM research papers. Most of these papers tested models from 2022 to 2023. Many current models have built-in deep reasoning, so the gains from these techniques may be smaller now. Before you rely on one, compare it on your own task first. See method 27 for how.
 
 ---
 
-### 2. 苏格拉底提问法
+## I. Understand the Problem
 
-> 先问清楚再动手
+### 1. First Principles
 
-**是什么**
+> Understand the problem itself first
 
-提问的人不直接给答案，靠连续追问来澄清概念、检查假设、暴露矛盾。完整介绍见[附录 A](#附录-a-苏格拉底提问法)。
+**What it is**
 
-**对 Agent 的意义**
+Go back to the most basic facts and reason step by step from those facts to a conclusion. Put experience, analogies and other people's conclusions aside for now.
 
-用户的需求经常含糊。Agent 默认会自己脑补一个理解然后直接执行，做到最后才发现方向错了。让 Agent 先提问，或者先对自己的理解提问，能在开工前就发现误解。
+**Why it matters for agents**
 
-**两种用法**
+Agents easily start fixing right away without confirming that the problem really exists. Long tasks have another risk: after tens or hundreds of turns, the agent forgets what it was originally asked to do and starts solving a problem that has drifted.
 
-- **向用户提问**。需求不清时，先列出关键问题，确认后再做。
-- **向自己提问**。给出结论前，自己追问这个说法的前提是什么、有没有反例、如果成立会推出什么。
+**How**
 
-**提示词**
+- Reproduce the problem before fixing it. Record the reproduction steps and the actual result.
+- Find the root cause before you change anything. A change that only removes the symptom does not count as a fix.
+- After the fix, run the same steps again and compare the results before and after.
+- At the start of a long task, write the goal into a file such as `TASK.md`, and have the agent reread it before each phase.
+
+**Prompt**
 ```
-开始之前，先用提问澄清任务：
-1. 列出你对这个需求的理解，以及其中你不确定的词或范围。
-2. 只问那些会改变实现方式的问题，一次一个，按重要性排序。
-3. 在给出最终结论前，自问三个问题：前提是什么？有没有反例？如果成立会推出什么后果？
+Before you change anything, go back to the facts:
+1. Reproduce the problem. Give the reproduction steps and the actual output. If you cannot reproduce it, stop and tell me.
+2. Find the root cause, and explain how you confirmed it is the root cause.
+3. After the fix, run the same steps again and show the results before and after the fix.
+After each phase, reread TASK.md and confirm you are still solving the original problem.
 ```
 
 ---
 
-### 3. 退一步提问
+### 2. Socratic Questioning
 
-> 先问背后的原理，再解具体问题
+> Ask until it is clear, then act
 
-**是什么**
+**What it is**
 
-Google DeepMind 2023 年的论文，发表在 ICLR 2024，英文叫 Step-Back Prompting。先让模型退一步，说出这个问题背后的一般原理或概念，再用原理去推导答案。论文在 PaLM-2L 上测试，物理题提升 7%，化学题提升 11%。
+The questioner does not give the answer directly. Instead, a series of follow-up questions clarifies concepts, checks assumptions and exposes contradictions. See [Appendix A](#appendix-a-socratic-questioning) for the full introduction.
 
-**对 Agent 的意义**
+**Why it matters for agents**
 
-这是第一性原理的一种具体做法。遇到具体 bug，先问这类问题一般由什么机制造成；遇到具体设计，先问这类系统的主要约束有哪些。
+User requirements are often vague. By default, an agent fills in its own interpretation and executes it, and only at the end finds out the direction was wrong. Having the agent ask questions first, or question its own understanding first, catches misunderstandings before work starts.
 
-**提示词**
+**Two ways to use it**
+
+- **Ask the user**. When the requirement is unclear, list the key questions first and start only after they are answered.
+- **Ask yourself**. Before giving a conclusion, ask yourself what the premise of the claim is, whether there are counterexamples, and what follows if it is true.
+
+**Prompt**
 ```
-回答这个问题之前，先退一步：
-1. 这个问题背后涉及的一般原理或概念是什么？
-2. 用这些原理推导出答案。
-3. 检查答案是否和原理一致。
-```
-
----
-
-### 4. 地图不是疆域
-
-> 文档和记忆可能过时，以当前代码为准
-
-**是什么**
-
-地图是对现实的简化描述。现实会变，地图会过时。
-
-**对 Agent 的意义**
-
-Agent 会相信 README、注释、旧笔记、上一次会话的总结，甚至它训练数据里的 API 用法。这些都可能已经过时。长任务和多会话工作中尤其要小心，上次记录的状态可能和现在对不上。
-
-**提示词**
-```
-文档、注释、笔记和你的记忆都可能过时。依赖其中任何一条信息做决定之前，先用当前的代码、配置或命令输出确认一次。
-如果发现文档和代码不一致，以代码为准，并把不一致的地方列出来。
-用到第三方库的 API 时，查当前版本的官方文档，不要凭记忆。
+Before you start, clarify the task with questions:
+1. List your understanding of this requirement, and the words or scope you are unsure about.
+2. Ask only the questions that would change how you implement it, one at a time, ordered by importance.
+3. Before giving your final conclusion, ask yourself three questions: What is the premise? Are there counterexamples? If it is true, what consequences follow?
 ```
 
 ---
 
-### 5. 分而治之与 MECE
+### 3. Step-Back Prompting
 
-> 拆成不重不漏的小块
+> Ask about the underlying principle first, then solve the specific problem
 
-**是什么**
+**What it is**
 
-把大问题拆成小问题分别解决。MECE 是麦肯锡的拆分原则，全称 Mutually Exclusive, Collectively Exhaustive，意思是各部分互不重叠，合起来没有遗漏。
+A 2023 paper from Google DeepMind, published at ICLR 2024, called Step-Back Prompting. First have the model step back and state the general principle or concept behind the problem, then use that principle to derive the answer. The paper tested it on PaLM-2L and reported gains of 7% on physics questions and 11% on chemistry questions.
 
-**对 Agent 的意义**
+**Why it matters for agents**
 
-一次给 Agent 一个大任务，它容易漏掉某些部分，或者在几个部分之间来回跳。拆成不重不漏的子任务后，每一块都能单独验证，也方便分给多个子 Agent 并行做。
+This is one concrete way to apply first principles. For a specific bug, first ask what mechanism usually causes this kind of problem. For a specific design, first ask what the main constraints of this kind of system are.
 
-**提示词**
+**Prompt**
 ```
-开始之前，先把任务拆成子任务：
-- 子任务之间不重叠，合起来覆盖整个任务。
-- 每个子任务写明：输入、输出、怎么验证完成。
-- 标出子任务之间的依赖关系，哪些可以并行。
-把清单写进 TODO.md，完成一项勾一项。
-```
-
----
-
-### 6. 由易到难分解
-
-> 先解最简单的子问题，逐步往上
-
-**是什么**
-
-Google 2022 年的论文，发表在 ICLR 2023，英文叫 Least-to-Most Prompting。把复杂问题拆成一串子问题，从最简单的开始解，每解完一个，就把答案作为下一个子问题的输入。
-
-**对 Agent 的意义**
-
-它和第 5 条相近，多了一层顺序上的要求，先解决最简单、最确定的部分，再用它的结果去解下一个。适合有前后依赖的任务。
-
-**提示词**
-```
-把这个问题拆成一串子问题，按从简单到复杂排序，后面的子问题可以用前面的答案。
-逐个解决，每解完一个，写下答案，再进入下一个。
+Before you answer this question, take a step back:
+1. What general principles or concepts does this question involve?
+2. Use those principles to derive the answer.
+3. Check that the answer is consistent with the principles.
 ```
 
 ---
 
-## 二、设计方案
+### 4. The Map Is Not the Territory
 
-### 7. 奥卡姆剃刀
+> Docs and memory may be outdated; the current code is the truth
 
-> 先做最简单、能工作的版本
+**What it is**
 
-**是什么**
+A map is a simplified description of reality. Reality changes, and maps go out of date.
 
-如无必要，勿增实体。几个方案都能解决问题时，选最简单的那个。
+**Why it matters for agents**
 
-**对 Agent 的意义**
+Agents trust the README, comments, old notes, the summary from the last session, and even the API usage in their training data. Any of these may already be outdated. Be especially careful in long tasks and multi-session work: the state recorded last time may not match the state now.
 
-Agent 很喜欢过度设计，加抽象层、加配置项、为以后可能用到的场景写代码。这些代码增加了审查和维护的成本，还可能引入新 bug。能用一个脚本解决的事，先把脚本跑通，架构随真实需求再迭代。
-
-**提示词**
+**Prompt**
 ```
-先做能解决问题的最简单版本：
-- 能用现有代码、标准库或已安装的依赖解决的，就不要新写。
-- 不要添加没人要求的功能、配置项或抽象层。
-- 如果你认为需要更复杂的方案，先说明简单方案在哪里不够用，再给出复杂方案。
-- 最后列出你刻意没做的东西，一行一个。
+Docs, comments, notes and your memory may all be outdated. Before you base a decision on any of them, confirm it once against the current code, configuration or command output.
+If the docs and the code disagree, trust the code, and list the places where they disagree.
+When you use a third-party library's API, check the official docs for the current version. Do not rely on memory.
 ```
 
 ---
 
-### 8. 高内聚低耦合
+### 5. Divide and Conquer (MECE)
 
-> 把模块边界划清楚
+> Split into parts with no overlaps and no gaps
 
-**是什么**
+**What it is**
 
-相关的逻辑放在一起，这叫高内聚。不同模块通过清楚的接口协作，彼此依赖尽量少，这叫低耦合。
+Split a large problem into small problems and solve them one by one. MECE is McKinsey's splitting principle. It stands for Mutually Exclusive, Collectively Exhaustive: the parts do not overlap, and together they leave nothing out.
 
-**对 Agent 的意义**
+**Why it matters for agents**
 
-Agent 的上下文窗口有限。模块边界越清楚，改一个模块时需要理解的范围就越小，越容易给它合适的上下文，修改也越容易验证。边界模糊的代码，Agent 要么看不全，要么改一处坏一片。
+Give an agent one big task at once and it tends to miss some parts or jump back and forth between them. Once the task is split into subtasks with no overlaps and no gaps, each piece can be verified on its own, and the pieces are easy to hand to several subagents in parallel.
 
-**提示词**
+**Prompt**
 ```
-修改代码时遵守模块边界：
-- 相关的逻辑放在同一个模块，不要把一个功能散落在多处。
-- 模块之间只通过公开接口交互，不要直接访问对方的内部实现。
-- 如果这次修改需要跨越多个模块，先说明原因，评估是否说明边界划分有问题。
-- 列出这次修改影响到的所有调用方。
-```
-
----
-
-### 9. 逆向思维与事前验尸
-
-> 假设它已经失败了，问为什么
-
-**是什么**
-
-逆向思维先问什么会保证失败，再设法避开这些。事前验尸是它的具体做法，英文叫 pre-mortem，想象项目已经失败，倒推原因。常被引用的案例是二战时的沃尔德，他建议给返航飞机上没有弹孔的部位加装甲，因为那些部位中弹的飞机没能飞回来。
-
-**对 Agent 的意义**
-
-Agent 习惯顺着"这样做能成功"的方向想，很少主动想失败路径。逆向提问能逼它列出风险，再把风险转成测试、约束或明确接受的风险。
-
-**提示词**
-```
-假设这个方案上线一个月后彻底失败了。
-1. 列出最可能导致失败的 5 个原因，按可能性排序。
-2. 对每个原因，给出现在就能做的预防措施：一个测试、一个约束、或一个监控。
-3. 哪些风险你认为可以接受？说明理由。
+Before you start, split the task into subtasks:
+- Subtasks do not overlap, and together they cover the whole task.
+- For each subtask, state: the input, the output, and how to verify it is done.
+- Mark the dependencies between subtasks and which ones can run in parallel.
+Write the list into TODO.md and check off each item as you finish it.
 ```
 
 ---
 
-### 10. 二阶思维
+### 6. Least-to-Most Decomposition
 
-> 然后呢？
+> Solve the easiest subproblem first, then work upward
 
-**是什么**
+**What it is**
 
-看一个决定的直接结果，也看结果引起的结果。常被引用的反例是 1902 年河内的捕鼠悬赏，官方按老鼠尾巴发赏金，有人剪了尾巴就把老鼠放生让它继续繁殖，后来还出现了专门养老鼠的人。
+A 2022 paper from Google, published at ICLR 2023, called Least-to-Most Prompting. Break a complex problem into a sequence of subproblems and start with the easiest. Each time one is solved, use its answer as input to the next subproblem.
 
-**对 Agent 的意义**
+**Why it matters for agents**
 
-Agent 改代码时通常只关心眼前的问题有没有解决，很少想到这次改动对调用方、性能、数据和用户习惯的后续影响。
+It is close to method 5, with one extra requirement about order: solve the simplest, most certain part first, then use its result to solve the next. It fits tasks with sequential dependencies.
 
-**提示词**
+**Prompt**
 ```
-对这个改动做二阶分析：
-- 一阶：它直接解决了什么问题？
-- 二阶：它会让哪些调用方、数据、性能或用户行为发生变化？
-- 三阶：这些变化会再引发什么？
-只列有依据的影响，推测的标注出来。
+Break this problem into a sequence of subproblems, ordered from simple to complex. Later subproblems can use the answers to earlier ones.
+Solve them one at a time. After each one, write down the answer, then move to the next.
 ```
 
 ---
 
-### 11. 切斯特顿的篱笆
+## II. Design the Approach
 
-> 拆之前先搞清楚它为什么在那
+### 7. Occam's Razor
 
-**是什么**
+> Build the simplest version that works first
 
-路上有一道篱笆，你不知道它有什么用。先去弄清楚它当初为什么被建起来，弄清楚以后才有资格决定拆不拆。
+**What it is**
 
-**对 Agent 的意义**
+Do not add entities beyond necessity. When several solutions all solve the problem, pick the simplest one.
 
-Agent 很喜欢删掉看起来没用的代码、多余的判断和奇怪的配置。这些东西经常是为了修某个历史 bug 或处理某个罕见情况才加上的。
+**Why it matters for agents**
 
-**提示词**
+Agents love to over-engineer: adding abstraction layers, adding config options, writing code for scenarios that might come up later. That code raises review and maintenance costs and can introduce new bugs. If a script can do the job, get the script working first, and let the architecture evolve with real needs.
+
+**Prompt**
 ```
-删除或改写任何看起来多余、奇怪的代码或配置之前：
-1. 用 git log / git blame 查它是什么时候、为什么加的，有没有关联的 issue 或 PR。
-2. 搜索所有引用它的地方。
-3. 说明如果删掉它，什么情况下会出问题。
-找不到它存在的理由时，不要删，列出来让我决定。
-```
-
----
-
-### 12. 单向门与双向门
-
-> 可逆的决定快做，不可逆的慢做
-
-**是什么**
-
-这是贝佐斯的说法。双向门是走过去还能走回来的决定，可以快做，做错了就退回来。单向门走过去就回不来，要慢、要谨慎。
-
-**对 Agent 的意义**
-
-这条帮 Agent 判断什么时候自己拿主意，什么时候停下来问人。改代码、跑测试属于双向门，可以放手做。删数据、推送到生产、给外部发消息属于单向门，要先确认。[techniques.md 的 C.9](techniques.md#c-写代码) 的危险操作确认也是同一个思路。
-
-**提示词**
-```
-做每个决定前，先判断它是不是可逆的：
-- 可逆（双向门）：本地修改、跑测试、建分支。直接做，不用问我。
-- 不可逆（单向门）：删除数据、推送到共享分支或生产、对外发送任何内容、改权限。停下来，说明影响和替代方案，等我确认。
-拿不准的时候，按不可逆处理。
+First build the simplest version that solves the problem:
+- If existing code, the standard library or an installed dependency can do it, do not write something new.
+- Do not add features, config options or abstraction layers nobody asked for.
+- If you think a more complex solution is needed, first explain where the simple one falls short, then give the complex one.
+- At the end, list the things you deliberately did not do, one per line.
 ```
 
 ---
 
-## 三、调试与找根因
+### 8. High Cohesion, Low Coupling
 
-### 13. 科学方法
+> Draw clear module boundaries
 
-> 假设、预测、实验、观察
+**What it is**
 
-**是什么**
+Keeping related logic together is high cohesion. Having modules work together through clear interfaces, with as few dependencies on each other as possible, is low coupling.
 
-先提出一个假设，预测假设成立时应该看到什么，设计实验去验证，再根据观察结果接受或推翻假设。2023 年的 AutoSD 研究把这个流程用在 LLM 自动调试上，模型提出假设后要写调试脚本去验证，不能直接猜答案。
+**Why it matters for agents**
 
-**对 Agent 的意义**
+An agent's context window is limited. The clearer the module boundaries, the less it has to understand to change one module, the easier it is to give it the right context, and the easier the change is to verify. With blurry boundaries, the agent either cannot see everything or breaks a whole area when it changes one spot.
 
-Agent 调试时常常想到一个原因就开始改，改错了再换一个。按科学方法走，每一步都有证据，也更容易向人解释 bug 是怎么找到的。
-
-**提示词**
+**Prompt**
 ```
-用科学方法调试，每一轮按这个格式记录：
-- 假设：我认为原因是……
-- 预测：如果假设成立，运行 [某个命令/测试] 应该看到……
-- 实验：实际运行的命令
-- 观察：实际看到的结果
-- 结论：假设成立 / 被推翻 / 需要更多信息
-至少提出两个相互竞争的假设，用实验区分它们，再动手修改。
+Respect module boundaries when you change code:
+- Keep related logic in the same module. Do not scatter one feature across many places.
+- Modules interact only through public interfaces. Do not reach into another module's internals.
+- If this change has to cross several modules, explain why first, and assess whether that means the boundaries are drawn wrong.
+- List every caller affected by this change.
 ```
 
 ---
 
-### 14. 五个为什么
+### 9. Inversion and Pre-Mortem
 
-> 连续追问，挖到根因
+> Assume it already failed, and ask why
 
-**是什么**
+**What it is**
 
-这是丰田生产方式里的方法。出了问题就问为什么，对得到的答案再问为什么，一般问到第五层左右能找到根本原因。比如下面这条链。
+Inversion first asks what would guarantee failure, then tries to avoid those things. A pre-mortem is one concrete way to do it: imagine the project has already failed and work backward to the causes. A commonly cited case is Wald in World War II. He recommended adding armor to the parts of returning planes that had no bullet holes, because the planes hit in those parts did not make it back.
 
-1. 服务挂了。为什么？
-2. 内存耗尽了。为什么？
-3. 缓存没有上限。为什么？
-4. 当初假设数据量很小。为什么？
-5. 团队没有容量评估的流程。
+**Why it matters for agents**
 
-**对 Agent 的意义**
+Agents tend to think along the line of "this will work" and rarely think about failure paths on their own. Inverted questions force them to list risks, then turn each risk into a test, a constraint or an explicitly accepted risk.
 
-Agent 容易停在第一层原因，内存满了就加内存。强制追问能让它找到真正该修的地方。
-
-**局限**
-
-它只沿一条因果链往下走，真实问题经常有几个原因同时存在。最好和第 13 条的多假设一起用。
-
-**提示词**
+**Prompt**
 ```
-对这个问题做"五个为什么"分析：
-从现象开始，每一层都问"为什么会这样"，每个回答都要附上证据（日志、代码、数据）。
-一直问到找到一个可以修复、修了之后同类问题不会再发生的原因为止。
-如果某一层有多个可能的原因，把分支都列出来。
+Assume this solution failed completely one month after launch.
+1. List the 5 most likely causes of the failure, ordered by likelihood.
+2. For each cause, give a preventive measure you can take now: a test, a constraint, or a monitor.
+3. Which risks do you think are acceptable? Explain why.
 ```
 
 ---
 
-### 15. 贝叶斯更新
+### 10. Second-Order Thinking
 
-> 带着置信度判断，按证据调整
+> And then what?
 
-**是什么**
+**What it is**
 
-先有一个初始判断，叫先验。每看到一条新证据，按证据的强弱调整判断，得到后验。判断有程度之分，不只有信和不信两种状态。常被引用的案例是法航 447 空难的搜索，搜索队把之前搜过却没找到的区域也重新算进去，考虑到黑匣子信标可能都坏了，结果一周内找到了残骸。
+Look at the direct result of a decision, and also at the results that result causes. A commonly cited counterexample is the 1902 rat bounty in Hanoi. Officials paid a bounty per rat tail. Some people cut off the tails and released the rats to keep breeding, and later some people started farming rats.
 
-**对 Agent 的意义**
+**Why it matters for agents**
 
-Agent 的结论通常只有是和不是，没有中间状态。要求它给出置信度，并说明哪条证据让置信度变了，就能看出它到底有多少把握。
+When agents change code, they usually only care whether the immediate problem is solved. They rarely think about the later effects of the change on callers, performance, data and user habits.
 
-**提示词**
+**Prompt**
 ```
-对每个候选原因，给出初始置信度（百分比）和理由。
-每拿到一条新证据，更新置信度，并说明这条证据为什么让它上升或下降。
-注意：没找到证据不等于证据不存在，说明你的检查方法有多大可能漏掉它。
-```
-
----
-
-## 四、验证与审查
-
-### 16. 帕累托改进
-
-> 改好一处，不弄坏别处
-
-**是什么**
-
-一个变化让至少一方变好，同时没有任何一方变差。完整介绍见[附录 B](#附录-b-帕累托改进)。
-
-**对 Agent 的意义**
-
-Agent 修一个 bug 时，经常顺手改坏别的东西，其他测试失败了，接口行为变了，性能下降了。用帕累托改进作为验收标准，就是要求每次修改都没有输家。确实需要取舍时必须明说，不能悄悄发生。
-
-**提示词**
-```
-这次修改必须是帕累托改进：
-1. 修改前跑一遍完整测试，记录基线（通过数、失败数、关键性能指标）。
-2. 修改后再跑一遍，确认没有任何原本通过的测试变成失败，没有任何指标变差。
-3. 如果某处不可避免要变差（取舍），停下来列出：谁变好、谁变差、变化多大，由我决定是否接受。
+Do a second-order analysis of this change:
+- First order: what problem does it directly solve?
+- Second order: what callers, data, performance or user behavior will it change?
+- Third order: what will those changes lead to in turn?
+List only effects you have grounds for, and mark the speculative ones.
 ```
 
 ---
 
-### 17. 古德哈特定律
+### 11. Chesterton's Fence
 
-> 指标一旦变成目标，就不再是好指标
+> Before you remove it, find out why it is there
 
-**是什么**
+**What it is**
 
-一个衡量标准被当成追求的目标以后，人们就会想办法让数字好看，它原本要衡量的东西却没有改善。第 10 条的捕鼠悬赏也是例子，官方数的是尾巴，想减少的是老鼠。
+There is a fence across a road and you do not know what it is for. First find out why it was built. Only after you know that do you have the right to decide whether to remove it.
 
-**对 Agent 的意义**
+**Why it matters for agents**
 
-给 Agent 一个"让测试通过"的目标，它可能硬编码测试值、删掉失败的测试，或者跳过检查。要让它知道指标背后真正要达到的效果。[techniques.md 的 C.6](techniques.md#c-写代码) 有一段配套的提示词。
+Agents love to delete code that looks useless, checks that look redundant and config that looks odd. These things were often added to fix some past bug or handle some rare case.
 
-**提示词**
+**Prompt**
 ```
-测试和指标只是用来验证的，真正的目标是：[一句话说清楚真正要达到的效果]。
-- 不要修改、删除或跳过任何现有测试，除非你能证明测试本身是错的，并先告诉我。
-- 不要硬编码只对测试数据有效的结果。
-- 如果你发现达到指标和达到真正目标之间有冲突，停下来告诉我。
-```
-
----
-
-### 18. 对抗式审查
-
-> 找一个专门挑毛病的 Agent
-
-**是什么**
-
-让没有参与实现的 Agent 独立审查结果，专门找反例、遗漏和失败场景。
-
-**对 Agent 的意义**
-
-写代码的 Agent 倾向于认为自己的方案是对的。换一个没看过实现过程的 Agent，只给它结果和原始需求，它更容易发现问题。这其实就是多 Agent 交叉验证。
-
-**做法**
-
-- 审查者和实现者分开，最好不共享实现过程的上下文。
-- 只给审查者原始需求和最终产出。
-- 每条问题都要附证据，比如复现步骤、代码位置或反例输入。
-
-**注意**
-
-让审查者找问题，它几乎总会报出一些，哪怕代码没问题。每条都去修会导致过度设计，多出抽象层、防御性代码，还有给不可能发生的情况写的测试。所以要限定它只报告影响正确性或需求的问题，其余当作可选项。这一点出自 Claude Code 官方最佳实践。
-
-**提示词**
-```
-你是一个独立审查者，没有参与这段实现。你的任务是证明它是错的。
-- 对照原始需求，找出遗漏的功能、边界条件和失败场景。
-- 构造能让它出错的反例输入。
-- 每个问题必须给出证据：代码位置、复现步骤或具体输入输出。没有证据的怀疑单独列出，标为"未证实"。
-- 如果找不到问题，说明你检查了哪些方面。
-- 只报告影响正确性或违反需求的问题，代码风格偏好不算。
+Before you delete or rewrite any code or config that looks redundant or odd:
+1. Use git log / git blame to find when and why it was added, and whether there is a related issue or PR.
+2. Search for every place that references it.
+3. Explain in which situations things would break if you deleted it.
+If you cannot find a reason for it to exist, do not delete it. List it and let me decide.
 ```
 
 ---
 
-### 19. 保持独立思考
+### 12. One-Way and Two-Way Doors
 
-> 先判断，再参考别人的答案
+> Make reversible decisions fast and irreversible ones slowly
 
-**是什么**
+**What it is**
 
-看到别人的结论之前，先形成自己的判断和依据。
+This is Bezos's framing. A two-way door is a decision you can walk back through. You can make it fast, and if it is wrong, you go back. A one-way door cannot be walked back through once you pass it, so take it slowly and carefully.
 
-**对 Agent 的意义**
+**Why it matters for agents**
 
-多 Agent 协作时，第一个 Agent 先发言，后面的 Agent 很容易被它锚定，跟着点头，几个 Agent 最后等于一个。让每个 Agent 先独立给出结论再互相讨论，分歧才会暴露出来。第 20 条的自洽性研究为这种做法提供了依据。
+This helps an agent decide when to make the call itself and when to stop and ask a human. Changing code and running tests are two-way doors, so it can go ahead. Deleting data, pushing to production and sending messages to outside parties are one-way doors, so it must confirm first. The dangerous-operation confirmation in [C.9 in techniques.md](techniques.md#c-writing-code) follows the same idea.
 
-**做法**
-
-- 并行启动多个 Agent，每个只拿到原始问题，彼此看不到对方的输出。
-- 收集所有结论后再汇总，重点看分歧点。
-- 有分歧时让各方拿证据辩论，不靠投票决定。
-
-**提示词**
+**Prompt**
 ```
-独立完成这个判断，不要参考其他 Agent 的答案：
-1. 给出你的结论和支持它的证据。
-2. 说明你的置信度和主要依据。
-之后你会看到其他 Agent 的结论。只有在对方给出了你没考虑到的证据时才改变立场，并说明是哪条证据改变了你的判断。
+Before each decision, first judge whether it is reversible:
+- Reversible (two-way door): local changes, running tests, creating branches. Just do it, no need to ask me.
+- Irreversible (one-way door): deleting data, pushing to a shared branch or production, sending anything externally, changing permissions. Stop, explain the impact and the alternatives, and wait for my confirmation.
+When in doubt, treat it as irreversible.
 ```
 
 ---
 
-### 20. 自洽性
+## III. Debug and Find Root Causes
 
-> 多次独立求解，看答案是否一致
+### 13. The Scientific Method
 
-**是什么**
+> Hypothesis, prediction, experiment, observation
 
-Google 2022 年的论文，英文叫 Self-Consistency。让模型对同一个问题用不同思路独立解多次，取出现次数最多的答案。正确答案往往可以从多条路径得到，错误答案则各不相同。
+**What it is**
 
-**对 Agent 的意义**
+First form a hypothesis, predict what you should see if it is true, design an experiment to test it, then accept or reject the hypothesis based on what you observe. The 2023 AutoSD study applied this process to automated debugging with LLMs. After the model proposes a hypothesis, it must write a debugging script to test it. It cannot just guess the answer.
 
-实际操作就是让几个子 Agent 各自独立解同一个问题。答案一致就更可信；答案不一致，分歧点就是最需要人去看的地方。
+**Why it matters for agents**
 
-**提示词**
+When debugging, agents often start changing code as soon as they think of one cause, and switch to another cause if that was wrong. Following the scientific method puts evidence behind every step, and makes it easier to explain to a human how the bug was found.
+
+**Prompt**
 ```
-用 3 种不同的思路独立解决这个问题，每种思路不要参考其他思路的结论。
-然后比较三个答案：
-- 一致：给出答案。
-- 不一致：列出分歧点，分析哪个思路的推理更可靠，给出最终判断和理由。
-```
-
----
-
-### 21. 钢人论证
-
-> 反驳之前，先把对方的观点说到最强
-
-**是什么**
-
-稻草人论证把对方的观点歪曲成最弱的版本再去反驳。钢人论证的方向相反，先把对方的观点整理成最有说服力的版本，再去评判。
-
-**对 Agent 的意义**
-
-Agent 比较方案时，常常把自己倾向的方案写得很好，把其他方案写得很弱。先要求它给每个方案做钢人论证，比较才公平。审查者也可以先对被审查的设计做钢人论证再挑毛病，免得为了挑而挑。
-
-**提示词**
-```
-比较这几个方案之前，先为每个方案写出它最有力的支持理由：在什么场景下它是最好的选择？它的支持者会怎么说？
-然后再比较各方案的优劣，给出你的推荐和理由。
-如果你推荐的方案在某个场景下不如其他方案，明确说出来。
+Debug with the scientific method. Record each round in this format:
+- Hypothesis: I think the cause is...
+- Prediction: if the hypothesis is true, running [some command/test] should show...
+- Experiment: the command actually run
+- Observation: the result actually seen
+- Conclusion: hypothesis confirmed / rejected / need more information
+Propose at least two competing hypotheses and use experiments to tell them apart before you change anything.
 ```
 
 ---
 
-### 22. 批判性思维
+### 14. Five Whys
 
-> 必须检查证据
+> Keep asking why until you reach the root cause
 
-**是什么**
+**What it is**
 
-一段论述写得完整流畅，也要逐条检查支撑它的证据，才能决定信不信。
+This method comes from the Toyota Production System. When something goes wrong, ask why. Then ask why about the answer. Usually by around the fifth level you find the root cause. For example, this chain:
 
-**对 Agent 的意义**
+1. The service went down. Why?
+2. Memory ran out. Why?
+3. The cache had no size limit. Why?
+4. The original assumption was that the data would be small. Why?
+5. The team had no capacity planning process.
 
-Agent 擅长写出逻辑通顺的分析，通顺和正确却是两回事。要让它分开观察到的事实和推测，并说明什么证据会推翻自己的判断。
+**Why it matters for agents**
 
-**提示词**
+Agents tend to stop at the first-level cause: memory is full, so add memory. Forcing them to keep asking leads them to the place that really needs fixing.
+
+**Limits**
+
+It follows only one causal chain, while real problems often have several causes at once. It works best combined with the multiple hypotheses of method 13.
+
+**Prompt**
 ```
-在你的分析里明确区分三类内容：
-- 【事实】直接观察到的：代码、日志、测试输出、文档原文，附出处。
-- 【推断】从事实推出来的，说明推理链。
-- 【假设】没有验证过的。
-对你的主要结论，说明：什么样的证据出现时会推翻它？你检查过这种证据是否存在吗？
-```
-
----
-
-### 23. 验证链
-
-> 先写草稿，再逐条独立核对
-
-**是什么**
-
-Meta 2023 年的论文，英文叫 Chain-of-Verification，简称 CoVe。一共四步。
-
-1. 先写一个初稿。
-2. 针对初稿里的事实陈述，列出验证问题。
-3. 逐个回答验证问题。回答时不看初稿，免得被初稿带偏。
-4. 根据验证结果修改初稿。
-
-论文还发现，开放式的验证问题比是非题效果好。问"X 是哪年发布的"，比问"X 是 2020 年发布的吗"更可靠，因为是非题容易让模型顺着原来的说法回答"是"。
-
-**对 Agent 的意义**
-
-适合写文档、写报告和回答事实性问题，可以和第 22 条配合使用。
-
-**提示词**
-```
-1. 先写出初稿。
-2. 列出初稿中所有可以核实的事实陈述，对每一条写一个开放式的验证问题（不要用是非题）。
-3. 逐个回答验证问题，回答时去查原始来源（代码、文档、命令输出），不要参考初稿。
-4. 根据验证结果修改初稿，并列出改了哪些地方。
+Do a "Five Whys" analysis of this problem:
+Start from the symptom. At each level, ask "why did this happen", and back every answer with evidence (logs, code, data).
+Keep asking until you find a cause that can be fixed, and that, once fixed, stops this kind of problem from happening again.
+If a level has several possible causes, list all the branches.
 ```
 
 ---
 
-### 24. 小黄鸭调试
+### 15. Bayesian Updating
 
-> 一行行讲出来，问题自己会冒出来
+> Judge with a confidence level and adjust it with evidence
 
-**是什么**
+**What it is**
 
-程序员对着桌上的小黄鸭，一行一行解释自己的代码在做什么。讲着讲着，问题往往自己就暴露了，因为要讲清楚，就得注意平时跳过的细节。
+Start with an initial judgment, called the prior. Each time you see new evidence, adjust the judgment according to how strong the evidence is, and get the posterior. Judgments come in degrees, not just two states of belief and disbelief. A commonly cited case is the search for Air France 447. The search team also recalculated the areas they had already searched without finding anything, taking into account that the black box beacons might both have failed, and found the wreckage within a week.
 
-**对 Agent 的意义**
+**Why it matters for agents**
 
-让 Agent 逐段解释自己写的改动，能发现它自己没意识到的问题，比如某个变量其实没用上，某个分支永远走不到，某个判断条件写反了。
+An agent's conclusions are usually just yes or no, with nothing in between. Asking it to give a confidence level, and to say which piece of evidence changed that confidence, shows how sure it really is.
 
-**提示词**
+**Prompt**
 ```
-逐段解释你这次的修改：每一段代码做了什么、为什么需要它、它处理了哪些输入情况。
-解释的过程中，如果发现某段代码说不清楚为什么存在，或者和你预期的行为不一致，标出来并修正。
-```
-
----
-
-## 五、交付与持续改进
-
-### 25. 列出所有不自信的点
-
-> 让不确定有地方出现
-
-**是什么**
-
-明确要求 Agent 交代自己哪里没把握。
-
-**对 Agent 的意义**
-
-Agent 的语气总是很自信，对的和错的听起来一样。不专门给不确定留一个位置，它就会藏在流畅的文字里。
-
-**提示词**
-```
-在回答末尾单独列出"不确定清单"：
-- 哪些结论缺少直接证据？
-- 哪些场景没有测试？
-- 哪些地方是推测或假设？
-- 哪些信息可能过时？
-每一项注明：如果它是错的，会影响哪个结论。
+For each candidate cause, give an initial confidence (as a percentage) and the reason.
+Each time you get a new piece of evidence, update the confidence, and explain why that evidence made it go up or down.
+Note: not finding evidence does not mean the evidence does not exist. Say how likely your checking method is to miss it.
 ```
 
 ---
 
-### 26. 检查清单
+## IV. Verify and Review
 
-> 把完成的标准写下来，逐项打勾
+### 16. Pareto Improvement
 
-**是什么**
+> Make one thing better without breaking anything else
 
-《清单革命》里有个观点，在复杂领域，很多失败出在漏了一步，做事的人其实会做。飞行员和外科医生都靠检查清单避免这种遗漏。
+**What it is**
 
-**对 Agent 的意义**
+A change that makes at least one party better off while making no party worse off. See [Appendix B](#appendix-b-pareto-improvement) for the full introduction.
 
-Agent 觉得看起来做完了就会停下。有一份写明完成标准的清单，它交付前就能逐项核对，你也能一眼看出哪项没做。
+**Why it matters for agents**
 
-**提示词**
+When an agent fixes one bug, it often breaks something else along the way: other tests fail, interface behavior changes, performance drops. Using Pareto improvement as the acceptance criterion means requiring that every change has no losers. When a trade-off is truly needed, it must be stated openly, not happen quietly.
+
+**Prompt**
 ```
-交付前，逐项检查并报告每一项的状态（✅ / ❌ / 不适用）：
-- [ ] 原始问题已复现，并在修复后确认不再出现
-- [ ] 相关测试已运行并通过，附输出
-- [ ] 没有原本通过的测试变成失败
-- [ ] lint 和类型检查通过
-- [ ] 所有调用方都已检查
-- [ ] 临时文件已清理
-- [ ] 不确定的地方已列出
-任何一项是 ❌，说明原因。
+This change must be a Pareto improvement:
+1. Before the change, run the full test suite and record the baseline (passed count, failed count, key performance metrics).
+2. After the change, run it again and confirm that no previously passing test now fails and no metric got worse.
+3. If something unavoidably gets worse (a trade-off), stop and list: who gets better, who gets worse, and by how much. I will decide whether to accept it.
 ```
 
 ---
 
-### 27. 消融实验
+### 17. Goodhart's Law
 
-> 拿掉一个东西，看看还行不行
+> When a measure becomes a target, it stops being a good measure
 
-**是什么**
+**What it is**
 
-英文叫 Ablation Study，是论文里证明每个组件有用的标准方法。其他条件不变，去掉某个变量，看结果变化多大。
+Once a measure is treated as the goal to chase, people find ways to make the number look good, while the thing it was meant to measure does not improve. The rat bounty in method 10 is also an example: officials counted tails, but what they wanted to reduce was rats.
 
-**对 Agent 的意义**
+**Why it matters for agents**
 
-提示词、规则和工具会越堆越多，没人知道哪些真的有用。某条规则、某个工具或某段提示词到底有没有作用，删掉它再跑一遍才知道。
+Give an agent the goal "make the tests pass" and it may hard-code test values, delete failing tests or skip checks. It needs to know the real effect the metric stands for. [C.6 in techniques.md](techniques.md#c-writing-code) has a matching prompt.
 
-**做法**
-
-- 固定测试用例和评判标准。
-- 每次只去掉一个元素，跑同样的测试。
-- 记录结果，删掉没有影响的元素。
-- Agent 的输出带随机性，每个条件要跑多次，免得把波动当成效果。
-
-**提示词**
+**Prompt**
 ```
-对这套配置做消融实验：
-1. 先用完整配置跑一遍测试集，记录基线结果。
-2. 每次只移除一项（一条规则 / 一个工具 / 一段提示词），其他保持不变，重新跑同样的测试集。
-3. 输出一张表：移除项、结果变化、结论（必要 / 可删 / 不确定）。
-4. 每个条件至少跑 N 次，说明结果的波动范围，避免把随机波动当成效果。
+Tests and metrics are only for verification. The real goal is: [one sentence stating the real effect to achieve].
+- Do not modify, delete or skip any existing test, unless you can prove the test itself is wrong and you tell me first.
+- Do not hard-code results that only work for the test data.
+- If you find a conflict between hitting the metric and reaching the real goal, stop and tell me.
 ```
 
 ---
 
-## 附录 A 苏格拉底提问法
+### 18. Adversarial Review
 
-古希腊哲学家苏格拉底的方法，主要记录在柏拉图的对话录里。提问的人不直接给答案，通过连续追问让对方检查自己的观点，自己发现矛盾，最后得到更清楚的理解。
+> Get an agent whose only job is to find faults
 
-**基本流程**
+**What it is**
 
-1. 让对方提出观点。比如对方说勇敢就是不怕危险。
-2. 追问定义和例子。一个不懂水性的人跳进激流，算勇敢吗？
-3. 找出矛盾。对方承认这更像鲁莽，原来的定义站不住了。
-4. 修正观点。勇敢应该包含对危险的判断。
-5. 继续追问，直到观点足够严密，或者双方承认还没想清楚。
+Have an agent that did not take part in the implementation review the result independently, looking specifically for counterexamples, omissions and failure scenarios.
 
-**六类常用问题**
+**Why it matters for agents**
 
-| 类型 | 示例 |
+The agent that wrote the code tends to believe its own solution is right. A different agent that has not seen the implementation process, given only the result and the original requirement, is more likely to find problems. This is really multi-agent cross-checking.
+
+**How**
+
+- Keep the reviewer and the implementer separate, ideally without shared context from the implementation process.
+- Give the reviewer only the original requirement and the final output.
+- Every issue must come with evidence, such as reproduction steps, a code location or a counterexample input.
+
+**Note**
+
+Ask a reviewer to find problems and it will almost always report some, even when the code is fine. Fixing every one of them leads to over-engineering: extra abstraction layers, defensive code, and tests for cases that cannot happen. So limit it to reporting issues that affect correctness or the requirements, and treat the rest as optional. This point comes from Claude Code's official best practices.
+
+**Prompt**
+```
+You are an independent reviewer and did not take part in this implementation. Your job is to prove it is wrong.
+- Against the original requirement, find missing features, edge cases and failure scenarios.
+- Construct counterexample inputs that make it fail.
+- Every issue must come with evidence: a code location, reproduction steps, or a concrete input and output. List suspicions without evidence separately and mark them "unconfirmed".
+- If you cannot find any issues, explain which aspects you checked.
+- Report only issues that affect correctness or violate the requirements. Code style preferences do not count.
+```
+
+---
+
+### 19. Independent Judgment
+
+> Judge first, then look at other answers
+
+**What it is**
+
+Form your own judgment and reasons before you see anyone else's conclusion.
+
+**Why it matters for agents**
+
+In multi-agent work, when the first agent speaks first, the agents after it are easily anchored by it and just nod along, so several agents end up being worth one. Having each agent give its own conclusion first and only then discuss is what brings disagreements to the surface. The self-consistency research in method 20 supports this practice.
+
+**How**
+
+- Start several agents in parallel. Each gets only the original problem, and none can see the others' output.
+- Collect all conclusions before combining them, and focus on where they disagree.
+- When they disagree, have each side argue with evidence. Do not decide by vote.
+
+**Prompt**
+```
+Make this judgment independently. Do not refer to other agents' answers:
+1. Give your conclusion and the evidence that supports it.
+2. State your confidence and your main grounds.
+After that you will see other agents' conclusions. Change your position only if another agent gives evidence you did not consider, and say which piece of evidence changed your judgment.
+```
+
+---
+
+### 20. Self-Consistency
+
+> Solve independently several times and check whether the answers agree
+
+**What it is**
+
+A 2022 paper from Google, called Self-Consistency. Have the model solve the same problem several times independently with different lines of reasoning, and take the answer that appears most often. The correct answer can often be reached by several paths, while wrong answers tend to differ from each other.
+
+**Why it matters for agents**
+
+In practice, this means having several subagents each solve the same problem independently. If the answers agree, they are more trustworthy. If they disagree, the points of disagreement are exactly where a human most needs to look.
+
+**Prompt**
+```
+Solve this problem independently with 3 different lines of reasoning. Each line must not refer to the conclusions of the others.
+Then compare the three answers:
+- They agree: give the answer.
+- They disagree: list the points of disagreement, analyze which line of reasoning is more reliable, and give a final judgment with the reason.
+```
+
+---
+
+### 21. Steelmanning
+
+> Before you argue against a view, state it in its strongest form
+
+**What it is**
+
+A straw man argument twists the other side's view into its weakest version and then attacks that. Steelmanning goes the other way: first put the other side's view into its most convincing version, then judge it.
+
+**Why it matters for agents**
+
+When an agent compares solutions, it often writes up the one it prefers very well and makes the others look weak. Asking it to steelman each solution first makes the comparison fair. A reviewer can also steelman the design under review before looking for faults, so it does not find fault just for the sake of it.
+
+**Prompt**
+```
+Before you compare these solutions, write the strongest case for each one: in what scenario is it the best choice? What would its supporters say?
+Then compare the strengths and weaknesses of each solution, and give your recommendation with the reason.
+If the solution you recommend is worse than another in some scenario, say so explicitly.
+```
+
+---
+
+### 22. Critical Thinking
+
+> Always check the evidence
+
+**What it is**
+
+Even when an argument is complete and well written, check the evidence behind each claim before deciding whether to believe it.
+
+**Why it matters for agents**
+
+Agents are good at writing analysis that reads logically, but reading well and being right are two different things. Make the agent separate observed facts from speculation, and say what evidence would overturn its judgment.
+
+**Prompt**
+```
+In your analysis, clearly separate three kinds of content:
+- [Fact] Directly observed: code, logs, test output, original doc text, with the source.
+- [Inference] Derived from facts. Show the chain of reasoning.
+- [Assumption] Not verified.
+For your main conclusion, state: what evidence, if it appeared, would overturn it? Have you checked whether such evidence exists?
+```
+
+---
+
+### 23. Chain-of-Verification
+
+> Write a draft first, then check each claim independently
+
+**What it is**
+
+A 2023 paper from Meta, called Chain-of-Verification, or CoVe for short. It has four steps:
+
+1. Write a first draft.
+2. For the factual claims in the draft, list verification questions.
+3. Answer the verification questions one by one. Do not look at the draft while answering, so it does not bias you.
+4. Revise the draft based on the verification results.
+
+The paper also found that open-ended verification questions work better than yes/no questions. Asking "What year was X released?" is more reliable than asking "Was X released in 2020?", because yes/no questions tend to make the model go along with the original claim and answer "yes".
+
+**Why it matters for agents**
+
+It fits writing docs, writing reports and answering factual questions, and can be combined with method 22.
+
+**Prompt**
+```
+1. Write a first draft.
+2. List every factual claim in the draft that can be checked, and write an open-ended verification question for each one (no yes/no questions).
+3. Answer the verification questions one by one. Check the original sources (code, docs, command output) when you answer. Do not refer to the draft.
+4. Revise the draft based on the verification results, and list what you changed.
+```
+
+---
+
+### 24. Rubber Duck Debugging
+
+> Explain it line by line, and the problem shows itself
+
+**What it is**
+
+A programmer explains to a rubber duck on the desk, line by line, what their code does. Partway through, the problem often shows itself, because to explain clearly you have to pay attention to details you normally skip.
+
+**Why it matters for agents**
+
+Having an agent explain its own changes section by section can surface problems it did not notice, such as a variable that is never actually used, a branch that can never be reached, or a condition that is written backward.
+
+**Prompt**
+```
+Explain your change section by section: what each piece of code does, why it is needed, and which input cases it handles.
+While explaining, if you find a piece of code whose reason for existing you cannot explain, or that does not behave as you expected, mark it and fix it.
+```
+
+---
+
+## V. Deliver and Improve
+
+### 25. List Every Uncertainty
+
+> Give uncertainty a place to show up
+
+**What it is**
+
+Explicitly require the agent to say where it is not sure.
+
+**Why it matters for agents**
+
+Agents always sound confident, and right and wrong answers sound the same. Unless you give uncertainty its own place, it hides inside fluent text.
+
+**Prompt**
+```
+At the end of your answer, add a separate "uncertainty list":
+- Which conclusions lack direct evidence?
+- Which scenarios are untested?
+- Which parts are speculation or assumption?
+- Which information might be outdated?
+For each item, note which conclusion would be affected if it is wrong.
+```
+
+---
+
+### 26. Checklists
+
+> Write down what "done" means and check each item
+
+**What it is**
+
+The Checklist Manifesto makes the point that in complex fields, many failures come from a missed step, not from people who do not know how to do the work. Pilots and surgeons both rely on checklists to avoid these misses.
+
+**Why it matters for agents**
+
+An agent stops once things look done. With a checklist that spells out what "done" means, it can check each item before delivery, and you can see at a glance which item was not done.
+
+**Prompt**
+```
+Before delivery, check each item and report its status (✅ / ❌ / N/A):
+- [ ] The original problem was reproduced, and confirmed gone after the fix
+- [ ] Relevant tests were run and passed, with output attached
+- [ ] No previously passing test now fails
+- [ ] Lint and type checks pass
+- [ ] All callers have been checked
+- [ ] Temporary files have been cleaned up
+- [ ] Uncertain points have been listed
+For any item marked ❌, explain why.
+```
+
+---
+
+### 27. Ablation Study
+
+> Remove one thing and see if it still works
+
+**What it is**
+
+An ablation study is the standard method in papers for showing that each component is useful. Keep everything else the same, remove one variable, and see how much the result changes.
+
+**Why it matters for agents**
+
+Prompts, rules and tools keep piling up, and nobody knows which ones really help. The only way to know whether a rule, a tool or a piece of prompt does anything is to remove it and run again.
+
+**How**
+
+- Fix the test cases and the scoring criteria.
+- Remove only one element at a time and run the same tests.
+- Record the results and delete the elements that have no effect.
+- Agent output is random, so run each condition several times, so you do not mistake noise for an effect.
+
+**Prompt**
+```
+Run an ablation study on this configuration:
+1. First run the test set with the full configuration and record the baseline results.
+2. Remove only one item at a time (one rule / one tool / one piece of prompt), keep everything else the same, and rerun the same test set.
+3. Output a table: removed item, change in results, conclusion (required / can delete / unsure).
+4. Run each condition at least N times and state the range of variation in the results, so random noise is not mistaken for an effect.
+```
+
+---
+
+## Appendix A: Socratic Questioning
+
+The method of the ancient Greek philosopher Socrates, recorded mainly in Plato's dialogues. The questioner does not give the answer directly. Through a series of follow-up questions, the other person examines their own view, finds the contradictions themselves, and reaches a clearer understanding.
+
+**Basic process**
+
+1. Have the other person state a view. For example, they say courage is not being afraid of danger.
+2. Ask for definitions and examples. If someone who cannot swim jumps into rapids, is that courage?
+3. Find the contradiction. They admit this is more like recklessness, so the original definition does not hold.
+4. Revise the view. Courage should include judgment about danger.
+5. Keep asking until the view is rigorous enough, or both sides admit they have not figured it out yet.
+
+**Six common types of questions**
+
+| Type | Example |
 |---|---|
-| 澄清概念 | 你说的"成功"具体指什么？ |
-| 检查假设 | 这个结论的前提是什么？一定成立吗？ |
-| 要求证据 | 你怎么知道的？有什么依据？ |
-| 换个角度 | 持反对意见的人会怎么说？ |
-| 推演后果 | 如果这个观点成立，会推出什么？ |
-| 反问问题本身 | 我们为什么要讨论这个问题？ |
+| Clarify concepts | What exactly do you mean by "success"? |
+| Check assumptions | What is the premise of this conclusion? Does it always hold? |
+| Ask for evidence | How do you know? What is it based on? |
+| Change perspective | What would someone who disagrees say? |
+| Trace consequences | If this view is true, what follows? |
+| Question the question | Why are we discussing this question? |
 
-**局限**
+**Limits**
 
-用得不好会显得咄咄逼人。它适合澄清思路、暴露矛盾，不一定能得出最终答案，柏拉图记录的很多对话结尾都没有结论。
-
----
-
-## 附录 B 帕累托改进
-
-意大利经济学家维尔弗雷多·帕累托提出的概念。资源配置发生变化后，至少一个人变好，同时没有任何人变差，就叫帕累托改进，也就是没有输家的改善。
-
-**相关概念**
-
-- **帕累托最优**。已经找不到任何帕累托改进的状态，想让任何一个人变好，就一定要让别人变差。
-- **卡尔多-希克斯改进**。允许有人受损，只要受益者的收益大于受损者的损失。现实中多数政策评估用的是这个标准。
-
-**注意**
-
-- 它衡量的是效率，不涉及公平。
-- 现实中完全没有受损者的改变很少见，它更多用作理论基准。
+Used badly, it comes across as aggressive. It is good for clarifying thinking and exposing contradictions, but it does not always reach a final answer. Many of the dialogues Plato recorded end without a conclusion.
 
 ---
 
-## 来源
+## Appendix B: Pareto Improvement
 
-- [Take a Step Back（Step-Back Prompting 论文）](https://arxiv.org/abs/2310.06117)，Zheng 等，Google DeepMind，ICLR 2024
-- [Least-to-Most Prompting Enables Complex Reasoning in LLMs](https://arxiv.org/abs/2205.10625)，Zhou 等，Google，ICLR 2023
-- [Self-Consistency Improves Chain of Thought Reasoning in LLMs](https://arxiv.org/abs/2203.11171)，Wang 等，Google，2022
-- [Chain-of-Verification Reduces Hallucination in LLMs](https://arxiv.org/abs/2309.11495)，Dhuliawala 等，Meta，2023
-- [Explainable Automated Debugging via LLM-driven Scientific Debugging](https://arxiv.org/abs/2304.02195)，AutoSD，Kang 等，2023
-- [How we made 163 mental models executable for AI agents](https://dev.to/bradju/how-we-made-163-mental-models-executable-for-ai-agents-3b97)，沃尔德、河内捕鼠和法航 447 三个案例转引自此文
+A concept introduced by the Italian economist Vilfredo Pareto. When a change in how resources are allocated makes at least one person better off and nobody worse off, it is called a Pareto improvement. In other words, an improvement with no losers.
+
+**Related concepts**
+
+- **Pareto optimal**. A state where no Pareto improvement can be found anymore. To make anyone better off, you must make someone else worse off.
+- **Kaldor-Hicks improvement**. Allows some people to lose, as long as the winners' gains are larger than the losers' losses. Most real-world policy evaluation uses this standard.
+
+**Note**
+
+- It measures efficiency, not fairness.
+- Real changes with no losers at all are rare. It is used more as a theoretical baseline.
+
+---
+
+## Sources
+
+- [Take a Step Back (Step-Back Prompting paper)](https://arxiv.org/abs/2310.06117), Zheng et al., Google DeepMind, ICLR 2024
+- [Least-to-Most Prompting Enables Complex Reasoning in LLMs](https://arxiv.org/abs/2205.10625), Zhou et al., Google, ICLR 2023
+- [Self-Consistency Improves Chain of Thought Reasoning in LLMs](https://arxiv.org/abs/2203.11171), Wang et al., Google, 2022
+- [Chain-of-Verification Reduces Hallucination in LLMs](https://arxiv.org/abs/2309.11495), Dhuliawala et al., Meta, 2023
+- [Explainable Automated Debugging via LLM-driven Scientific Debugging](https://arxiv.org/abs/2304.02195), AutoSD, Kang et al., 2023
+- [How we made 163 mental models executable for AI agents](https://dev.to/bradju/how-we-made-163-mental-models-executable-for-ai-agents-3b97). The three cases of Wald, the Hanoi rat bounty and Air France 447 are cited from this article.
 - [Inversion Thinking](https://concepts.dsebastien.net/concept/inversion-thinking/)
 - [Chesterton's Fence](https://concepts.dsebastien.net/concept/chestertons-fence/)

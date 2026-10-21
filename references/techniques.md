@@ -1,384 +1,384 @@
-# 按任务类型的提示词技巧
+# Prompting Techniques by Task Type
 
-| 任务类型 | 最关键的一条 |
+| Task type | The single most important technique |
 |---|---|
-| 所有任务 | 把 Agent 当成聪明但不了解背景的新同事，说清楚要什么、为什么 |
-| 解释与讲解 | 先说清楚给谁看、讲到什么程度 |
-| 写代码 | 给它一个能自己跑的检查，比如测试、构建或截图 |
-| 画架构图 | 一张图只画一个抽象层级，用文本格式，画完要渲染检查 |
-| 长任务 | 进度写进文件，上下文乱了就重开 |
-| 调研 | 先定义怎样才算答到了，要求多源交叉验证 |
-| 输出格式 | 告诉它要什么，少说不要什么 |
+| All tasks | Treat the agent as a smart new colleague who lacks context. Say what you want and why |
+| Explaining and teaching | First say who the reader is and how deep to go |
+| Writing code | Give it a check it can run itself, such as tests, a build, or a screenshot |
+| Architecture diagrams | One abstraction level per diagram, use a text format, render and check when done |
+| Long tasks | Write progress to files. Start fresh when the context gets messy |
+| Research | First define what counts as an answer. Require cross-checking across several sources |
+| Output format | Tell it what to do, not what not to do |
 
 ---
 
-## A. 通用技巧
+## A. General Techniques
 
-**1. 同事测试**
+**1. The colleague test**
 
-Anthropic 的提示词指南里有一条黄金法则，把你的提示词拿给一个不了解这个任务的同事看，同事看了会困惑，Agent 也会。可以把 Agent 当成一个聪明但刚入职、不了解你们规范的新员工。
+Anthropic's prompting guide has a golden rule: show your prompt to a colleague who does not know the task. If they would be confused, the agent will be too. Think of the agent as a brilliant but new employee who does not know your norms.
 
-**2. 说明规则背后的原因**
+**2. Explain the reason behind a rule**
 
-只给规则，Agent 会死守字面意思。说明了原因，它能推广到类似的情况。
+If you only give a rule, the agent follows its literal wording. If you explain the reason, it can generalize to similar cases.
 
-| 效果差 | 效果好 |
+| Less effective | More effective |
 |---|---|
-| 永远不要用省略号 | 你的回复会被语音引擎朗读，引擎不知道怎么读省略号，所以不要用 |
+| Never use ellipses | Your response will be read aloud by a text-to-speech engine. The engine does not know how to pronounce ellipses, so do not use them |
 
-**3. 想要超出预期，就明说**
+**3. If you want more than the minimum, say so**
 
-新一代模型会严格按字面执行。想让它多做一些，要直接写出来。
+Newer models follow instructions literally. If you want it to do more, write that out directly.
 
-| 效果差 | 效果好 |
+| Less effective | More effective |
 |---|---|
-| 做一个数据看板 | 做一个数据看板，尽量包含相关的功能和交互，做成完整的实现，不要只做基础版 |
+| Create an analytics dashboard | Create an analytics dashboard. Include as many relevant features and interactions as possible. Make it a fully featured implementation, not just the basics |
 
-**4. 用例子，并且选好例子**
+**4. Use examples, and choose them well**
 
-例子是控制格式、语气和结构最可靠的办法。官方建议给 3 到 5 个，要贴近真实场景，彼此之间要有差异，否则 Agent 会学到你不想要的共同点。例子用 `<example>` 标签包起来，和指令分开。
+Examples are the most reliable way to control format, tone, and structure. The official guidance suggests 3 to 5 examples. They should be close to real use cases and differ from each other. Otherwise the agent picks up shared traits you did not intend. Wrap examples in `<example>` tags to keep them apart from the instructions.
 
-**5. 用 XML 标签分隔不同内容**
+**5. Use XML tags to separate content**
 
-提示词里同时有指令、背景、例子和输入数据时，用 `<instructions>`、`<context>`、`<input>` 这类标签分开，能减少误解。
+When a prompt contains instructions, context, examples, and input data together, separate them with tags such as `<instructions>`, `<context>`, and `<input>`. This reduces misreading.
 
-**6. 给一个角色**
+**6. Give it a role**
 
-一句话就有效，比如"你是一个资深安全工程师"。
+One sentence is enough, for example "You are a senior security engineer."
 
-**7. 允许它说不知道**
+**7. Let it say "I don't know"**
 
-明确告诉 Agent 不确定时可以说不确定，能减少编造。可以和[methods.md 第 25 条](methods.md#25-列出所有不自信的点)配合使用。
+Tell the agent clearly that it may say it is unsure when it is unsure. This reduces made-up answers. Combine this with [method 25 in methods.md](methods.md#25-list-every-uncertainty).
 
-**8. 先查再答**
+**8. Investigate before answering**
 ```
 <investigate_before_answering>
-不要对你没有打开过的代码做任何推测。如果用户提到了某个文件，必须先读这个文件再回答。
-回答关于代码库的问题之前，先调查、阅读相关文件。
+Never speculate about code you have not opened. If the user mentions a specific file, you must read that file before answering.
+Before answering questions about the codebase, investigate and read the relevant files.
 </investigate_before_answering>
 ```
 
 ---
 
-## B. 解释与讲解
+## B. Explaining and Teaching
 
-**1. 先定读者和深度**
+**1. Set the reader and the depth first**
 
-说清楚读者是谁，新手、同行还是老板，有多少背景知识，要讲到什么程度。同一个概念讲给产品经理和讲给工程师，写法完全不同。
+Say who the reader is (a beginner, a peer, or a manager), how much background they have, and how deep to go. The same concept is written completely differently for a product manager than for an engineer.
 
-**2. 结论放在最前面**
+**2. Put the conclusion first**
 
-OpenAI 的指南建议直接规定内容顺序，比如先给结论，再讲理由，最后讲注意事项，同时给出字数上限。
+OpenAI's guide suggests specifying the order of content directly. For example: conclusion first, then reasons, then caveats. Also give a word limit.
 
-**3. 分层讲解**
+**3. Explain in layers**
 
-这是费曼技巧的一种用法。让 Agent 用几种深度讲同一个概念，从小孩能懂的类比，到专业解释，再到一句话总结。读的时候留意自己从哪一层开始点头却复述不出来，那里就是没懂的地方。
+This is one use of the Feynman technique. Ask the agent to explain the same concept at several depths: from an analogy a child can follow, to a professional explanation, to a one-sentence summary. As you read, notice the layer where you start nodding but cannot restate it yourself. That is where you did not understand.
 
-**4. 类比要说明在哪里失效**
+**4. Say where an analogy breaks down**
 
-类比能帮人快速理解，但每个类比都有对不上的地方。要求 Agent 说明类比在哪里失效，否则读者会带着错误的理解走。
+Analogies help people understand quickly, but every analogy has points where it does not fit. Ask the agent to say where the analogy fails. Otherwise readers walk away with a wrong understanding.
 
-**5. 先分清是哪种文档**
+**5. First decide which kind of document it is**
 
-Diátaxis 框架把技术文档分成四种，写法各不相同，混在一起哪种需求都满足不好。
+The Diátaxis framework divides technical documentation into four types. Each is written differently. If you mix them, none of the needs is met well.
 
-| 类型 | 读者想要 | 写法 |
+| Type | What the reader wants | How to write it |
 |---|---|---|
-| 教程（Tutorial） | 第一次上手 | 一步步带着做，保证能成功 |
-| 操作指南（How-to） | 完成某个具体任务 | 只给步骤，不讲原理 |
-| 参考（Reference） | 查一个具体信息 | 完整、准确、结构统一 |
-| 解释（Explanation） | 理解为什么 | 讲背景、原理和取舍 |
+| Tutorial | To get started for the first time | Walk them through step by step, and make sure they succeed |
+| How-to guide | To complete a specific task | Give only the steps, no theory |
+| Reference | To look up a specific fact | Complete, accurate, consistent structure |
+| Explanation | To understand why | Cover background, principles, and trade-offs |
 
-**6. 反过来考读者**
+**6. Turn it around and test the reader**
 
-让 Agent 扮演刚入门的学生，你来讲，它负责指出你讲不清楚的地方。也可以让它讲完后出两三个问题，检验读者有没有真的懂。
+Ask the agent to play a beginner student. You explain, and it points out where your explanation is unclear. You can also ask it to write two or three questions after its explanation, to test whether the reader really understood.
 
-**7. 格式为理解服务**
+**7. Format serves understanding**
 
-默认用段落，需要对比、排序或快速浏览时才用表格和列表。Agent 常把内容切成一堆很短的要点，看起来整齐，句子之间的逻辑关系却丢了。
+Use paragraphs by default. Use tables and lists only when you need comparison, ranking, or quick scanning. Agents often cut content into many short bullet points. It looks tidy, but the logical links between sentences are lost.
 
-**提示词**
+**Prompt**
 ```
-给 [读者，例如：没有后端经验的产品经理] 解释 [概念]。
-- 先用一句话给出结论，再展开。
-- 先用一个日常类比，然后说明这个类比在哪里不成立。
-- 用一个具体例子走一遍完整过程。
-- 不要使用没有解释过的术语；必须用的术语，第一次出现时解释。
-- 控制在 [N] 字以内。
-- 最后出 2 个问题，让读者检验自己是否理解了。
+Explain [concept] to [reader, e.g. a product manager with no backend experience].
+- Give the conclusion in one sentence first, then expand.
+- Start with an everyday analogy, then say where the analogy does not hold.
+- Walk through the full process with one concrete example.
+- Do not use terms you have not explained. If you must use a term, explain it the first time it appears.
+- Keep it under [N] words.
+- End with 2 questions the reader can use to check whether they understood.
 ```
 
 ---
 
-## C. 写代码
+## C. Writing Code
 
-**1. 给它一个能自己跑的检查**
+**1. Give it a check it can run itself**
 
-Claude Code 官方文档把这条放在第一位。Agent 觉得看起来做完了就会停下。没有可以运行的检查，你就成了唯一的验证环节，每个错误都要等你发现。
+The Claude Code docs put this first. The agent stops when the work looks done to it. Without a check it can run, you become the only verification step, and every mistake waits for you to find it.
 
-| 效果差 | 效果好 |
+| Less effective | More effective |
 |---|---|
-| 写一个验证邮箱的函数 | 写一个 validateEmail 函数，测试用例为 user@example.com 返回 true，invalid 返回 false，user@.com 返回 false。写完运行测试 |
-| 把看板做得好看一点 | [贴截图] 按这个设计实现。实现后截图和原图对比，列出差异并修复 |
-| 构建失败了 | 构建报这个错 [贴错误]。修复它并确认构建成功。解决根因，不要压制报错 |
+| Write a function that validates email addresses | Write a validateEmail function. Test cases: user@example.com returns true, invalid returns false, user@.com returns false. Run the tests when done |
+| Make the dashboard look better | [paste screenshot] Implement this design. After implementing, take a screenshot and compare it to the original. List the differences and fix them |
+| The build is failing | The build fails with this error: [paste error]. Fix it and verify the build succeeds. Address the root cause, do not suppress the error |
 
-**2. 要证据**
+**2. Ask for evidence**
 
-让 Agent 展示测试输出、运行的命令和返回结果，或者截图。一句"已经修好了"不算数。看证据比自己重跑快得多。
+Ask the agent to show test output, the commands it ran and their results, or screenshots. A sentence like "it's fixed now" does not count. Reading evidence is much faster than rerunning things yourself.
 
-**3. 探索、计划、实现、提交**
+**3. Explore, plan, implement, commit**
 
-先让 Agent 只读代码，不做修改。再让它出计划，你审核计划。然后实现，实现时对照计划检查。最后提交。
+First have the agent only read code, with no changes. Then have it write a plan, and you review the plan. Then implement, checking against the plan while doing so. Finally, commit.
 
-能用一句话描述要改的内容时，比如改错别字、加一行日志，直接让它做，不用计划。
+When you can describe the change in one sentence, such as fixing a typo or adding a log line, have it do the change directly. No plan needed.
 
-**4. 给具体的上下文**
+**4. Give specific context**
 
-| 策略 | 效果差 | 效果好 |
+| Strategy | Less effective | More effective |
 |---|---|---|
-| 限定范围 | 给 foo.py 加测试 | 给 foo.py 写一个测试，覆盖用户已登出的情况，不要用 mock |
-| 指向信息来源 | 为什么这个 API 设计得这么怪？ | 看一下 ExecutionFactory 的 git 历史，总结它的 API 是怎么演变成现在这样的 |
-| 参考现有模式 | 加一个日历组件 | 看首页现有组件的实现方式，HotDogWidget.php 是个好例子，按同样的模式实现日历组件 |
-| 描述症状 | 修一下登录 bug | 用户反馈会话超时后登录失败。检查 src/auth/ 的 token 刷新逻辑。先写一个能复现问题的失败测试，再修复 |
+| Scope the task | Add tests for foo.py | Write a test for foo.py that covers the case where the user is logged out. Do not use mocks |
+| Point to sources | Why is this API designed so strangely? | Look through the git history of ExecutionFactory and summarize how its API evolved into its current form |
+| Reference existing patterns | Add a calendar widget | Look at how existing widgets on the home page are implemented. HotDogWidget.php is a good example. Follow the same pattern to implement the calendar widget |
+| Describe the symptom | Fix the login bug | Users report that login fails after a session timeout. Check the token refresh logic in src/auth/. First write a failing test that reproduces the issue, then fix it |
 
-**5. 大功能先让它采访你**
+**5. For a large feature, let it interview you first**
 ```
-我想做 [简短描述]。用提问的方式详细采访我。
-问技术实现、交互、边界情况、顾虑和取舍。不要问显而易见的问题，挖那些我可能没想到的难点。
-一直问到覆盖全部内容，然后把完整的需求规格写进 SPEC.md。
-```
-
-SPEC.md 写好后，开一个新会话来实现，新会话的上下文是干净的。好的规格会写明涉及哪些文件和接口、哪些内容不做，以及最后怎么端到端验证。
-
-**6. 不要只为了让测试通过**
-```
-写一个通用、正确的解决方案。不要硬编码测试里的值，不要写只对测试用例有效的代码。
-测试是用来验证正确性的，不是用来定义解决方案的。
-如果任务不合理，或者某个测试本身是错的，告诉我，不要绕过它。
+I want to build [brief description]. Interview me in detail by asking questions.
+Ask about technical implementation, UI and interaction, edge cases, concerns, and trade-offs. Do not ask obvious questions. Dig into the hard parts I might not have thought about.
+Keep asking until everything is covered, then write the complete spec to SPEC.md.
 ```
 
-背后的道理见[methods.md 第 17 条](methods.md#17-古德哈特定律)。
+Once SPEC.md is written, start a new session to implement it. The new session has a clean context. A good spec states which files and interfaces are involved, what is out of scope, and how to verify the result end to end.
 
-**7. 需求可追溯**
-
-OpenAI 的指南建议，实现计划里要列出每条需求在哪里实现，涉及哪些文件和 API，失败时怎么处理，还有哪些问题没定。
-
-**8. 跑不了检查时要说明**
+**6. Do not just make the tests pass**
 ```
-修改后，运行最相关的验证：针对修改行为的单元测试、类型检查、lint、构建。
-如果无法运行验证，说明原因，并给出次优的检查方式。
+Write a general, correct solution. Do not hard-code values from the tests, and do not write code that only works for the test cases.
+Tests are there to verify correctness, not to define the solution.
+If the task is unreasonable, or a test is itself wrong, tell me instead of working around it.
 ```
 
-**9. 危险操作先确认**
+For the reasoning behind this, see [method 17 in methods.md](methods.md#17-goodharts-law).
+
+**7. Make requirements traceable**
+
+OpenAI's guide suggests that an implementation plan list, for each requirement, where it is implemented, which files and APIs are involved, how failures are handled, and which questions are still open.
+
+**8. Say so when checks cannot run**
 ```
-考虑操作的可逆性和影响范围。本地的、可逆的操作（改文件、跑测试）可以直接做；
-难以撤销、影响共享系统或有破坏性的操作，先问我：
-- 删除文件或分支、删数据库表、rm -rf
-- git push --force、git reset --hard、修改已发布的提交
-- 别人看得到的操作：推送代码、在 PR 或 issue 下评论、发消息
-遇到障碍时不要用破坏性操作走捷径，比如不要用 --no-verify 跳过检查。
+After making changes, run the most relevant verification: unit tests for the changed behavior, type checks, lint, and the build.
+If you cannot run verification, explain why and give the next best way to check.
 ```
 
-**10. 收拾临时文件**
+**9. Confirm dangerous actions first**
 ```
-如果你为了调试创建了临时文件或脚本，任务结束时删掉它们。
+Consider the reversibility and blast radius of each action. Local, reversible actions (editing files, running tests) can be done directly.
+For actions that are hard to undo, affect shared systems, or are destructive, ask me first:
+- Deleting files or branches, dropping database tables, rm -rf
+- git push --force, git reset --hard, amending published commits
+- Actions others can see: pushing code, commenting on PRs or issues, sending messages
+When you hit an obstacle, do not take shortcuts with destructive actions. For example, do not use --no-verify to skip checks.
+```
+
+**10. Clean up temporary files**
+```
+If you created temporary files or scripts for debugging, delete them at the end of the task.
 ```
 
 ---
 
-## D. 画架构图
+## D. Architecture Diagrams
 
-**1. 用文本格式的图**
+**1. Use text-based diagrams**
 
-让 Agent 输出 Mermaid、PlantUML 或 Structurizr DSL 代码，别让它用文字描述一张图。文本格式能放进 git、能比对修改、能自动渲染。
+Ask the agent to output Mermaid, PlantUML, or Structurizr DSL code. Do not let it describe a diagram in words. A text format can go into git, can be diffed, and can be rendered automatically.
 
-**2. 指定图的类型和层级**
+**2. Specify the diagram type and level**
 
-"给我的项目画个架构图"这种提示效果很差，要说清楚画哪种图。
+A prompt like "draw an architecture diagram of my project" works poorly. Say which kind of diagram to draw.
 
-| 想回答的问题 | 用什么图 |
+| Question you want to answer | Diagram to use |
 |---|---|
-| 系统整体由哪些部分组成，谁在用 | C4 系统上下文图，或 Mermaid `flowchart TD` |
-| 一个系统里有哪些服务和数据库 | C4 容器图 |
-| 一次请求经过哪些步骤 | 时序图 `sequenceDiagram` |
-| 一个对象有哪些状态 | 状态图 `stateDiagram` |
-| 数据表之间的关系 | ER 图 `erDiagram` |
+| What parts make up the whole system, and who uses it | C4 system context diagram, or Mermaid `flowchart TD` |
+| What services and databases are inside one system | C4 container diagram |
+| What steps a request goes through | Sequence diagram `sequenceDiagram` |
+| What states an object has | State diagram `stateDiagram` |
+| How database tables relate | ER diagram `erDiagram` |
 
-**3. 一张图只画一个抽象层级**
+**3. One abstraction level per diagram**
 
-Agent 最常犯的错是把不同层级混在一起，比如在服务层面的图里画出具体的类。C4 模型的几条规则可以直接写进提示词。系统上下文图只画人和系统。每个元素都要有名字和一句描述。容器要标注技术栈。同一个元素在不同图里名字保持一致。
+The agent's most common mistake is mixing levels, for example drawing specific classes in a service-level diagram. Several rules from the C4 model can go straight into the prompt. A system context diagram shows only people and systems. Every element has a name and a one-sentence description. Containers are labeled with their technology stack. The same element keeps the same name across diagrams.
 
-**4. 以代码为依据**
+**4. Base it on the code**
 
-要求每个节点都对应代码里真实存在的模块，并注明文件路径。不这样要求，Agent 可能画出一张它想象中的理想架构。
+Require every node to map to a module that really exists in the code, with its file path. Without this requirement, the agent may draw the ideal architecture it imagines.
 
-**5. 画完要渲染检查**
+**5. Render and check when done**
 
-用 Mermaid CLI 之类的工具渲染一遍，检查语法错误、布局重叠和文字截断。OpenAI 的指南也建议视觉类产出先渲染，再改到符合要求为止。
+Render it once with a tool such as Mermaid CLI. Check for syntax errors, overlapping layout, and truncated text. OpenAI's guide also suggests rendering visual output first, then revising until it meets the requirements.
 
-**6. 加图例**
+**6. Add a legend**
 
-图里用了不同的颜色、线型或形状，就要有图例说明它们代表什么。
+If the diagram uses different colors, line styles, or shapes, add a legend that says what they mean.
 
-**提示词**
+**Prompt**
 ```
-根据代码库画一张 [C4 容器图 / 时序图 / ...]，用 Mermaid 格式。
-- 这张图要回答的问题是：[例如：一次下单请求经过哪些服务]
-- 只画 [容器] 这一个层级，不要混入类或函数。
-- 每个节点：名字 + 一句话描述 + 技术栈 + 对应的代码路径。
-- 节点必须对应代码里真实存在的模块，不确定的标注"推测"。
-- 加图例说明颜色和线型的含义。
-- 画完用 mermaid-cli 渲染一遍，修复语法错误和布局问题。
+Based on the codebase, draw a [C4 container diagram / sequence diagram / ...] in Mermaid format.
+- The question this diagram must answer: [e.g. which services an order request passes through]
+- Draw only the [container] level. Do not mix in classes or functions.
+- Each node: name + one-sentence description + technology stack + corresponding code path.
+- Nodes must map to modules that really exist in the code. Mark anything you are unsure of as "inferred".
+- Add a legend explaining what the colors and line styles mean.
+- When done, render it once with mermaid-cli and fix syntax errors and layout problems.
 ```
 
 ---
 
-## E. 长任务和上下文管理
+## E. Long Tasks and Context Management
 
-**1. 上下文是最重要的资源**
+**1. Context is the most important resource**
 
-Claude Code 官方文档说，大多数最佳实践都出自同一个限制。上下文窗口很快会被填满，填得越满，模型表现越差，会开始忘记前面的指令。[methods.md 第 1 条](methods.md#1-第一性原理)提到的"100 轮之后忘了任务"，根源就在这里。
+The Claude Code docs say that most best practices come from one constraint. The context window fills up fast, and the fuller it gets, the worse the model performs. It starts to forget earlier instructions. The "forgot the task after 100 turns" problem mentioned in [method 1 in methods.md](methods.md#1-first-principles) comes from this.
 
-**2. 纠正两次还不对，就重开**
+**2. If two corrections do not fix it, start over**
 
-同一个问题纠正了两次以上，上下文里已经塞满了失败的尝试。清空会话，把学到的东西写进一个更好的初始提示词，重新开始。官方文档的经验是，干净的会话配上更好的提示词，几乎总比纠正了很多次的长会话效果好。
+Once you have corrected the same problem more than twice, the context is full of failed attempts. Clear the session, write what you learned into a better initial prompt, and start again. The docs' experience is that a clean session with a better prompt almost always beats a long session with many corrections.
 
-**3. 进度写进文件**
+**3. Write progress to files**
 
-- 结构化的状态用 JSON，比如记录测试结果的 `tests.json`。
-- 自由的进度笔记用文本，比如 `progress.txt`。
-- 用 git 记录做过什么，随时可以回滚。
+- Use JSON for structured state, such as `tests.json` for test results.
+- Use plain text for free-form progress notes, such as `progress.txt`.
+- Use git to record what was done, so you can roll back at any time.
 
-`progress.txt` 可以写成这样。
+`progress.txt` can look like this.
 ```
-第 3 次会话进度：
-- 修复了认证 token 校验
-- 更新了用户模型，处理边界情况
-- 下一步：排查 user_management 测试失败（测试 #2）
-- 注意：不要删除测试，否则会漏掉功能
-```
-
-**4. 新会话怎么开始**
-```
-运行 pwd，你只能读写这个目录下的文件。
-先阅读 progress.txt、tests.json 和 git log。
-在开始新功能之前，先手动跑一遍基本的集成测试。
+Session 3 progress:
+- Fixed authentication token validation
+- Updated user model to handle edge cases
+- Next: investigate user_management test failures (test #2)
+- Note: do not delete tests, or functionality will be missed
 ```
 
-**5. 告诉它会自动压缩，别提前收工**
-
-Agent 感觉上下文快满时，会倾向于草草结束。如果你用的工具会自动压缩上下文，就告诉它。
+**4. How to start a new session**
 ```
-你的上下文会在接近上限时自动压缩，所以不要因为担心 token 不够而提前结束任务。
-接近上限时，先把当前进度和状态保存到文件里。
-```
-
-**6. 规定压缩时保留什么**
-
-在 CLAUDE.md 里写一句"压缩上下文时，始终保留完整的已修改文件列表和测试命令"。
-
-**7. 调研交给子 Agent**
-
-调研会读大量文件，占满主会话的上下文。让子 Agent 去查，只把总结带回来。
-```
-用子 Agent 调查我们的认证系统怎么处理 token 刷新，以及有没有现有的 OAuth 工具可以复用。
+Run pwd. You can only read and write files in this directory.
+First read progress.txt, tests.json, and the git log.
+Before starting a new feature, manually run a basic integration test.
 ```
 
-**8. 也别滥用子 Agent**
+**5. Tell it about automatic compaction so it does not stop early**
+
+When the agent senses the context is nearly full, it tends to wrap up hastily. If your tool compacts context automatically, tell it.
 ```
-任务可以并行、需要隔离上下文、或者是互不依赖的工作流时，用子 Agent。
-简单任务、顺序操作、单文件修改、需要跨步骤保持上下文的任务，直接做。
+Your context will be compacted automatically when it nears its limit, so do not end the task early because you worry about running out of tokens.
+When you approach the limit, first save your current progress and state to a file.
 ```
 
-**9. CLAUDE.md 要短**
+**6. Specify what to keep during compaction**
 
-每一行都问自己，删掉这行 Agent 会犯错吗？不会就删。CLAUDE.md 太长，重要的规则会被淹没。某条规则总被忽略，就单独给这一行加上 "IMPORTANT"。加强调的行太多，就等于都没强调。必须百分之百执行的规则用 hook 实现，别只写在提示词里。
+Add a line to CLAUDE.md: "When compacting context, always keep the full list of modified files and the test commands."
+
+**7. Hand research to subagents**
+
+Research reads many files and fills up the main session's context. Let a subagent do the investigation and bring back only a summary.
+```
+Use a subagent to investigate how our authentication system handles token refresh, and whether there are existing OAuth utilities we can reuse.
+```
+
+**8. Do not overuse subagents either**
+```
+Use subagents when tasks can run in parallel, need isolated context, or are independent workstreams.
+For simple tasks, sequential operations, single-file edits, or tasks that need context kept across steps, do the work directly.
+```
+
+**9. Keep CLAUDE.md short**
+
+For each line, ask yourself: would removing this line make the agent make mistakes? If not, delete it. When CLAUDE.md is too long, important rules get buried. If a rule keeps being ignored, add "IMPORTANT" to that one line. If too many lines are emphasized, nothing is emphasized. Rules that must be followed 100% of the time belong in a hook, not just in the prompt.
 
 ---
 
-## F. 调研与信息收集
+## F. Research and Information Gathering
 
-**1. 先定义怎样才算答到了**
+**1. First define what counts as an answer**
 
-没有成功标准，Agent 不知道什么时候该停，要么查得太浅，要么一直查下去。
+Without a success criterion, the agent does not know when to stop. It either searches too shallowly or keeps searching forever.
 
-**2. 要求多源交叉验证**
+**2. Require cross-checking across sources**
 
-同一个事实至少在两个独立来源确认，优先看官方文档和原始数据。
+Confirm each fact in at least two independent sources. Prefer official documentation and primary data.
 
-**3. 同时维护几个假设**
+**3. Keep several hypotheses at once**
 ```
-用结构化的方式调研。收集信息时，同时维护几个相互竞争的假设。
-在笔记里记录你对每个假设的信心程度。
-定期反思你的方法和计划。把假设树或调研笔记写进文件。
+Research in a structured way. As you gather information, keep several competing hypotheses.
+Record your confidence in each hypothesis in your notes.
+Regularly reflect on your approach and plan. Write the hypothesis tree or research notes to a file.
 ```
 
-**4. 限定范围**
+**4. Limit the scope**
 
-只说"调查一下 X"而不划范围，Agent 可能读几百个文件。要说明查哪里，查到什么程度停。
+If you only say "look into X" without setting a scope, the agent may read hundreds of files. Say where to look and when to stop.
 
 ---
 
-## G. 输出格式与长度
+## G. Output Format and Length
 
-**1. 告诉它要什么**
+**1. Tell it what you want**
 
-| 效果差 | 效果好 |
+| Less effective | More effective |
 |---|---|
-| 不要用 markdown | 用连贯的段落写，不要拆成要点 |
+| Don't use markdown | Write in flowing paragraphs, not bullet points |
 
-**2. 提示词的风格会影响输出风格**
+**2. The style of the prompt affects the style of the output**
 
-提示词里满是 markdown 列表，回复也会满是列表。想要段落式的回复，提示词本身也用段落写。
+If the prompt is full of markdown lists, the reply will be full of lists too. If you want a reply in paragraphs, write the prompt itself in paragraphs.
 
-**3. 说明读者、长度和顺序**
+**3. State the reader, length, and order**
 
-比如"给技术负责人看，300 字以内，先结论，再理由，最后风险"。
+For example: "For a tech lead, under 300 words. Conclusion first, then reasons, then risks."
 
-**4. 改稿时先说要保留什么**
+**4. When editing text, first say what to keep**
 
-让 Agent 改一段文字，它容易越改越长，还会改掉原来的结构。先说明保留原来的体裁、长度和结构，只改哪个具体问题。
+When you ask the agent to revise a passage, it tends to make it longer and change the original structure. First say to keep the original genre, length, and structure, and name the one specific problem to fix.
 
-**5. 需要过程说明就明说**
+**5. If you want a process summary, ask for it**
 
-新模型调用工具后可能直接进入下一步，不做总结。想看到它做了什么，就加一句。
+Newer models may go straight to the next step after a tool call, without a summary. If you want to see what it did, add a line.
 ```
-完成涉及工具调用的任务后，简要总结你做了什么。
+After completing a task that involves tool calls, briefly summarize what you did.
 ```
 
-**6. 结构化输出用 schema**
+**6. Use a schema for structured output**
 
-需要 JSON 时，优先用 API 自带的结构化输出功能（Structured Outputs），少在提示词里用文字描述格式。
+When you need JSON, prefer the API's built-in Structured Outputs feature. Avoid describing the format in words in the prompt.
 
 ---
 
-## 合并版提示词
+## Combined Prompt
 
-下面这段可以直接放进 CLAUDE.md 或 AGENTS.md。按 E.9 的建议，放进去以后观察 Agent 的行为有没有变化，没起作用的行就删掉。
+You can put the block below straight into CLAUDE.md or AGENTS.md. As E.9 suggests, after adding it, watch whether the agent's behavior changes, and delete lines that have no effect.
 
 ```
-工作原则：
-1. 先复现问题、找到根因，再修改；修改后给出前后对比。长任务每阶段重读任务目标。
-2. 需求不清时先提问，只问会改变实现的问题。
-3. 文档、注释和记忆可能过时，做决定前用当前代码确认。
-4. 先做最简单能工作的版本，不加没人要求的功能和抽象。
-5. 删除看起来多余的代码前，先查清它为什么存在。
-6. 可逆的操作直接做；删除数据、推送、对外发送等不可逆操作先问我。
-7. 修改不能让任何原本正常的东西变差；有取舍时停下来说明。不为了通过测试而硬编码。
-8. 区分事实、推断和假设，事实附出处；说明什么证据会推翻你的结论。
-9. 回答末尾列出：缺少证据的结论、未测试的场景、推测的部分。
+Working principles:
+1. Reproduce the problem and find the root cause before changing anything. After the change, show a before/after comparison. On long tasks, reread the task goal at each stage.
+2. When requirements are unclear, ask first. Only ask questions that would change the implementation.
+3. Docs, comments, and memory may be outdated. Confirm against the current code before making decisions.
+4. Build the simplest version that works first. Do not add features or abstractions nobody asked for.
+5. Before deleting code that looks redundant, find out why it exists.
+6. Do reversible actions directly. Ask me before irreversible actions such as deleting data, pushing, or sending anything externally.
+7. Changes must not make anything that worked before worse. When there is a trade-off, stop and explain it. Do not hard-code to pass tests.
+8. Separate facts, inferences, and assumptions. Cite sources for facts. Say what evidence would overturn your conclusion.
+9. At the end of each answer, list: conclusions lacking evidence, untested scenarios, and parts that are guesses.
 ```
 
 ---
 
-## 来源
+## Sources
 
-- [Claude Code 最佳实践](https://code.claude.com/docs/en/best-practices)，Anthropic
-- [Claude 提示词最佳实践](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)，Anthropic
-- [Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)，Anthropic 工程博客
-- [Best practices for prompt engineering](https://claude.com/resources/articles/best-practices-for-prompt-engineering)，Anthropic
-- [GPT-5.5 使用指南](https://developers.openai.com/api/docs/guides/gpt-5.5)，OpenAI
-- [LLM 画架构图对比](https://icepanel.io/blog/comparison-llms-for-creating-software-architecture-diagrams)，IcePanel
-- [用 Codex CLI 从源码生成架构图](https://codex.danielvaughan.com/2026/05/13/codex-cli-architecture-diagrams-mermaid-c4-plantuml-source-code-visualisation/)
-- [The Feynman Technique Prompt](https://dev.to/blobxiaoyao/the-feynman-technique-prompt-how-to-make-ai-explain-anything-in-4-layers-of-depth-3076)，DEV Community
-- [Diátaxis 文档框架](https://diataxis.fr/)
+- [Claude Code best practices](https://code.claude.com/docs/en/best-practices), Anthropic
+- [Claude prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices), Anthropic
+- [Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents), Anthropic Engineering Blog
+- [Best practices for prompt engineering](https://claude.com/resources/articles/best-practices-for-prompt-engineering), Anthropic
+- [GPT-5.5 guide](https://developers.openai.com/api/docs/guides/gpt-5.5), OpenAI
+- [Comparing LLMs for creating architecture diagrams](https://icepanel.io/blog/comparison-llms-for-creating-software-architecture-diagrams), IcePanel
+- [Generating architecture diagrams from source code with Codex CLI](https://codex.danielvaughan.com/2026/05/13/codex-cli-architecture-diagrams-mermaid-c4-plantuml-source-code-visualisation/)
+- [The Feynman Technique Prompt](https://dev.to/blobxiaoyao/the-feynman-technique-prompt-how-to-make-ai-explain-anything-in-4-layers-of-depth-3076), DEV Community
+- [Diátaxis documentation framework](https://diataxis.fr/)

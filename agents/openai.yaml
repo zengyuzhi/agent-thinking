@@ -1,5 +1,5 @@
 interface:
   display_name: "Agent Thinking"
-  short_description: "按任务阶段挑选思维方法并照着做，或生成发给其他 Agent 的提示词"
+  short_description: "Pick thinking methods by task stage and apply them, or write prompts for other agents"
 policy:
   allow_implicit_invocation: false

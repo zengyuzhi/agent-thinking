@@ -1,57 +1,61 @@
 # agent-thinking
 
-一个 Agent Skill，兼容 Claude Code、Codex、pi 等支持 `SKILL.md` 的 Agent。它从 27 条思维方法里给当前任务挑出合适的几条并照着做，也能生成发给其他 Agent 的提示词。
+English | [中文](README.zh-CN.md)
 
-方法包括第一性原理、苏格拉底提问法、事前验尸、切斯特顿的篱笆、科学方法调试、对抗式审查、验证链、消融实验等，另有按任务类型整理的提示词技巧，覆盖解释讲解、写代码、画架构图、长任务、调研和输出格式。
+An Agent Skill for Claude Code, Codex, pi, and other agents that support `SKILL.md`. It picks the right few of 27 thinking methods for the task at hand and applies them, or writes a prompt for another agent.
 
-## 安装
+The methods include First Principles, Socratic Questioning, Pre-Mortem, Chesterton's Fence, scientific debugging, Adversarial Review, Chain-of-Verification, and Ablation Study. A second reference collects prompting techniques by task type: explaining, writing code, architecture diagrams, long tasks, research, and output format.
 
-用 [skills CLI](https://github.com/vercel-labs/skills) 安装。`-g` 装到用户目录，所有项目都能用；去掉 `-g` 只装到当前项目。`-a` 后面写你用的 Agent，可以写多个。
+## Install
+
+Install with the [skills CLI](https://github.com/vercel-labs/skills). `-g` installs to your user directory for all projects; drop it to install into the current project only. List the agents you use after `-a`.
 
 ```bash
 npx skills add zengyuzhi/agent-thinking -g -a claude-code codex pi
 ```
 
-Claude Code 的 skill 装进 `.claude/skills/`，Codex 和 pi 共用 `.agents/skills/`。也可以手动 clone 到对应目录。
+Claude Code reads skills from `.claude/skills/`; Codex and pi share `.agents/skills/`. You can also clone by hand.
 
 ```bash
 git clone https://github.com/zengyuzhi/agent-thinking.git ~/.claude/skills/agent-thinking   # Claude Code
-git clone https://github.com/zengyuzhi/agent-thinking.git ~/.agents/skills/agent-thinking   # Codex、pi
+git clone https://github.com/zengyuzhi/agent-thinking.git ~/.agents/skills/agent-thinking   # Codex, pi
 ```
 
-装完重开会话才生效。仓库设为私有时，安装用的是你本机已有的 git 凭据，需要有这个仓库的访问权限。
+Start a new session after installing.
 
-## 用法
+## Usage
 
-这个 skill 只能手动调用，模型不会自己加载它，平时不占上下文。
+The skill is manual-only: the model never loads it on its own, so it costs no context until you call it.
 
-| Agent | 调用方式 | 怎样关掉自动调用 |
+| Agent | Invoke | What turns off automatic invocation |
 |---|---|---|
-| Claude Code | `/agent-thinking 任务` | `SKILL.md` 里的 `disable-model-invocation: true` |
-| pi | `/skill:agent-thinking 任务` | 同上，pi 也认这个字段 |
-| Codex | `$agent-thinking 任务` | `agents/openai.yaml` 里的 `allow_implicit_invocation: false` |
+| Claude Code | `/agent-thinking <task>` | `disable-model-invocation: true` in `SKILL.md` |
+| pi | `/skill:agent-thinking <task>` | same field; pi honors it too |
+| Codex | `$agent-thinking <task>` | `allow_implicit_invocation: false` in `agents/openai.yaml` |
 
-其他 Agent 如果不认这两个字段，skill 仍然能用，只是可能会被模型自动加载。
+Agents that ignore both fields can still use the skill, but may load it automatically.
 
 ```
-/agent-thinking 修复登录超时后无法重新登录的 bug
-/agent-thinking 写提示词：让子 Agent 审查这次的支付改动
-/agent-thinking 事前验尸
+/agent-thinking fix the bug where users can't log back in after a session timeout
+/agent-thinking write a prompt: have a subagent review this payment change
+/agent-thinking pre-mortem
 ```
 
-| 模式 | 触发方式 | 做什么 |
+| Mode | Triggered by | What it does |
 |---|---|---|
-| 套用 | 参数描述一件要做的事，或者留空 | 按任务阶段挑最多五条方法，自己完成任务，每条方法在对话里留下证据 |
-| 写提示词 | 参数要求写提示词、交给某个 Agent、写进 CLAUDE.md 或 AGENTS.md | 只产出一段自包含的提示词，不执行任务 |
-| 点名 | 参数里点了某条方法的名字 | 只用被点名的方法 |
+| Apply | a task description, or nothing | picks up to five methods by task stage, does the task, and leaves evidence for each method in the conversation |
+| Write a prompt | asking for a prompt, a hand-off to an agent, or rules for CLAUDE.md or AGENTS.md | produces one self-contained prompt and does not run the task |
+| Named | naming a method | uses only the named methods |
 
-## 文件
+The agent replies in the language you write in.
 
-| 文件 | 内容 |
+## Files
+
+| File | Contents |
 |---|---|
-| [SKILL.md](SKILL.md) | 操作步骤，以及任务阶段和方法的对照表 |
-| [references/methods.md](references/methods.md) | 27 条思维方法，每条附可复制的提示词 |
-| [references/techniques.md](references/techniques.md) | 按任务类型的提示词技巧，以及一份可放进 CLAUDE.md 或 AGENTS.md 的合并版提示词 |
-| [agents/openai.yaml](agents/openai.yaml) | Codex 的界面信息和调用策略 |
+| [SKILL.md](SKILL.md) | the steps, and the stage-to-method picker |
+| [references/methods.md](references/methods.md) | 27 thinking methods, each with a copy-paste prompt |
+| [references/techniques.md](references/techniques.md) | prompting techniques by task type, and a combined prompt for CLAUDE.md or AGENTS.md |
+| [agents/openai.yaml](agents/openai.yaml) | Codex UI metadata and invocation policy |
 
-两个 reference 文件也可以脱离 skill 单独阅读，各自文末列了来源。
+Both reference files read fine on their own, outside the skill. Each lists its sources at the end.

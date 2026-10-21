@@ -1,113 +1,115 @@
 ---
 name: agent-thinking
-description: 给当前任务挑选合适的思维方法并照着做，或者生成发给其他 Agent 的高质量提示词。
-argument-hint: "要做的任务；或者「写提示词：……」；也可以点名方法，如「事前验尸」"
+description: Pick the right thinking methods for the current task and apply them, or write a high-quality prompt for another agent.
+argument-hint: "a task; or \"write a prompt: ...\"; or name a method, e.g. \"pre-mortem\""
 disable-model-invocation: true
 ---
 
-# Agent 思维方法
+# Agent Thinking
 
-方法库有两份，按需读取，不要整份加载。
+The method library lives in two files. Read only the parts you pick; never load a whole file.
 
-- [references/methods.md](references/methods.md) 收录 27 条思维方法，每条一个 `### N. 名字` 标题，附可复制的提示词。
-- [references/techniques.md](references/techniques.md) 按任务类型整理提示词技巧，分 A 到 G 七节，末尾有一份可放进 CLAUDE.md 的合并版提示词。
+- [references/methods.md](references/methods.md) holds 27 thinking methods, each under a `### N. Name` heading with a copy-paste prompt.
+- [references/techniques.md](references/techniques.md) holds prompting techniques by task type in sections A to G, and ends with a combined prompt for CLAUDE.md or AGENTS.md.
 
-## 1. 定模式
+Reply in the language the user writes in. Prompts you produce follow the same language unless the user asks otherwise.
 
-读用户调用这个 skill 时附带的文字，归入一种模式。Claude Code 会把这段文字填在这里：$ARGUMENTS。其他 Agent 里，它就是调用这个 skill 的那条用户消息。没有附带文字时，对象是当前对话里正在做的任务。
+## 1. Pick the mode
 
-- **套用**。参数描述一件要做的事。你自己用选中的方法完成它。
-- **写提示词**。参数要求写提示词、交给某个 Agent 或子 Agent、写进 CLAUDE.md 或 AGENTS.md。你只产出提示词，不执行任务。
-- **点名**。参数点了某条方法的名字。只用被点名的方法，跳过第 2 步的挑选。
+Read the text the user attached when invoking this skill. Claude Code fills it in here: $ARGUMENTS. In other agents it is the user message that invoked the skill. With no attached text, the subject is the task currently under way in the conversation.
 
-完成标准是能用一句话复述任务和模式。复述不出来，问用户一个问题再继续。
+- **Apply**. The text describes something to do. You do it yourself, using the picked methods.
+- **Write a prompt**. The text asks for a prompt, a hand-off to another agent or subagent, or rules for CLAUDE.md or AGENTS.md. You produce the prompt only and do not run the task.
+- **Named**. The text names one or more methods. Use only those and skip step 2.
 
-## 2. 按阶段挑方法
+Done when you can restate the task and the mode in one sentence. If you cannot, ask the user one question before going on.
 
-判断任务实际经过下面哪几个阶段，从每个相关阶段挑一到两条方法，总数不超过五条。每条方法后面写了它的使用场景，按场景匹配，场景和任务对得上的方法优先，什么任务都沾边的通用方法往后放。再挑出这类任务对应的 techniques.md 小节。
+## 2. Pick methods by stage
 
-**理解问题**（techniques.md A、C.5）
-- 1 第一性原理：要修 bug，或长任务开始前确认目标
-- 2 苏格拉底提问法：需求含糊，有几种理解
-- 3 退一步提问：具体问题背后有一般原理可循
-- 4 地图不是疆域：要依赖文档、注释、旧笔记或记忆里的 API
+Decide which stages below the task actually passes through. From each relevant stage pick one or two methods, five at most in total. Each method lists the situation it fits: match on the situation, prefer methods whose situation fits the task, and rank general methods that fit everything last. Then pick the techniques.md sections that fit the task type.
 
-**拆解任务**（E.3）
-- 5 分而治之与 MECE：任务大，有多个独立部分
-- 6 由易到难分解：子问题之间有前后依赖
+**Understand the problem** (techniques.md A, C.5)
+- 1 First Principles: fixing a bug, or confirming the goal before a long task
+- 2 Socratic Questioning: the request is vague or reads several ways
+- 3 Step-Back Prompting: a general principle sits behind the specific question
+- 4 The Map Is Not the Territory: relying on docs, comments, old notes, or remembered APIs
 
-**设计方案**（C.3、D）
-- 7 奥卡姆剃刀：要写新代码或新功能
-- 8 高内聚低耦合：改动跨模块，或要新建模块
-- 9 逆向思维与事前验尸：方案要上线，或失败代价高
-- 10 二阶思维：改接口、指标、流程，影响别人
-- 21 钢人论证：要在几个方案里选一个
+**Break down the task** (E.3)
+- 5 Divide and Conquer (MECE): a large task with several independent parts
+- 6 Least-to-Most Decomposition: subproblems depend on each other in order
 
-**动手修改**（C.4、C.9）
-- 11 切斯特顿的篱笆：要删看似多余的代码、判断或配置
-- 12 单向门与双向门：涉及删除、推送、对外发送、改权限
+**Design the approach** (C.3, D)
+- 7 Occam's Razor: writing new code or a new feature
+- 8 High Cohesion, Low Coupling: the change crosses modules, or adds a module
+- 9 Inversion and Pre-Mortem: the plan will ship, or failure is costly
+- 10 Second-Order Thinking: changing an interface, metric, or process others depend on
+- 21 Steelmanning: choosing between several approaches
 
-**调试**（C.1）
-- 13 科学方法：原因不明，有几种可能
-- 14 五个为什么：已知直接原因，要找根因
-- 15 贝叶斯更新：证据零散，要判断哪个原因更可能
+**Make changes** (C.4, C.9)
+- 11 Chesterton's Fence: deleting code, checks, or config that look unnecessary
+- 12 One-Way and Two-Way Doors: deleting, pushing, sending anything outside, changing permissions
 
-**验证**（C.2、C.6）
-- 16 帕累托改进：修改可能影响原本正常的功能
-- 17 古德哈特定律：有测试或指标作为完成标准
-- 24 小黄鸭调试：刚写完一段改动，要自查
+**Debug** (C.1)
+- 13 The Scientific Method: the cause is unknown and there are several candidates
+- 14 Five Whys: the direct cause is known and the root cause is not
+- 15 Bayesian Updating: evidence is scattered and you must judge which cause is likelier
 
-**审查**（F.2）
-- 18 对抗式审查：要交付的改动需要独立的人检查
-- 19 保持独立思考：多个 Agent 一起判断同一件事
-- 20 自洽性：判断要求高可靠，可以多解几次
-- 22 批判性思维：分析或报告里有推断
-- 23 验证链：输出里有很多可核实的事实
+**Verify** (C.2, C.6)
+- 16 Pareto Improvement: the change may break something that works today
+- 17 Goodhart's Law: tests or metrics define "done"
+- 24 Rubber Duck Debugging: you just wrote a change and should check it yourself
 
-**交付**（G）
-- 25 列出所有不自信的点：任何交付
-- 26 检查清单：交付物有多项完成标准
+**Review** (F.2)
+- 18 Adversarial Review: a change about to ship needs an independent check
+- 19 Independent Judgment: several agents judge the same thing
+- 20 Self-Consistency: the judgment must be highly reliable and can be solved several times
+- 22 Critical Thinking: an analysis or report contains inferences
+- 23 Chain-of-Verification: the output contains many checkable facts
 
-**优化提示词和配置**（E.9）
-- 27 消融实验：规则、工具或提示词越堆越多，不知道哪些有用
+**Deliver** (G)
+- 25 List Every Uncertainty: any delivery
+- 26 Checklists: the deliverable has several completion criteria
 
-解释讲解类任务加 B，长任务加 E，调研加 F。
+**Tune prompts and config** (E.9)
+- 27 Ablation Study: rules, tools, or prompts keep piling up and nobody knows which ones help
 
-完成标准是一份清单，列出选中的方法编号和 techniques.md 小节，每项附一句选它的理由。
+Add B for explaining or teaching, E for long tasks, F for research.
 
-## 3. 读选中的条目
+Done when you have a list of the picked method numbers and techniques.md sections, each with one sentence on why.
 
-用 grep 找到每条选中方法的 `### N.` 标题，只读那一节，techniques.md 同样只读选中的小节。点名模式按方法名找标题。
+## 3. Read the picked entries
 
-## 4a. 套用模式
+Grep for each picked method's `### N.` heading and read only that section. Read only the picked sections of techniques.md too. In Named mode, find the heading by method name.
 
-完成任务，每条选中的方法都在对话里留下可以查看的**证据**。
+## 4a. Apply mode
 
-| 方法 | 证据 |
+Do the task. Every picked method leaves **evidence** in the conversation that the user can inspect.
+
+| Method | Evidence |
 |---|---|
-| 第一性原理 | 复现命令和输出，修复前后的对比 |
-| 事前验尸 | 失败原因清单，每条对应一个预防措施 |
-| 切斯特顿的篱笆 | git log 或 blame 的结论，引用位置 |
-| 科学方法 | 每轮的假设、预测、实验、观察 |
-| 帕累托改进 | 修改前后的测试基线 |
-| 列出所有不自信的点 | 末尾的不确定清单 |
+| First Principles | reproduction command and output, before-and-after comparison |
+| Pre-Mortem | list of failure causes, each with a preventive measure |
+| Chesterton's Fence | what git log or blame showed, and where the code is referenced |
+| The Scientific Method | hypothesis, prediction, experiment, and observation for each round |
+| Pareto Improvement | test baseline before and after the change |
+| List Every Uncertainty | the uncertainty list at the end |
 
-表里没有的方法，按它在 methods.md 里的提示词决定证据是什么。完成标准是每条选中的方法都有证据，做不到的写明原因。
+For methods not in the table, derive the evidence from that method's prompt in methods.md. Done when every picked method has evidence, or a stated reason why it could not.
 
-## 4b. 写提示词模式
+## 4b. Write-a-prompt mode
 
-产出一段自包含的提示词，依次包含下面几块。
+Produce one self-contained prompt with these parts, in order.
 
-1. 目标和背景，写清对方不知道的上下文。
-2. 范围，哪些要做、哪些不做。
-3. 对方能自己运行的检查，或者明确的完成标准。
-4. 选中方法的提示词，合并去重，占位符换成这次任务的具体内容。
-5. 交付格式，包括末尾的不确定清单。
+1. Goal and background, including the context the recipient does not have.
+2. Scope: what to do and what not to do.
+3. A check the recipient can run on its own, or a clear completion criterion.
+4. The picked methods' prompts, merged and de-duplicated, with placeholders filled in for this task.
+5. The delivery format, ending with an uncertainty list.
 
-目标是 CLAUDE.md 或 AGENTS.md 时，从 techniques.md 末尾的合并版提示词出发，只留和这个项目相关的行。
+When the target is CLAUDE.md or AGENTS.md, start from the combined prompt at the end of techniques.md and keep only the lines that fit this project.
 
-写完做一次同事测试，把提示词当成发给一个完全不了解任务的同事，他读完能直接开工才算合格。提示词放在一个代码块里交付，后面逐行列出用了哪些方法、为什么。
+Then run the colleague test: read the prompt as a colleague who knows nothing about the task. It passes only if they could start work right away. Deliver the prompt in one code block, followed by one line per method used and why.
 
-## 5. 收尾
+## 5. Wrap up
 
-最后一行列出这次用到的方法编号。
+End with one line listing the method numbers used.
