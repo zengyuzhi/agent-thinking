@@ -6,11 +6,19 @@
 
 ## 安装
 
+用 [skills CLI](https://github.com/vercel-labs/skills) 安装，`-g` 装到用户目录，所有项目都能用；去掉 `-g` 只装到当前项目。
+
+```bash
+npx skills add zengyuzhi/agent-thinking -g -a claude-code
+```
+
+也可以直接 clone 到 Claude Code 的 skill 目录。
+
 ```bash
 git clone https://github.com/zengyuzhi/agent-thinking.git ~/.claude/skills/agent-thinking
 ```
 
-重开 Claude Code 会话后生效。
+两种方式都要重开 Claude Code 会话才生效。仓库设为私有时，安装用的是你本机已有的 git 凭据，需要有这个仓库的访问权限。
 
 ## 用法
 
