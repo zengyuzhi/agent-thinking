@@ -3,7 +3,7 @@
 fix-build-agentops
 fix-build-google-auto
 fix-erlang-ssh-cve
-fix-druid-loophole-cve
+# fix-druid-loophole-cve  # needs 16 GB RAM; skip when Docker has less
 react-performance-debugging
 debug-trl-grpo
 spring-boot-jakarta-migration
