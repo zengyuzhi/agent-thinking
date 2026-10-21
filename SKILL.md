@@ -14,7 +14,7 @@ disable-model-invocation: true
 
 ## 1. 定模式
 
-读 `$ARGUMENTS`，归入一种模式。参数为空时，对象是当前对话里正在做的任务。
+读用户调用这个 skill 时附带的文字，归入一种模式。Claude Code 会把这段文字填在这里：$ARGUMENTS。其他 Agent 里，它就是调用这个 skill 的那条用户消息。没有附带文字时，对象是当前对话里正在做的任务。
 
 - **套用**。参数描述一件要做的事。你自己用选中的方法完成它。
 - **写提示词**。参数要求写提示词、交给某个 Agent 或子 Agent、写进 CLAUDE.md 或 AGENTS.md。你只产出提示词，不执行任务。
