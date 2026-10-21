@@ -1,0 +1,5 @@
+interface:
+  display_name: "Agent 思维方法"
+  short_description: "按任务阶段挑选思维方法并照着做，或生成发给其他 Agent 的提示词"
+policy:
+  allow_implicit_invocation: false

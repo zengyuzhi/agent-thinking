@@ -6,26 +6,30 @@
 
 方法包括第一性原理、苏格拉底提问法、事前验尸、切斯特顿的篱笆、科学方法调试、对抗式审查、验证链、消融实验等，另有按任务类型整理的提示词技巧，覆盖解释讲解、写代码、画架构图、长任务、调研和输出格式。
 
+仓库里有两个内容相同的 skill：英文版 `agent-thinking` 和中文版 `agent-thinking-zh`，装哪个都行，也可以都装。
+
 ## 安装
 
 用 [skills CLI](https://github.com/vercel-labs/skills) 安装。`-g` 装到用户目录，所有项目都能用；去掉 `-g` 只装到当前项目。`-a` 后面写你用的 Agent，可以写多个。
 
 ```bash
-npx skills add zengyuzhi/agent-thinking -g -a claude-code codex pi
+npx skills add zengyuzhi/agent-thinking --skill agent-thinking-zh -g -a claude-code codex pi   # 中文版
+npx skills add zengyuzhi/agent-thinking --skill agent-thinking -g -a claude-code codex pi      # 英文版
 ```
 
-Claude Code 的 skill 装进 `.claude/skills/`，Codex 和 pi 共用 `.agents/skills/`。也可以手动 clone 到对应目录。
+Claude Code 的 skill 装进 `.claude/skills/`，Codex 和 pi 共用 `.agents/skills/`。手动安装的话，把仓库 clone 到任意位置，再把要用的那个 skill 目录链接过去。
 
 ```bash
-git clone https://github.com/zengyuzhi/agent-thinking.git ~/.claude/skills/agent-thinking   # Claude Code
-git clone https://github.com/zengyuzhi/agent-thinking.git ~/.agents/skills/agent-thinking   # Codex、pi
+git clone https://github.com/zengyuzhi/agent-thinking.git ~/src/agent-thinking
+ln -s ~/src/agent-thinking/skills/agent-thinking-zh ~/.claude/skills/agent-thinking-zh   # Claude Code
+ln -s ~/src/agent-thinking/skills/agent-thinking-zh ~/.agents/skills/agent-thinking-zh   # Codex、pi
 ```
 
-装完重开会话才生效。仓库设为私有时，安装用的是你本机已有的 git 凭据，需要有这个仓库的访问权限。
+装完重开会话才生效。
 
 ## 用法
 
-这个 skill 只能手动调用，模型不会自己加载它，平时不占上下文。
+这个 skill 只能手动调用，模型不会自己加载它，平时不占上下文。下面的命令以英文版为例，用中文版时把 `agent-thinking` 换成 `agent-thinking-zh`，比如 `/agent-thinking-zh 修一下登录 bug`。
 
 | Agent | 调用方式 | 怎样关掉自动调用 |
 |---|---|---|
@@ -51,11 +55,13 @@ git clone https://github.com/zengyuzhi/agent-thinking.git ~/.agents/skills/agent
 
 ## 文件
 
+两个 skill 的文件结构相同，中文版在 [skills/agent-thinking-zh](skills/agent-thinking-zh)，英文版在 [skills/agent-thinking](skills/agent-thinking)。
+
 | 文件 | 内容 |
 |---|---|
-| [SKILL.md](SKILL.md) | 操作步骤，以及任务阶段和方法的对照表 |
-| [references/methods.md](references/methods.md) | 27 条思维方法，每条附可复制的提示词 |
-| [references/techniques.md](references/techniques.md) | 按任务类型的提示词技巧，以及一份可放进 CLAUDE.md 或 AGENTS.md 的合并版提示词 |
-| [agents/openai.yaml](agents/openai.yaml) | Codex 的界面信息和调用策略 |
+| `SKILL.md` | 操作步骤，以及任务阶段和方法的对照表 |
+| `references/methods.md` | 27 条思维方法，每条附可复制的提示词 |
+| `references/techniques.md` | 按任务类型的提示词技巧，以及一份可放进 CLAUDE.md 或 AGENTS.md 的合并版提示词 |
+| `agents/openai.yaml` | Codex 的界面信息和调用策略 |
 
-两个 reference 文件也可以脱离 skill 单独阅读，各自文末列了来源。skill 和 reference 文件都是英文写的，调用时 Agent 会用你提问的语言回复。
+两个 reference 文件也可以脱离 skill 单独阅读，各自文末列了来源。不管装哪个版本，Agent 都会用你提问的语言回复。
