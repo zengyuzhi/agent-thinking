@@ -352,6 +352,28 @@ When you need JSON, prefer the API's built-in Structured Outputs feature. Avoid 
 
 ---
 
+## H. Interface Copy
+
+**1. Write for the glance, not the read**
+
+Steve Krug's first law of usability is "Don't make me think": a screen should be self-evident, and where it cannot be, self-explanatory. Robin Williams's four principles for non-designers are contrast, repetition, alignment, and proximity. For menus and feature text this means: a label says what happens, in the user's words; items that belong together sit together and follow one pattern; every needless word goes. Krug's rule of thumb: remove half the words, then half of what is left.
+
+**2. Rewrite menus and feature text**
+```
+You are a product manager and a copywriter in the Apple style. Rewrite every menu item and feature description in this admin interface by the principles of "Don't Make Me Think" and "The Non-Designer's Design Book":
+- A user understands each label at a glance, without reading it twice.
+- Everyday words. No internal names, no technical terms.
+- Names: one to three words. Descriptions: under twelve words.
+- Items of the same kind follow one pattern: same part of speech, same word order.
+Deliver a table: current text, new text, what changed and why. Flag every item whose meaning you had to guess.
+```
+
+**3. Check it the way a user would**
+
+Give the new labels, without their descriptions, to someone or to a fresh agent session that has not seen the product, and ask what each one does. A label that needs its description to be understood is not done.
+
+---
+
 ## Combined Prompt
 
 You can put the block below straight into CLAUDE.md or AGENTS.md. As E.9 suggests, after adding it, watch whether the agent's behavior changes, and delete lines that have no effect.
@@ -382,3 +404,5 @@ Working principles:
 - [Generating architecture diagrams from source code with Codex CLI](https://codex.danielvaughan.com/2026/05/13/codex-cli-architecture-diagrams-mermaid-c4-plantuml-source-code-visualisation/)
 - [The Feynman Technique Prompt](https://dev.to/blobxiaoyao/the-feynman-technique-prompt-how-to-make-ai-explain-anything-in-4-layers-of-depth-3076), DEV Community
 - [Diátaxis documentation framework](https://diataxis.fr/)
+- Steve Krug, *Don't Make Me Think, Revisited*, 3rd edition, New Riders, 2014
+- Robin Williams, *The Non-Designer's Design Book*, 4th edition, Peachpit Press, 2014

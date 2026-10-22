@@ -10,7 +10,7 @@ disable-model-invocation: true
 The twelve method cards below are all you need in most cases. Each one says what to do and what evidence it leaves. Two reference files hold the long versions; read a section there only when a step below sends you to it.
 
 - [references/methods.md](references/methods.md) holds 27 thinking methods with background and copy-paste prompts, each under a `### N. Name` heading. Each card lists the numbers it draws on.
-- [references/techniques.md](references/techniques.md) holds prompting techniques by task type in sections A to G, and ends with a combined prompt for CLAUDE.md or AGENTS.md.
+- [references/techniques.md](references/techniques.md) holds prompting techniques by task type in sections A to H, and ends with a combined prompt for CLAUDE.md or AGENTS.md.
 
 Reply in the language the user writes in. Prompts you produce follow the same language unless the user asks otherwise.
 
@@ -87,7 +87,7 @@ Picks
 
 Do the task, following the picked cards, and finish with the Ledger. Before an irreversible step the user has not approved, such as deleting data, pushing, sending anything outside, or changing permissions, stop and ask.
 
-For explaining, diagrams, research, or long tasks, also read the matching techniques.md section (B, D, F, or E), found by its `## ` heading.
+For explaining, diagrams, research, long tasks, or interface copy, also read the matching techniques.md section (B, D, F, E, or H), found by its `## ` heading.
 
 When you dispatch agents, give each one only the cards that fit its part, written as concrete rules, plus the files and interfaces it owns, what it leaves alone, its checks, and the evidence its report carries. You own the integration: rerun at least one check from each report yourself and test the combined result. A worker's "done" is a claim, not evidence. If you cannot dispatch, do the parts yourself in order.
 

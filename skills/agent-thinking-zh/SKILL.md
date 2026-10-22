@@ -10,7 +10,7 @@ disable-model-invocation: true
 下面十二张方法卡片能应付大多数情况，每张写明要做什么、留下什么证据。两份参考文件放着完整版，只有下面某一步让你去查时才读对应的一节。
 
 - [references/methods.md](references/methods.md) 收录 27 条思维方法，有背景和可复制的提示词，每条一个 `### N. 名字` 标题。每张卡片注明它取自哪几条。
-- [references/techniques.md](references/techniques.md) 按任务类型整理提示词技巧，分 A 到 G 七节，末尾有一份可放进 CLAUDE.md 或 AGENTS.md 的合并版提示词。
+- [references/techniques.md](references/techniques.md) 按任务类型整理提示词技巧，分 A 到 H 八节，末尾有一份可放进 CLAUDE.md 或 AGENTS.md 的合并版提示词。
 
 用用户提问的语言回复。你写出来的提示词也用同一种语言，除非用户另有要求。
 
@@ -87,7 +87,7 @@ disable-model-invocation: true
 
 按选中的卡片完成任务，最后给出证据账本。遇到用户没批准过的不可逆操作，比如删数据、推送、对外发送任何内容、改权限，先停下来问。
 
-解释讲解、画架构图、调研或长任务，再读 techniques.md 对应的小节（B、D、F 或 E），按 `## ` 标题查找。
+解释讲解、画架构图、调研、长任务或界面文案，再读 techniques.md 对应的小节（B、D、F、E 或 H），按 `## ` 标题查找。
 
 派发 Agent 时，每个 Agent 只拿和它那部分相关的卡片，写成具体规则，再写明它负责哪些文件和接口、哪些不动、要跑哪些检查、报告里要带什么证据。整合由你负责：每份报告里至少挑一项检查自己重跑，并测试合起来的结果。干活的 Agent 说“做完了”只是一句声明，不是证据。没法派发时，自己按顺序做完各部分。
 

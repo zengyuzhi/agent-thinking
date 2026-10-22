@@ -4,7 +4,7 @@ English | [中文](README.zh-CN.md)
 
 An Agent Skill for Claude Code, Codex, pi, and other agents that support `SKILL.md`. It makes an agent's work verifiable: it picks the few thinking methods that guard against the task's likely failures, proves "done" with evidence for every acceptance criterion, or writes a self-contained prompt for another agent.
 
-`SKILL.md` carries twelve short method cards, built from a library of 27 methods that includes First Principles, Socratic Questioning, Pre-Mortem, Chesterton's Fence, scientific debugging, Adversarial Review, Chain-of-Verification, and Ablation Study. A second reference collects prompting techniques by task type: explaining, writing code, architecture diagrams, long tasks, research, and output format.
+`SKILL.md` carries twelve short method cards, built from a library of 27 methods that includes First Principles, Socratic Questioning, Pre-Mortem, Chesterton's Fence, scientific debugging, Adversarial Review, Chain-of-Verification, and Ablation Study. A second reference collects prompting techniques by task type: explaining, writing code, architecture diagrams, long tasks, research, output format, and interface copy.
 
 The repo holds two skills with the same content: `agent-thinking` in English and `agent-thinking-zh` in Chinese. Install either one, or both.
 

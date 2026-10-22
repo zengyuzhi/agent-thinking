@@ -352,6 +352,28 @@ Agent 感觉上下文快满时，会倾向于草草结束。如果你用的工�
 
 ---
 
+## H. 界面文案
+
+**1. 为一眼看懂而写，不为细读而写**
+
+Steve Krug 的可用性第一定律是"别让我思考"：一个界面应该不言自明，做不到时也要能自我解释。Robin Williams 在《写给大家看的设计书》里给非设计师的四条原则是对比、重复、对齐、亲密性。落到菜单和功能文案上：标签用用户的话说清会发生什么；同类的项放在一起，写法一致；多余的字全删。Krug 的经验法则：先删掉一半的字，再把剩下的删掉一半。
+
+**2. 重写菜单和功能文案**
+```
+你是产品经理 + 苹果文案大师。按《Don't Make Me Think》和《写给大家看的设计书》的原则，重写这个后台所有菜单和功能文案：
+- 用户一眼看懂，不用读第二遍。
+- 用日常说法，不用内部名称和技术术语。
+- 名称 2 到 4 字，描述不超过 20 字。
+- 同类的项用同一种写法：同样的词性，同样的语序。
+交付一张表：原文案、新文案、改了什么、为什么。意思只能靠猜的项单独标出来。
+```
+
+**3. 像用户那样检查**
+
+把新标签（不带描述）交给没见过这个产品的人，或者一个没有上下文的新 Agent 会话，问每一项是干什么的。需要靠描述才能看懂的标签，还没改好。
+
+---
+
 ## 合并版提示词
 
 下面这段可以直接放进 CLAUDE.md 或 AGENTS.md。按 E.9 的建议，放进去以后观察 Agent 的行为有没有变化，没起作用的行就删掉。
@@ -382,3 +404,5 @@ Agent 感觉上下文快满时，会倾向于草草结束。如果你用的工�
 - [用 Codex CLI 从源码生成架构图](https://codex.danielvaughan.com/2026/05/13/codex-cli-architecture-diagrams-mermaid-c4-plantuml-source-code-visualisation/)
 - [The Feynman Technique Prompt](https://dev.to/blobxiaoyao/the-feynman-technique-prompt-how-to-make-ai-explain-anything-in-4-layers-of-depth-3076)，DEV Community
 - [Diátaxis 文档框架](https://diataxis.fr/)
+- Steve Krug，《Don't Make Me Think, Revisited》（中译《点石成金》），第 3 版，New Riders，2014
+- Robin Williams，《The Non-Designer's Design Book》（中译《写给大家看的设计书》），第 4 版，Peachpit Press，2014
