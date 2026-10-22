@@ -5,10 +5,10 @@
 | **一、弄清问题** | | | |
 | 1 | 第一性原理 | 先把问题本身搞清楚 | 修 bug、长任务开始前 |
 | 2 | 苏格拉底提问法 | 先问清楚再动手 | 需求含糊时 |
-| 3 | 退一步提问（论文） | 先问背后的原理，再解具体问题 | 复杂推理 |
+| 3 | 退一步提问（论文，过时） | 先问背后的原理，再解具体问题 | 复杂推理 |
 | 4 | 地图不是疆域 | 文档和记忆可能过时，以当前代码为准 | 读文档、接手项目 |
 | 5 | 分而治之与 MECE | 拆成不重不漏的小块 | 大任务、调研 |
-| 6 | 由易到难分解（论文） | 先解最简单的子问题，逐步往上 | 有前后依赖的任务 |
+| 6 | 由易到难分解（论文，过时） | 先解最简单的子问题，逐步往上 | 有前后依赖的任务 |
 | **二、设计方案** | | | |
 | 7 | 奥卡姆剃刀 | 先做最简单、能工作的版本 | 所有实现 |
 | 8 | 高内聚低耦合 | 把模块边界划清楚 | 改代码、拆模块 |
@@ -25,17 +25,17 @@
 | 17 | 古德哈特定律 | 指标一旦变成目标，就不再是好指标 | 写测试、定验收标准 |
 | 18 | 对抗式审查 | 找一个专门挑毛病的 Agent | 审查 |
 | 19 | 保持独立思考 | 先判断，再参考别人的答案 | 多 Agent 协作 |
-| 20 | 自洽性（论文） | 多次独立求解，看答案是否一致 | 需要高可靠的判断 |
+| 20 | 自洽性（论文，过时） | 多次独立求解，看答案是否一致 | 需要高可靠的判断 |
 | 21 | 钢人论证 | 反驳之前，先把对方的观点说到最强 | 方案选型 |
 | 22 | 批判性思维 | 必须检查证据 | 所有分析 |
-| 23 | 验证链（论文） | 先写草稿，再逐条独立核对 | 减少事实性错误 |
+| 23 | 验证链（论文，过时） | 先写草稿，再逐条独立核对 | 减少事实性错误 |
 | 24 | 小黄鸭调试 | 一行行讲出来，问题自己会冒出来 | 自查代码 |
 | **五、交付与持续改进** | | | |
 | 25 | 列出所有不自信的点 | 让不确定有地方出现 | 交付时 |
 | 26 | 检查清单 | 把完成的标准写下来，逐项打勾 | 交付前 |
 | 27 | 消融实验 | 拿掉一个东西，看看还行不行 | 优化提示词和配置 |
 
-标了"论文"的四条来自 LLM 研究论文。论文测试的大多是 2022 到 2023 年的模型，现在的模型很多自带深度思考，这些技巧带来的提升可能变小了。用之前最好在自己的任务上做一次对比，方法见第 27 条。
+标了"论文"的四条（3、6、20、23）已经过时。它们是在 2022 到 2023 年的模型上验证的。对 2025 年之后的推理模型，在提示词里规定一步步想，多花 20% 到 80% 的时间，最多换来几个百分点，有时还更差（Wharton GAIL，2025）；没有新的外部证据就让模型自我修正，准确率会下降（Huang 等，2024）；编码 Agent 动手前想得越久越容易失败（Cuadron 等，2025）。Anthropic 和 OpenAI 都建议不要给这些模型规定推理步骤。只有一条规则还成立：第二遍只有在读到第一遍没读过的东西时才值钱，比如一条命令的输出、一个文件、另一个 Agent 的结论。完整的证据综述见文末来源。
 
 ---
 
@@ -102,6 +102,8 @@ Agent 很容易直接开始修，却没确认问题是否真的存在。长任�
 
 > 先问背后的原理，再解具体问题
 
+**状态（2026）：过时。** 推理模型在内部就会这么做，在提示词里要求它只多花时间，几乎没有收益。见表格上方的说明。
+
 **是什么**
 
 Google DeepMind 2023 年的论文，发表在 ICLR 2024，英文叫 Step-Back Prompting。先让模型退一步，说出这个问题背后的一般原理或概念，再用原理去推导答案。论文在 PaLM-2L 上测试，物理题提升 7%，化学题提升 11%。
@@ -167,6 +169,8 @@ Agent 会相信 README、注释、旧笔记、上一次会话的总结，甚至�
 ### 6. 由易到难分解
 
 > 先解最简单的子问题，逐步往上
+
+**状态（2026）：过时。** 子问题有先后依赖时，由易到难的顺序仍然有用；一问一答的脚本式分解在现在的模型上不需要了。
 
 **是什么**
 
@@ -515,6 +519,8 @@ Agent 修一个 bug 时，经常顺手改坏别的东西，其他测试失败了
 
 > 多次独立求解，看答案是否一致
 
+**状态（2026）：用于自我验证时过时。** 对必须可靠的判断，独立多次求解仍然有用；不要把它花在复查自己的工作上（Anthropic 的 Opus 5 指南）。
+
 **是什么**
 
 Google 2022 年的论文，英文叫 Self-Consistency。让模型对同一个问题用不同思路独立解多次，取出现次数最多的答案。正确答案往往可以从多条路径得到，错误答案则各不相同。
@@ -580,6 +586,8 @@ Agent 擅长写出逻辑通顺的分析，通顺和正确却是两回事。要�
 ### 23. 验证链
 
 > 先写草稿，再逐条独立核对
+
+**状态（2026）：过时。** 还成立的部分是第二遍要读新的来源：一条命令、一个文件、另一个 Agent。重读自己的草稿不算。
 
 **是什么**
 
@@ -764,3 +772,9 @@ Agent 觉得看起来做完了就会停下。有一份写明完成标准的清�
 - [How we made 163 mental models executable for AI agents](https://dev.to/bradju/how-we-made-163-mental-models-executable-for-ai-agents-3b97)，沃尔德、河内捕鼠和法航 447 三个案例转引自此文
 - [Inversion Thinking](https://concepts.dsebastien.net/concept/inversion-thinking/)
 - [Chesterton's Fence](https://concepts.dsebastien.net/concept/chestertons-fence/)
+- [Prompting Science Report 2: The Decreasing Value of Chain of Thought in Prompting](https://arxiv.org/abs/2506.07142)，Meincke、Mollick、Mollick、Shapiro，Wharton GAIL，2025
+- [Large Language Models Cannot Self-Correct Reasoning Yet](https://arxiv.org/abs/2310.01798)，Huang 等，ICLR 2024
+- [The Danger of Overthinking: Examining the Reasoning-Action Dilemma in Agentic Tasks](https://arxiv.org/abs/2502.08235)，Cuadron 等，2025
+- [Prompting Claude Opus 5](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5)，Anthropic 文档
+- [Reasoning best practices](https://developers.openai.com/api/docs/guides/reasoning-best-practices)，OpenAI 文档
+- [What the evidence says about thinking disciplines for coding agents](https://github.com/zengyuzhi/agent-thinking/blob/main/research/2026-10-22-evidence-for-agent-thinking.md)，本仓库，2026。过时标记的依据。

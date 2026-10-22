@@ -5,10 +5,10 @@
 | **I. Understand the Problem** | | | |
 | 1 | First Principles | Understand the problem itself first | Fixing bugs, before long tasks |
 | 2 | Socratic Questioning | Ask until it is clear, then act | Vague requirements |
-| 3 | Step-Back Prompting (paper) | Ask about the underlying principle first, then solve the specific problem | Complex reasoning |
+| 3 | Step-Back Prompting (paper, legacy) | Ask about the underlying principle first, then solve the specific problem | Complex reasoning |
 | 4 | The Map Is Not the Territory | Docs and memory may be outdated; the current code is the truth | Reading docs, taking over a project |
 | 5 | Divide and Conquer (MECE) | Split into parts with no overlaps and no gaps | Large tasks, research |
-| 6 | Least-to-Most Decomposition (paper) | Solve the easiest subproblem first, then work upward | Tasks with sequential dependencies |
+| 6 | Least-to-Most Decomposition (paper, legacy) | Solve the easiest subproblem first, then work upward | Tasks with sequential dependencies |
 | **II. Design the Approach** | | | |
 | 7 | Occam's Razor | Build the simplest version that works first | All implementation |
 | 8 | High Cohesion, Low Coupling | Draw clear module boundaries | Changing code, splitting modules |
@@ -25,17 +25,17 @@
 | 17 | Goodhart's Law | When a measure becomes a target, it stops being a good measure | Writing tests, setting acceptance criteria |
 | 18 | Adversarial Review | Get an agent whose only job is to find faults | Review |
 | 19 | Independent Judgment | Judge first, then look at other answers | Multi-agent work |
-| 20 | Self-Consistency (paper) | Solve independently several times and check whether the answers agree | Judgments that must be highly reliable |
+| 20 | Self-Consistency (paper, legacy) | Solve independently several times and check whether the answers agree | Judgments that must be highly reliable |
 | 21 | Steelmanning | Before you argue against a view, state it in its strongest form | Choosing between solutions |
 | 22 | Critical Thinking | Always check the evidence | All analysis |
-| 23 | Chain-of-Verification (paper) | Write a draft first, then check each claim independently | Reducing factual errors |
+| 23 | Chain-of-Verification (paper, legacy) | Write a draft first, then check each claim independently | Reducing factual errors |
 | 24 | Rubber Duck Debugging | Explain it line by line, and the problem shows itself | Self-checking code |
 | **V. Deliver and Improve** | | | |
 | 25 | List Every Uncertainty | Give uncertainty a place to show up | At delivery |
 | 26 | Checklists | Write down what "done" means and check each item | Before delivery |
 | 27 | Ablation Study | Remove one thing and see if it still works | Tuning prompts and configuration |
 
-The four methods marked "paper" come from LLM research papers. Most of these papers tested models from 2022 to 2023. Many current models have built-in deep reasoning, so the gains from these techniques may be smaller now. Before you rely on one, compare it on your own task first. See method 27 for how.
+The four methods marked "paper" (3, 6, 20, 23) are legacy. They were validated on 2022–2023 models. On reasoning models from 2025 on, scripting step-by-step thinking in the prompt costs 20–80% more time for a few points at most, and sometimes less accuracy (Wharton GAIL, 2025); self-correction without new external evidence lowers accuracy (Huang et al., 2024); and long deliberation before acting predicts failure in coding agents (Cuadron et al., 2025). Anthropic and OpenAI both advise against prescribing reasoning steps to these models. One rule survives: a second pass is worth its cost only when it reads something the first pass did not, such as a command's output, a file, or another agent's finding. The evidence review is linked in Sources.
 
 ---
 
@@ -102,6 +102,8 @@ Before you start, clarify the task with questions:
 
 > Ask about the underlying principle first, then solve the specific problem
 
+**Status (2026): legacy.** Reasoning models do this internally; asking for it in the prompt adds time for little or no gain. See the note above the table.
+
 **What it is**
 
 A 2023 paper from Google DeepMind, published at ICLR 2024, called Step-Back Prompting. First have the model step back and state the general principle or concept behind the problem, then use that principle to derive the answer. The paper tested it on PaLM-2L and reported gains of 7% on physics questions and 11% on chemistry questions.
@@ -167,6 +169,8 @@ Write the list into TODO.md and check off each item as you finish it.
 ### 6. Least-to-Most Decomposition
 
 > Solve the easiest subproblem first, then work upward
+
+**Status (2026): legacy.** Keep the easiest-first order when subtasks depend on each other; the scripted question-and-answer chain is not needed on current models.
 
 **What it is**
 
@@ -515,6 +519,8 @@ After that you will see other agents' conclusions. Change your position only if 
 
 > Solve independently several times and check whether the answers agree
 
+**Status (2026): legacy for self-verification.** Independent samples still help for a judgment that has to be reliable; do not spend them re-checking your own work (Anthropic, Opus 5 guidance).
+
 **What it is**
 
 A 2022 paper from Google, called Self-Consistency. Have the model solve the same problem several times independently with different lines of reasoning, and take the answer that appears most often. The correct answer can often be reached by several paths, while wrong answers tend to differ from each other.
@@ -580,6 +586,8 @@ For your main conclusion, state: what evidence, if it appeared, would overturn i
 ### 23. Chain-of-Verification
 
 > Write a draft first, then check each claim independently
+
+**Status (2026): legacy.** The surviving part is a second pass that reads a new source: a command, a file, a different agent. Re-reading your own draft does not count.
 
 **What it is**
 
@@ -764,3 +772,9 @@ A concept introduced by the Italian economist Vilfredo Pareto. When a change in 
 - [How we made 163 mental models executable for AI agents](https://dev.to/bradju/how-we-made-163-mental-models-executable-for-ai-agents-3b97). The three cases of Wald, the Hanoi rat bounty and Air France 447 are cited from this article.
 - [Inversion Thinking](https://concepts.dsebastien.net/concept/inversion-thinking/)
 - [Chesterton's Fence](https://concepts.dsebastien.net/concept/chestertons-fence/)
+- [Prompting Science Report 2: The Decreasing Value of Chain of Thought in Prompting](https://arxiv.org/abs/2506.07142), Meincke, Mollick, Mollick and Shapiro, Wharton GAIL, 2025
+- [Large Language Models Cannot Self-Correct Reasoning Yet](https://arxiv.org/abs/2310.01798), Huang et al., ICLR 2024
+- [The Danger of Overthinking: Examining the Reasoning-Action Dilemma in Agentic Tasks](https://arxiv.org/abs/2502.08235), Cuadron et al., 2025
+- [Prompting Claude Opus 5](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5), Anthropic docs
+- [Reasoning best practices](https://developers.openai.com/api/docs/guides/reasoning-best-practices), OpenAI docs
+- [What the evidence says about thinking disciplines for coding agents](https://github.com/zengyuzhi/agent-thinking/blob/main/research/2026-10-22-evidence-for-agent-thinking.md), this repository, 2026. The review behind the legacy marks.
