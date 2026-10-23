@@ -12,7 +12,7 @@ The twelve method cards below are all you need in most cases. Each one says what
 - [references/methods.md](references/methods.md) holds 27 thinking methods with background and copy-paste prompts, each under a `### N. Name` heading. Each card lists the numbers it draws on.
 - [references/techniques.md](references/techniques.md) holds prompting techniques by task type in sections A to H, and ends with a combined prompt for CLAUDE.md or AGENTS.md.
 
-Reply in the language the user writes in. Prompts you produce follow the same language unless the user asks otherwise.
+Reply in the language the user writes in, progress updates included. Prompts you produce follow the same language unless the user asks otherwise.
 
 ## 1. Pick the mode
 
@@ -49,12 +49,13 @@ Keep at most three candidates, five when you dispatch agents. Keep the ones guar
 
 **When the task text names a runnable check** (a test command, a verifier, a build) **and asks for one bounded change**, keep only the Ledger and say so in one line. The other cards pay off when there is no runnable check, a destructive or outward-facing step, several agents, an unknown cause, or work that spans sessions.
 
-Your very next output is the picks message below, with no tool call before it. Send it and keep going; do not wait for a reply. After your first look at the code you may add or swap one card, saying why.
+Your very next output is the picks message below, with no tool call before it. When the task is explaining, a diagram, research, a long task, or interface copy, add a line naming the techniques.md section (B, D, F, E, or H) and read it before starting. Send the message and keep going; do not wait for a reply. After your first look at the code you may add or swap one card, saying why.
 
 ```
 Picks
 - Reproduce: guards against fixing a symptom I never saw. Adds: run the failing case before editing. Evidence: command and output, before and after.
 - Ledger: every acceptance criterion marked verified, failed, or unverified.
+- Techniques: H, interface copy (only when a section applies).
 ```
 
 ## 3. Cards

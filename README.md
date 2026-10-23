@@ -39,6 +39,8 @@ The skill is manual-only: the model never loads it on its own, so it costs no co
 
 Agents that ignore both fields can still use the skill, but may load it automatically.
 
+Invoke it on its own. When one message names two skills, Claude Code loads only the last one in full, so `/agent-thinking /show-me ...` runs without this skill. Put the other skill's ask in the text instead (`/agent-thinking recap the night, drawn the show-me way`), or put `/agent-thinking` last.
+
 ```
 /agent-thinking fix the bug where users can't log back in after a session timeout
 /agent-thinking write a prompt: have a subagent review this payment change

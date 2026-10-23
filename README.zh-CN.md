@@ -39,6 +39,8 @@ ln -s ~/src/agent-thinking/skills/agent-thinking-zh ~/.agents/skills/agent-think
 
 其他 Agent 如果不认这两个字段，skill 仍然能用，只是可能会被模型自动加载。
 
+请单独调用。一条消息里写了两个 skill 时，Claude Code 只完整加载最后一个，所以 `/agent-thinking /show-me ……` 实际上不会用到这个 skill。可以把另一个 skill 的要求写进文字里（`/agent-thinking 回顾一晚做了什么，用 show-me 的画法`），或者把 `/agent-thinking` 放在最后。
+
 ```
 /agent-thinking 修复登录超时后无法重新登录的 bug
 /agent-thinking 写提示词：让子 Agent 审查这次的支付改动
