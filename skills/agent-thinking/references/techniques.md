@@ -356,7 +356,7 @@ When you need JSON, prefer the API's built-in Structured Outputs feature. Avoid 
 
 **1. Write for the glance, not the read**
 
-Steve Krug's first law of usability is "Don't make me think": a screen should be self-evident, and where it cannot be, self-explanatory. Robin Williams's four principles for non-designers are contrast, repetition, alignment, and proximity. For menus and feature text this means: a label says what happens, in the user's words; items that belong together sit together and follow one pattern; every needless word goes. Krug's rule of thumb: remove half the words, then half of what is left.
+Steve Krug's first law of usability is "Don't make me think": a screen should be self-evident, and where it cannot be, self-explanatory. Robin Williams's four principles for non-designers are contrast, repetition, alignment, and proximity. For menus and feature text this means: a label says what happens, in the user's words; items that belong together sit together and follow one pattern; every needless word goes. Krug's rule of thumb: remove half the words, then half of what is left. Layout explains before words do: grouping, order, and position already say what belongs together and what matters most, so a secondary label or description that repeats them is noise.
 
 **2. Rewrite menus and feature text**
 ```
@@ -365,12 +365,13 @@ You are a product manager and a copywriter in the Apple style. Rewrite every men
 - Everyday words. No internal names, no technical terms.
 - Names: one to three words. Descriptions: under twelve words.
 - Items of the same kind follow one pattern: same part of speech, same word order.
-Deliver a table: current text, new text, what changed and why. Flag every item whose meaning you had to guess.
+- Avoid unnecessary secondary labels and descriptions. Let the layout do the explaining.
+Deliver a table: current text, new text (or "removed"), what changed and why. Flag every item whose meaning you had to guess.
 ```
 
 **3. Check it the way a user would**
 
-Give the new labels, without their descriptions, to someone or to a fresh agent session that has not seen the product, and ask what each one does. A label that needs its description to be understood is not done.
+Give the new labels, without their descriptions, to someone or to a fresh agent session that has not seen the product, and ask what each one does. A label that needs its description to be understood is not done. Then cover each secondary label and description in turn: if the screen still reads without it, remove it.
 
 ---
 
