@@ -9,6 +9,8 @@
 | 长任务 | 进度写进文件，上下文乱了就重开 |
 | 调研 | 先定义怎样才算答到了，要求多源交叉验证 |
 | 输出格式 | 告诉它要什么，少说不要什么 |
+| 界面文案 | 用用户的话说清会发生什么，让布局自己说明 |
+| 视觉设计 | 给数得清的数字，不给形容词；动手前先出几个方向 |
 
 ---
 
@@ -184,6 +186,41 @@ OpenAI 的指南建议，实现计划里要列出每条需求在哪里实现，�
 如果你为了调试创建了临时文件或脚本，任务结束时删掉它们。
 ```
 
+**11. 只改需求要改的地方**
+```
+每一行改动都要能对应到需求。不要顺手"改进"旁边的代码、注释或格式。
+发现无关的死代码或 bug，提出来，不要改。
+只删除你这次改动造成的无用 import、变量和函数。
+```
+
+出自整理 Andrej Karpathy 对编程 Agent 观察的 CLAUDE.md；Codex 的默认系统提示词对无关 bug 也是同样的要求。第一行可以直接拿来查 diff：对应不到需求的行就该撤掉。
+
+**12. 让错误暴露出来**
+```
+不要加大范围的 try/catch、静默默认值，或者让失败看起来像成功的兜底。让错误往上抛，或者明确报告出来。
+```
+
+出自 OpenAI 的 Codex 提示词指南。吞掉错误会让一次失败的运行看起来已经完成，这正是证据账本卡要防的情况。
+
+**13. 先整理结构，再改行为**
+```
+结构改动和行为改动不要放进同一个提交。两种都需要时，先做结构改动，前后各跑一次测试，证明行为没变。
+```
+
+出自 Kent Beck 的增强编程系统提示词。他更早的一句话是同一个意思："先让改动变容易（这一步可能很难），再做那个容易的改动。"这样审查的人先看一个有测试担保的重构，再看一个单独的、很小的行为改动。
+
+**14. 先红后绿**
+
+一句"Use red/green TDD"就够了。Simon Willison 指出，现在的模型都懂这个说法：先写测试，确认测试失败，再写实现。一个从没失败过的测试，证明不了它能抓到问题。
+
+**15. 修三次不好就停**
+```
+同一个问题修了三次还没好，就停下，不要试第四次。
+说明每次尝试排除了什么，先质疑设计再继续。
+```
+
+出自 superpowers（Jesse Vincent）的 systematic-debugging 技能：连续三次失败，问题通常出在结构上，不在下一个补丁里。可以配合诊断卡的记录一起用。
+
 ---
 
 ## D. 画架构图
@@ -319,7 +356,7 @@ Agent 感觉上下文快满时，会倾向于草草结束。如果你用的工�
 
 ---
 
-## G. 输出格式与长度
+## G. 输出格式与写作
 
 **1. 告诉它要什么**
 
@@ -350,28 +387,98 @@ Agent 感觉上下文快满时，会倾向于草草结束。如果你用的工�
 
 需要 JSON 时，优先用 API 自带的结构化输出功能（Structured Outputs），少在提示词里用文字描述格式。
 
+**7. 翻译用"重写"**
+```
+请尊重原意，保持原有格式不变，用简体中文重写下面的内容：
+```
+
+要求"重写"而不是"翻译"，输出就不会照搬原文的句子结构。宝玉用这一句替代了早期模型需要的"直译、反思、意译"多步提示词。检验标准：读起来像不像本来就用中文写的。
+
+**8. 从自己的修改里学文风**
+
+大家共用一套"去 AI 味"提示词，结果只是换成一套新的模板腔；宝玉的说法是"所有去 AI 味提示词都是错的"。更好的做法是自己动手改一份 AI 初稿，再把两个版本一起给它：
+```
+对比下面两段文字，第一段是 AI 写的初稿，第二段是我改过的版本。列出我做了哪几类修改，写出每类修改背后的规则，加进我的写作风格说明里。
+```
+几轮之后，这份说明写的就是你自己的文风，以后的初稿从它出发。
+
+**9. 校对只列问题，不动手改**
+```
+这篇文字准备发布，帮我校对。只列出问题，不要修改：
+1. 错别字
+2. 语法错误
+3. 重复的词或句式
+4. 逻辑错误和事实错误
+5. 可以写得更有力的薄弱论证
+6. 空链接或占位链接
+```
+改编自 Simon Willison 的校对提示词。Agent 只指出问题，文字就还是作者自己的口吻；参见 G.4。
+
 ---
 
 ## H. 界面文案
 
 **1. 为一眼看懂而写，不为细读而写**
 
-Steve Krug 的可用性第一定律是"别让我思考"：一个界面应该不言自明，做不到时也要能自我解释。Robin Williams 在《写给大家看的设计书》里给非设计师的四条原则是对比、重复、对齐、亲密性。落到菜单和功能文案上：标签用用户的话说清会发生什么；同类的项放在一起，写法一致；多余的字全删。Krug 的经验法则：先删掉一半的字，再把剩下的删掉一半。布局比文字先说话：分组、顺序和位置已经说明了哪些是一类、哪些最重要，再用副标签或描述重复一遍就是噪音。
+Steve Krug 的可用性第一定律是"别让我思考"：一个界面应该不言自明，做不到时也要能自我解释。Robin Williams 在《写给大家看的设计书》里给非设计师的四条原则是对比、重复、对齐、亲密性。落到菜单和功能文案上：标签用用户的话说清会发生什么；同类的项放在一起，写法一致；多余的字全删。Krug 的经验法则：先删掉一半的字，再把剩下的删掉一半。布局比文字先说话：分组、顺序和位置已经说明了哪些是一类、哪些最重要，再用副标签或描述重复一遍就是噪音。最常见的多余标签是标题上方的小标签（eyebrow），impeccable 设计技能直接禁用它：标题自己就撑得住。
 
 **2. 重写菜单和功能文案**
 ```
 你是产品经理 + 苹果文案大师。按《Don't Make Me Think》和《写给大家看的设计书》的原则，重写这个后台所有菜单和功能文案：
 - 用户一眼看懂，不用读第二遍。
 - 用日常说法，不用内部名称和技术术语。
+- 按钮写清按下后会发生什么：写「保存修改」，不写「提交」。同一个动作从头到尾用一个词：按钮叫「发布」，提示就叫「已发布」。
+- 一句话如果能放进广告，就改到像产品界面为止。
 - 名称 2 到 4 字，描述不超过 20 字。
 - 同类的项用同一种写法：同样的词性，同样的语序。
 - 去掉不必要的副标签和描述，让布局自己说明。
 交付一张表：原文案、新文案（或「删除」）、改了什么、为什么。意思只能靠猜的项单独标出来。
 ```
 
-**3. 像用户那样检查**
+**3. 重写报错信息**
+```
+把每条报错信息改成三部分：
+- 标题，12 字以内：出了什么事。
+- 一句话：为什么，用大白话说。
+- 一个动作：用户下一步可以做什么；有临时解决办法就写上。
+写出具体是哪个字段或组件。不写用户看不懂的错误码，不用被动句，不责怪用户（"你没有……"），不写"请"。
+```
 
-把新标签（不带描述）交给没见过这个产品的人，或者一个没有上下文的新 Agent 会话，问每一项是干什么的。需要靠描述才能看懂的标签，还没改好。再把副标签和描述逐条遮住看：遮住后界面照样看得懂的，就删掉。
+改编自西门子 iX 设计系统里改写报错信息的提示词。
+
+**4. 像用户那样检查**
+
+把新标签（不带描述）交给没见过这个产品的人，或者一个没有上下文的新 Agent 会话，问每一项是干什么的。需要靠描述才能看懂的标签，还没改好。再把副标签和描述逐条遮住看：遮住后界面照样看得懂的，就删掉。最后按 OpenAI 前端指南的建议，只看标题、标签和数字：界面应该仍然看得懂。
+
+---
+
+## I. 视觉设计
+
+**1. 给数字，不给形容词**
+
+Anthropic 的提示词指南提到，"别用那个颜色""做得干净简约"这类笼统要求，往往只会让模型换到另一套固定配色，而不是做出变化。管用的是具体规格，或者先给几个方案让人选。所以要写数得清的限制和能检查的标准，不写感觉。
+
+**2. 动手前先出方向**
+```
+动手之前，先针对这个需求提出 4 个不同的视觉方向，每个写清背景色、强调色和字体，再加一句理由。让我选一个，然后只实现那一个。
+```
+
+**3. 数得清的设计规则**
+```
+- 一个 H1，最多两种字体，一个中性底色加一个强调色，每屏一个主按钮。
+- 字号和字重加起来四到五级。间距用 4px 的倍数。
+- 先用灰度做出层级，靠字号、字重和间距；最后再上色。眯起眼看，最重要的东西仍然最突出。
+- 彩色背景上的次要文字，从背景色取同色系，不用灰色。
+- 只有装着可操作内容的才用卡片。去掉边框、阴影、背景或圆角后，既不影响操作也不影响理解，就去掉。
+- 强调就强调整个标题，不单独给一个词变色或加粗。标签不用全大写。只有真正有先后顺序的内容才加 01、02、03 编号。
+- 只在需要说明因果时才加动画。时长 300ms 以内，退出比进入快约 20%，元素进出用 ease-out，从 scale(0.95) 开始而不是从 0 开始。
+```
+
+这些规则分别来自 OpenAI 的前端指南（各项数量、间距和删框测试）、Anthropic 的 frontend-design 技能（暴露生成痕迹的排版习惯）、《Refactoring UI》（先灰度、彩色底上的文字取同色系）、Emil Kowalski（动效时长）和 Vercel 的 Web Interface Guidelines（只为说明因果而动）。按需求挑适用的规则；品牌已有设计规范时以规范为准。
+
+**4. 逐个状态走一遍**
+
+默认状态的截图会藏住大部分问题。逐个检查 hover、focus、active、加载中、空和出错状态，再分别试短、中、超长的内容。有动效时，在浏览器的动画面板里用 10% 的速度回放：慢放时看着别扭的地方，就是正常速度下说不出哪里不对的地方。这一条是 C.1 截图对比的延伸。
 
 ---
 
@@ -407,3 +514,18 @@ Steve Krug 的可用性第一定律是"别让我思考"：一个界面应该不�
 - [Diátaxis 文档框架](https://diataxis.fr/)
 - Steve Krug，《Don't Make Me Think, Revisited》（中译《点石成金》），第 3 版，New Riders，2014
 - Robin Williams，《The Non-Designer's Design Book》（中译《写给大家看的设计书》），第 4 版，Peachpit Press，2014
+- Adam Wathan、Steve Schoger，《Refactoring UI》，2018
+- [Designing delightful frontends with GPT-5.4](https://developers.openai.com/blog/designing-delightful-frontends-with-gpt-5-4)，OpenAI
+- [GPT-5 提示词指南](https://developers.openai.com/cookbook/examples/gpt-5/gpt-5_prompting_guide)和 [Codex 提示词指南](https://github.com/openai/openai-cookbook/blob/main/examples/gpt-5/codex_prompting_guide.ipynb)，OpenAI Cookbook
+- [Prompting Claude Sonnet 5](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5)，Anthropic
+- [frontend-design 技能](https://github.com/anthropics/skills/blob/main/skills/frontend-design/SKILL.md)，Anthropic
+- [andrej-karpathy-skills 的 CLAUDE.md](https://github.com/forrestchang/andrej-karpathy-skills/blob/main/CLAUDE.md)，整理自 Andrej Karpathy 的观察
+- Kent Beck，[Augmented coding: beyond the vibes](https://newsletter.kentbeck.com/p/augmented-coding-beyond-the-vibes)，2025
+- Simon Willison，[Red/green TDD](https://simonwillison.net/guides/agentic-engineering-patterns/red-green-tdd/) 和 [Prompts](https://simonwillison.net/guides/agentic-engineering-patterns/prompts/)，Agentic Engineering Patterns
+- Jesse Vincent，[systematic-debugging 技能](https://github.com/obra/superpowers/blob/main/skills/systematic-debugging/SKILL.md)，superpowers
+- 宝玉，[关于用大模型翻译](https://baoyu.io/blog/llm-translation-better-idiom)，2025；[关于去掉文章的 AI 味](https://baoyu.io/blog/2026-02-14/remove-ai-writing-flavor)，2026
+- [AI and UX writing](https://ix.siemens.io/docs/guidelines/language/support-and-resources/AI-and-UX-writing)，西门子 iX 设计系统
+- Paul Bakaus，[impeccable](https://github.com/pbakaus/impeccable)
+- Emil Kowalski，[Agents with taste](https://emilkowal.ski/ui/agents-with-taste)
+- [Web Interface Guidelines](https://vercel.com/design/guidelines)，Vercel
+- Jakub Krehel，[make-interfaces-feel-better](https://github.com/jakubkrehel/make-interfaces-feel-better)

@@ -10,7 +10,7 @@ disable-model-invocation: true
 The twelve method cards below are all you need in most cases. Each one says what to do and what evidence it leaves. Two reference files hold the long versions; read a section there only when a step below sends you to it.
 
 - [references/methods.md](references/methods.md) holds 27 thinking methods with background and copy-paste prompts, each under a `### N. Name` heading. Each card lists the numbers it draws on.
-- [references/techniques.md](references/techniques.md) holds prompting techniques by task type in sections A to H, and ends with a combined prompt for CLAUDE.md or AGENTS.md.
+- [references/techniques.md](references/techniques.md) holds prompting techniques by task type in sections A to I, and ends with a combined prompt for CLAUDE.md or AGENTS.md.
 
 Reply in the language the user writes in, progress updates included. Prompts you produce follow the same language unless the user asks otherwise.
 
@@ -49,7 +49,7 @@ Keep at most three candidates, five when you dispatch agents. Keep the ones guar
 
 **When the task text names a runnable check** (a test command, a verifier, a build) **and asks for one bounded change**, keep only the Ledger and say so in one line. The other cards pay off when there is no runnable check, a destructive or outward-facing step, several agents, an unknown cause, or work that spans sessions.
 
-Your very next output is the picks message below, with no tool call before it. When the task is explaining, a diagram, research, a long task, or interface copy, add a line naming the techniques.md section (B, D, F, E, or H) and read it before starting. Send the message and keep going; do not wait for a reply. After your first look at the code you may add or swap one card, saying why.
+Your very next output is the picks message below, with no tool call before it. When the task is explaining, a diagram, research, a long task, writing or translation, interface copy, or visual design, add a line naming the techniques.md section (B, D, F, E, G, H, or I) and read it before starting. Send the message and keep going; do not wait for a reply. After your first look at the code you may add or swap one card, saying why.
 
 ```
 Picks
@@ -78,7 +78,7 @@ Picks
 
 **Pre-mortem** (9, 10). Assume the change failed a month after shipping. List the likeliest causes, including second-order effects on callers, data, performance, and users. For each, add a test, guard, or monitor now, or say why the risk is accepted. Evidence: each cause with its measure, pointing to the added tests.
 
-**Review** (18, 19, 20, 21). Have a reviewer who did not do the work check it against the original requirement and the final output only. Its job is to prove the work wrong with counterexample inputs, code locations, or reproduction steps, and report only issues that affect correctness or the requirements. With no second agent, do it yourself as a separate pass: build at least one input meant to break the change, and run it. When choosing between approaches, first write the strongest case for each. When several agents judge the same thing, each answers before seeing the others; settle disagreements with a check that tells them apart, not a vote. Evidence: the findings with their evidence, or what was checked and found clean.
+**Review** (18, 19, 20, 21). Have a reviewer who did not do the work check it against the original requirement and the final output only. Its job is to prove the work wrong with counterexample inputs, code locations, or reproduction steps, and report only issues that affect correctness or the requirements (for code, only ones the change introduced), each tagged P0 (blocks release) to P3 (nice to have). With no second agent, do it yourself as a separate pass: build at least one input meant to break the change, and run it. When choosing between approaches, first write the strongest case for each. When several agents judge the same thing, each answers before seeing the others; settle disagreements with a check that tells them apart, not a vote. Evidence: the findings with their evidence, or what was checked and found clean.
 
 **Task record** (1; techniques E). Keep one record of the goal, acceptance criteria, the latest user decisions, assumptions that changed, the status of each criterion, blockers, and the next step. Reuse an existing task, plan, or progress file; create one only when the task already changes files. Update it at handoffs, before compaction, and when scope changes. When resuming, reread it and reconcile it with the current files before going on, and confirm at each phase that you are still solving the original problem. Evidence: the record, current at the end.
 
@@ -88,7 +88,7 @@ Picks
 
 Do the task, following the picked cards, and finish with the Ledger. Before an irreversible step the user has not approved, such as deleting data, pushing, sending anything outside, or changing permissions, stop and ask.
 
-For explaining, diagrams, research, long tasks, or interface copy, also read the matching techniques.md section (B, D, F, E, or H), found by its `## ` heading.
+For explaining, diagrams, research, long tasks, writing or translation, interface copy, or visual design, also read the matching techniques.md section (B, D, F, E, G, H, or I), found by its `## ` heading.
 
 When you dispatch agents, give each one only the cards that fit its part, written as concrete rules, plus the files and interfaces it owns, what it leaves alone, its checks, and the evidence its report carries. You own the integration: rerun at least one check from each report yourself and test the combined result. A worker's "done" is a claim, not evidence. If you cannot dispatch, do the parts yourself in order.
 

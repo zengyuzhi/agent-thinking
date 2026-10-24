@@ -9,6 +9,8 @@
 | Long tasks | Write progress to files. Start fresh when the context gets messy |
 | Research | First define what counts as an answer. Require cross-checking across several sources |
 | Output format | Tell it what to do, not what not to do |
+| Interface copy | Say what happens, in the user's words. Let the layout do the explaining |
+| Visual design | Give numbers you can count, not adjectives. Propose directions before building |
 
 ---
 
@@ -184,6 +186,41 @@ When you hit an obstacle, do not take shortcuts with destructive actions. For ex
 If you created temporary files or scripts for debugging, delete them at the end of the task.
 ```
 
+**11. Change only what the request needs**
+```
+Every changed line should trace to the request. Do not "improve" nearby code, comments, or formatting.
+If you notice unrelated dead code or bugs, mention them; do not change them.
+Remove only the imports, variables, and functions that your own change left unused.
+```
+
+This follows the CLAUDE.md that collects Andrej Karpathy's notes on coding agents; Codex's default system prompt says the same about unrelated bugs. The first line is a check you can run on the diff: a line that does not trace to the request should go.
+
+**12. Let errors show**
+```
+Do not add broad try/catch blocks, silent defaults, or fallbacks that make a failure look like success. Let errors propagate, or report them explicitly.
+```
+
+From OpenAI's Codex prompting guide. A swallowed error makes a broken run look done, which is the failure the Ledger card exists to catch.
+
+**13. Tidy first, then change behavior**
+```
+Never mix structural and behavioral changes in one commit. When both are needed, make the structural change first, and run the tests before and after it to show behavior did not change.
+```
+
+From Kent Beck's system prompt for augmented coding. His older line says the same: "make the change easy (warning: this may be hard), then make the easy change." The reviewer then reads a refactor the tests vouch for, and a separate, small behavior change.
+
+**14. Red, then green**
+
+"Use red/green TDD" is enough on its own. Simon Willison notes that current models read it as: write the tests first, and confirm they fail before implementing the change. A test that never failed has not shown that it can catch anything.
+
+**15. Stop after three failed fixes**
+```
+If three fixes for the same problem have failed, stop. Do not try a fourth.
+Report what each attempt ruled out, and question the design before going on.
+```
+
+From the systematic-debugging skill in superpowers (Jesse Vincent): three failures usually mean the problem is in the structure, not in the next patch. It pairs with the Diagnose card's log.
+
 ---
 
 ## D. Architecture Diagrams
@@ -319,7 +356,7 @@ If you only say "look into X" without setting a scope, the agent may read hundre
 
 ---
 
-## G. Output Format and Length
+## G. Output Format and Writing
 
 **1. Tell it what you want**
 
@@ -350,28 +387,98 @@ After completing a task that involves tool calls, briefly summarize what you did
 
 When you need JSON, prefer the API's built-in Structured Outputs feature. Avoid describing the format in words in the prompt.
 
+**7. Translate by rewriting**
+```
+Keep the original meaning and formatting, and rewrite the following in [target language]:
+```
+
+Asking for a rewrite instead of a translation stops the output from copying the source's sentence structure. 宝玉 (baoyu) uses this one line in place of the multi-step translate, reflect, and re-translate prompts that earlier models needed. The test: does it read as if it was written in the target language?
+
+**8. Learn the voice from your own edits**
+
+When everyone uses the same "make it sound less like AI" prompt, the output just moves to a new shared template; 宝玉 argues that all such prompts are wrong. Instead, edit an AI draft yourself, then give both versions back:
+```
+Compare the two texts below. The first is the AI draft; the second is my edited version. List the kinds of changes I made, state the rule behind each, and add the rules to my writing-style notes.
+```
+After a few rounds the notes describe your own voice, and later drafts start from it.
+
+**9. Proofread without rewriting**
+```
+Proofread this text before it is published. List the problems; do not fix them:
+1. Spelling mistakes and typos
+2. Grammar mistakes
+3. Repeated words or sentence patterns
+4. Logic errors and factual mistakes
+5. Weak arguments that could be made stronger
+6. Empty or placeholder links
+```
+Adapted from Simon Willison's proofreading prompt. Because the agent only points, the text keeps the author's voice; see G.4.
+
 ---
 
 ## H. Interface Copy
 
 **1. Write for the glance, not the read**
 
-Steve Krug's first law of usability is "Don't make me think": a screen should be self-evident, and where it cannot be, self-explanatory. Robin Williams's four principles for non-designers are contrast, repetition, alignment, and proximity. For menus and feature text this means: a label says what happens, in the user's words; items that belong together sit together and follow one pattern; every needless word goes. Krug's rule of thumb: remove half the words, then half of what is left. Layout explains before words do: grouping, order, and position already say what belongs together and what matters most, so a secondary label or description that repeats them is noise.
+Steve Krug's first law of usability is "Don't make me think": a screen should be self-evident, and where it cannot be, self-explanatory. Robin Williams's four principles for non-designers are contrast, repetition, alignment, and proximity. For menus and feature text this means: a label says what happens, in the user's words; items that belong together sit together and follow one pattern; every needless word goes. Krug's rule of thumb: remove half the words, then half of what is left. Layout explains before words do: grouping, order, and position already say what belongs together and what matters most, so a secondary label or description that repeats them is noise. The most common needless one is a small label above a heading, often called an eyebrow; the impeccable design skill bans it outright, because the heading carries itself.
 
 **2. Rewrite menus and feature text**
 ```
 You are a product manager and a copywriter in the Apple style. Rewrite every menu item and feature description in this admin interface by the principles of "Don't Make Me Think" and "The Non-Designer's Design Book":
 - A user understands each label at a glance, without reading it twice.
 - Everyday words. No internal names, no technical terms.
+- A button says what happens when it is pressed: "Save changes," not "Submit." An action keeps one name through the flow: a "Publish" button leads to a "Published" message.
+- If a line could appear in an ad, rewrite it until it sounds like product UI.
 - Names: one to three words. Descriptions: under twelve words.
 - Items of the same kind follow one pattern: same part of speech, same word order.
 - Avoid unnecessary secondary labels and descriptions. Let the layout do the explaining.
 Deliver a table: current text, new text (or "removed"), what changed and why. Flag every item whose meaning you had to guess.
 ```
 
-**3. Check it the way a user would**
+**3. Rewrite error messages**
+```
+Rewrite each error message in three parts:
+- A title of five to eight words: what happened.
+- One sentence: why, in plain words.
+- One action: what the user can do next, with a workaround if there is one.
+Name the specific field or component. No error codes users would not recognize, no passive voice, no blame ("you failed to..."), no "please."
+```
 
-Give the new labels, without their descriptions, to someone or to a fresh agent session that has not seen the product, and ask what each one does. A label that needs its description to be understood is not done. Then cover each secondary label and description in turn: if the screen still reads without it, remove it.
+Adapted from the Siemens iX design system's prompt for error messages.
+
+**4. Check it the way a user would**
+
+Give the new labels, without their descriptions, to someone or to a fresh agent session that has not seen the product, and ask what each one does. A label that needs its description to be understood is not done. Then cover each secondary label and description in turn: if the screen still reads without it, remove it. Last, read only the headings, labels, and numbers, as OpenAI's frontend guide suggests: the screen should still make sense.
+
+---
+
+## I. Visual Design
+
+**1. Give numbers, not adjectives**
+
+Anthropic's prompting guide notes that generic instructions such as "don't use that color" or "make it clean and minimal" tend to shift the model to a different fixed palette instead of producing variety. What works is a concrete spec, or options to pick from. So state limits you can count and checks you can run, not a mood.
+
+**2. Propose directions before building**
+```
+Before building, propose 4 distinct visual directions for this brief, each as background color, accent color, and typeface, plus a one-line reason. Ask me to pick one, then build only that direction.
+```
+
+**3. Design rules you can count**
+```
+- One H1, two typefaces at most, one neutral base and one accent color, one primary button per screen.
+- Four or five font sizes and weights in total. Spacing in multiples of 4px.
+- Build the hierarchy in grayscale first, with size, weight, and spacing. Add color last. Squint at the result: what matters most should still stand out.
+- On a colored background, tint secondary text from that color, not gray.
+- Use a card only when it holds something the user acts on. If removing its border, shadow, background, or radius hurts neither use nor understanding, remove them.
+- Emphasize a whole heading, not one word in it. Labels in sentence case, not all caps. Numbered markers (01, 02, 03) only for real sequences.
+- Animate only to show cause and effect. Keep it under 300ms, exits about 20% faster than entrances, ease-out for elements entering or leaving, and scale from 0.95, not from 0.
+```
+
+These come from OpenAI's frontend guides (the counts, the spacing, and the card test), Anthropic's frontend-design skill (the typographic habits that give a generated page away), *Refactoring UI* (grayscale first, tinted text), Emil Kowalski (motion timing), and Vercel's Web Interface Guidelines (animate only to show cause and effect). Keep the rules that fit the brief; a brand's own design system overrides them.
+
+**4. Walk every state**
+
+A screenshot of the default state hides most problems. Check hover, focus, active, loading, empty, and error states, and try short, average, and very long content. When there is motion, replay it at 10% speed in the browser's animation panel: what looks off when slowed down is what feels subtly wrong at full speed. This extends the screenshot loop in C.1.
 
 ---
 
@@ -407,3 +514,18 @@ Working principles:
 - [Diátaxis documentation framework](https://diataxis.fr/)
 - Steve Krug, *Don't Make Me Think, Revisited*, 3rd edition, New Riders, 2014
 - Robin Williams, *The Non-Designer's Design Book*, 4th edition, Peachpit Press, 2014
+- Adam Wathan and Steve Schoger, *Refactoring UI*, 2018
+- [Designing delightful frontends with GPT-5.4](https://developers.openai.com/blog/designing-delightful-frontends-with-gpt-5-4), OpenAI
+- [GPT-5 prompting guide](https://developers.openai.com/cookbook/examples/gpt-5/gpt-5_prompting_guide) and [Codex prompting guide](https://github.com/openai/openai-cookbook/blob/main/examples/gpt-5/codex_prompting_guide.ipynb), OpenAI Cookbook
+- [Prompting Claude Sonnet 5](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5), Anthropic
+- [frontend-design skill](https://github.com/anthropics/skills/blob/main/skills/frontend-design/SKILL.md), Anthropic
+- [andrej-karpathy-skills CLAUDE.md](https://github.com/forrestchang/andrej-karpathy-skills/blob/main/CLAUDE.md), based on Andrej Karpathy's notes
+- Kent Beck, [Augmented coding: beyond the vibes](https://newsletter.kentbeck.com/p/augmented-coding-beyond-the-vibes), 2025
+- Simon Willison, [Red/green TDD](https://simonwillison.net/guides/agentic-engineering-patterns/red-green-tdd/) and [Prompts](https://simonwillison.net/guides/agentic-engineering-patterns/prompts/), Agentic Engineering Patterns
+- Jesse Vincent, [systematic-debugging skill](https://github.com/obra/superpowers/blob/main/skills/systematic-debugging/SKILL.md), superpowers
+- 宝玉 (baoyu), [on translating with LLMs](https://baoyu.io/blog/llm-translation-better-idiom), 2025, and [on removing the AI flavor from writing](https://baoyu.io/blog/2026-02-14/remove-ai-writing-flavor), 2026
+- [AI and UX writing](https://ix.siemens.io/docs/guidelines/language/support-and-resources/AI-and-UX-writing), Siemens iX design system
+- Paul Bakaus, [impeccable](https://github.com/pbakaus/impeccable)
+- Emil Kowalski, [Agents with taste](https://emilkowal.ski/ui/agents-with-taste)
+- [Web Interface Guidelines](https://vercel.com/design/guidelines), Vercel
+- Jakub Krehel, [make-interfaces-feel-better](https://github.com/jakubkrehel/make-interfaces-feel-better)
