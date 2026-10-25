@@ -60,6 +60,18 @@ Before answering questions about the codebase, investigate and read the relevant
 </investigate_before_answering>
 ```
 
+**9. Deepen the task before starting**
+```
+I want a deeper version, not a bigger one. Before rewriting this task, answer:
+1. What would an expert in this field do that I did not ask for? List only what makes the result more reliable, not new features.
+2. Which raw material would they start from (source data, raw logs, primary documents), instead of the material I already organized?
+3. Which specific methods and tools would they use?
+4. Apart from your judgment and mine, what could prove the result correct: tests, data, independent sources, a command anyone can rerun?
+Then rewrite the task, marking which question each new requirement came from. List anything that widens the scope separately and wait for my confirmation.
+```
+
+Adapted from a prompt shared in the Chinese community; the original source is unknown. "Deeper, not bigger" is the counterweight to A.3. Question 4 asks for a check outside the conversation, which is what C.1 and the Ledger card need.
+
 ---
 
 ## B. Explaining and Teaching

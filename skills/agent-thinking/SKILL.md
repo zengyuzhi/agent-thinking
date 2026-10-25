@@ -103,6 +103,8 @@ Produce one self-contained prompt with these parts, in order.
 5. The budget: when to stop and report instead of pressing on.
 6. The report format: the Ledger, so each criterion comes back verified, failed, or unverified with its evidence, ending with the uncertainties.
 
+Before writing, run the four questions in techniques.md A.9 on the task, and fold in the answers that make the result more reliable without widening the scope.
+
 When the target is CLAUDE.md or AGENTS.md, start from the combined prompt at the end of techniques.md and keep only the lines that fit this project.
 
 Then run the colleague test: read the prompt as a colleague who knows nothing about the task. It passes only if they could start work right away. Deliver the prompt in one code block, followed by one line per card used and why.
