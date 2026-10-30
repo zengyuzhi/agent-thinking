@@ -426,6 +426,12 @@ Agent 感觉上下文快满时，会倾向于草草结束。如果你用的工�
 ```
 改编自 Simon Willison 的校对提示词。Agent 只指出问题，文字就还是作者自己的口吻；参见 G.4。
 
+**10. 点名合作原则**
+```
+以格赖斯合作原则及四项会话准则为指导，确保信息充分而不冗余、论述真实且有依据、回应紧扣问题、表达清晰有序；在不牺牲准确性与必要深度的前提下，提高沟通效率。没有依据的内容直接说明不确定，不要为了显得有依据而补出处。
+```
+改编自中文社区流传的一段提示词，原始出处不明。四个短语分别对应格赖斯的量、质、关系、方式四条准则。名字很短，模型也熟悉这套理论，但每条都是形容词，没有可检查的标准；最后一句是我们加的，补上了"没有依据时怎么办"。需要可检查的规则时，再加上 G.3。
+
 ---
 
 ## H. 界面文案
@@ -527,6 +533,7 @@ Anthropic 的提示词指南提到，"别用那个颜色""做得干净简约"这
 - Steve Krug，《Don't Make Me Think, Revisited》（中译《点石成金》），第 3 版，New Riders，2014
 - Robin Williams，《The Non-Designer's Design Book》（中译《写给大家看的设计书》），第 4 版，Peachpit Press，2014
 - Adam Wathan、Steve Schoger，《Refactoring UI》，2018
+- H. P. Grice，"Logic and Conversation"，收于 *Syntax and Semantics 3: Speech Acts*，Academic Press，1975
 - [Designing delightful frontends with GPT-5.4](https://developers.openai.com/blog/designing-delightful-frontends-with-gpt-5-4)，OpenAI
 - [GPT-5 提示词指南](https://developers.openai.com/cookbook/examples/gpt-5/gpt-5_prompting_guide)和 [Codex 提示词指南](https://github.com/openai/openai-cookbook/blob/main/examples/gpt-5/codex_prompting_guide.ipynb)，OpenAI Cookbook
 - [Prompting Claude Sonnet 5](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5)，Anthropic

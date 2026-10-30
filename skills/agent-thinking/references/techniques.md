@@ -426,6 +426,12 @@ Proofread this text before it is published. List the problems; do not fix them:
 ```
 Adapted from Simon Willison's proofreading prompt. Because the agent only points, the text keeps the author's voice; see G.4.
 
+**10. Name the cooperative principle**
+```
+Follow Grice's Cooperative Principle and its four maxims: give as much information as needed and no more, say only what is true and supported, stay on the question, and be clear and orderly. Be efficient, but not at the cost of accuracy or needed depth. If something has no support, say you are not sure; do not add a source just to look supported.
+```
+Adapted from a prompt shared in the Chinese community; the original source is unknown. The four phrases map to Grice's maxims of quantity, quality, relation, and manner. The name is short and the model knows the theory, but the maxims are adjectives with no checkable bar; the last sentence is our addition and closes the gap of what to do without evidence. For checkable rules, add G.3.
+
 ---
 
 ## H. Interface Copy
@@ -527,6 +533,7 @@ Working principles:
 - Steve Krug, *Don't Make Me Think, Revisited*, 3rd edition, New Riders, 2014
 - Robin Williams, *The Non-Designer's Design Book*, 4th edition, Peachpit Press, 2014
 - Adam Wathan and Steve Schoger, *Refactoring UI*, 2018
+- H. P. Grice, "Logic and Conversation", in *Syntax and Semantics 3: Speech Acts*, Academic Press, 1975
 - [Designing delightful frontends with GPT-5.4](https://developers.openai.com/blog/designing-delightful-frontends-with-gpt-5-4), OpenAI
 - [GPT-5 prompting guide](https://developers.openai.com/cookbook/examples/gpt-5/gpt-5_prompting_guide) and [Codex prompting guide](https://github.com/openai/openai-cookbook/blob/main/examples/gpt-5/codex_prompting_guide.ipynb), OpenAI Cookbook
 - [Prompting Claude Sonnet 5](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5), Anthropic
